@@ -1,3 +1,5 @@
+from pymongo.errors import BulkWriteError
+
 def filter_symbol(x):
     if x["type"] == "EQS":
         return 1
@@ -10,6 +12,10 @@ def get_recommendation_trends(symbols, finnhub_client, collection):
         print(f"Downloading {symbol}")
         result = finnhub_client.recommendation_trends(symbol)
         if result != []:
-            collection.insert_many(result)
+            try:
+                collection.insert_many(result)
+            except BulkWriteError as bwe:
+                print(f"BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                continue
         else:
             print(f"Cannot insert {symbol} as the list is empty")
