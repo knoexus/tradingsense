@@ -3,6 +3,8 @@ import datetime
 import time
 import requests
 import os
+import proxy
+from requests.exceptions import ProxyError, SSLError
 
 def get_symbol_list():
     raw_symbols = requests.get(f"https://finnhub.io/api/v1/stock/symbol?exchange=US&token={os.environ['FINNHUB_API_KEY']}")
@@ -19,6 +21,13 @@ class DataOps:
         self.symbols = get_symbol_list()[:10]
         self.finnhub_client = finnhub_client
         self.db = db
+        self.proxies = list(map(lambda x: {
+            "http": x,
+            "https": x
+        }, list(proxy.get_proxies())))
+    
+    STATUS_LIMIT_EXCEEDED = 429
+    STATUS_SUCCESS = 200 
 
     def get_recommendation_trends(self):
         self.db.recommendation_trends.create_index([("period", 1), ("symbol", 1)], unique=True)
@@ -114,6 +123,53 @@ class DataOps:
 
     def get_pattern_recognition(self):
         pass
+
+    # unauthed
+    def get_financials(self):
+        def iterate_proxies(val, delay):
+            if val == len(self.proxies):
+                val == 0 
+                self.proxies = proxy.get_proxies(delay=delay)    
+            else:
+                val += 1
+
+        self.db.financials.create_index([("period", 1), ("symbol", 1), ('accumulatedDepreciationTotal', 1)], unique=True)
+        i = 0
+        delay = 15
+        local_used_proxies = {}
+        for item in self.symbols:
+            symbol = item["symbol"]
+            print(f"Downloading {symbol}")
+            result = []
+            status = self.STATUS_LIMIT_EXCEEDED
+            while status == self.STATUS_LIMIT_EXCEEDED:
+                print(self.proxies)
+                if self.proxies[i]["https"] in local_used_proxies:
+                    iterate_proxies(i, delay)
+                    continue
+                try: 
+                    response = requests.get(f"https://finnhub.io/api/v1/stock/financials?symbol={symbol}&statement=bs&freq=quarterly", proxies=self.proxies[i])
+                except (ProxyError, SSLError):
+                    print("Proxy error occured")
+                    iterate_proxies(i, delay)
+                    continue
+                status = response.status_code 
+                if status == self.STATUS_LIMIT_EXCEEDED:
+                    local_used_proxies[self.proxies[i]["https"]] = self.proxies[i]
+                    iterate_proxies(i, delay)
+                elif status != self.STATUS_SUCCESS:
+                    print(f"{self.get_financials.__name__}: Error {status} - {symbol} occured")
+                else:
+                    result = response.json()
+            if result != {} and result["financials"] != []:
+                for f in result["financials"]:
+                    f["symbol"] = symbol
+                try:
+                    self.db.financials.insert_many(result["financials"]) 
+                except BulkWriteError as bwe:
+                    print(f"{self.get_financials.__name__}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+            else:
+                print(f"{self.get_financials.__name__}: Cannot insert {symbol} as the response is empty")
 
 
 
