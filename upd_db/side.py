@@ -17,8 +17,8 @@ def filter_symbol(x):
         return 0
 
 class DataOps:
-    def __init__(self, finnhub_client, db):
-        self.symbols = get_symbol_list()[:10]
+    def __init__(self, finnhub_client, db, number_of_assets):
+        self.symbols = get_symbol_list()[:number_of_assets]
         self.finnhub_client = finnhub_client
         self.db = db
         self.proxies = list(map(lambda x: {
@@ -27,11 +27,29 @@ class DataOps:
         }, list(proxy.get_proxies())))
     
     STATUS_LIMIT_EXCEEDED = 429
-    STATUS_SUCCESS = 200 
+    STATUS_SUCCESS = 200
+
+    def call_all_authed(self):
+        self.get_recommendation_trends()
+        time.sleep(60)
+        self.get_financials_reported()
+        time.sleep(60)
+        self.get_earnings_calendar() 
+        time.sleep(60)
+        self.get_candles()
+        time.sleep(60)
+        self.get_company_profile()
+        time.sleep(60)
+    
+    def call_all(self):
+        self.call_all_authed()
+        self.get_financials()
 
     def get_recommendation_trends(self):
         self.db.recommendation_trends.create_index([("period", 1), ("symbol", 1)], unique=True)
-        for item in self.symbols:
+        for idx, item in enumerate(self.symbols):
+            if idx % 60 == 0:
+                time.sleep(61)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
             result = self.finnhub_client.recommendation_trends(symbol)
@@ -46,7 +64,9 @@ class DataOps:
 
     def get_financials_reported(self):
         self.db.financials_reported.create_index([("accessNumber", 1), ("symbol", 1)], unique=True)
-        for item in self.symbols:
+        for idx, item in enumerate(self.symbols):
+            if idx % 60 == 0:
+                time.sleep(61)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
             result = self.finnhub_client.financials_reported(symbol=symbol, freq='quarterly')
@@ -61,7 +81,9 @@ class DataOps:
     
     def get_earnings_calendar(self):
         self.db.earnings_calendar.create_index([("date", 1), ("symbol", 1)], unique=True)
-        for item in self.symbols:
+        for idx, item in enumerate(self.symbols):
+            if idx % 60 == 0:
+                time.sleep(61)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
             result = self.finnhub_client.earnings_calendar(symbol=symbol)
@@ -76,7 +98,9 @@ class DataOps:
     
     def get_candles(self):
         self.db.candles.create_index([("timestamp", 1), ("symbol", 1)], unique=True)
-        for item in self.symbols:
+        for idx, item in enumerate(self.symbols):
+            if idx % 60 == 0:
+                time.sleep(61)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
             current_timestamp = int(time.time())
@@ -105,7 +129,9 @@ class DataOps:
     def get_company_profile(self):
         self.db.company_profile.create_index([("symbol", 1), ("shareOutstanding", 1)], unique=True)
         data_list = []
-        for item in self.symbols:
+        for idx, item in enumerate(self.symbols):
+            if idx % 60 == 0:
+                time.sleep(61)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
             result = self.finnhub_client.company_profile2(symbol=symbol)
