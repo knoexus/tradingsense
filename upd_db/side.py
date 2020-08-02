@@ -30,16 +30,10 @@ class DataOps:
     STATUS_SUCCESS = 200
 
     def call_all_authed(self):
-        self.get_recommendation_trends()
-        time.sleep(60)
-        self.get_financials_reported()
-        time.sleep(60)
-        self.get_earnings_calendar() 
-        time.sleep(60)
-        self.get_candles()
-        time.sleep(60)
-        self.get_company_profile()
-        time.sleep(60)
+        methods = [self.get_recommendation_trends, self.get_financials_reported, self.get_earnings_calendar, self.get_candles, self.get_company_profile]
+        for method in methods:
+            method()
+            time.sleep(60)
     
     def call_all(self):
         self.call_all_authed()
