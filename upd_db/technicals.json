@@ -1,0 +1,50 @@
+{
+    "MACD": {
+        "params": {},
+        "retrievable_symbols": ["macd"]
+    },
+    "STOCH": {
+        "params": {},
+        "retrievable_symbols": ["slowd", "slowk"]
+    },
+    "WILLR": {
+        "params": {},
+        "retrievable_symbols": ["willr"]
+    },
+    "ADX": {
+        "params": {},
+        "retrievable_symbols": ["adx"]
+    },
+    "APO": {
+        "params": {},
+        "retrievable_symbols": ["apo"]
+    },
+    "CCI": {
+        "params": {},
+        "retrievable_symbols": ["cci"]
+    },
+    "AROONOSC": {
+        "params": {},
+        "retrievable_symbols": ["aroonosc"]
+    },
+    "BBANDS": {
+        "params": {},
+        "retrievable_symbols": ["upperband", "middleband", "lowerband"]
+    },
+    "AD": {
+        "params": {},
+        "retrievable_symbols": ["ad"]
+    },
+    "ATR": {
+        "params": {},
+        "retrievable_symbols": ["atr"]
+    },
+    "OBV": {
+        "params": {},
+        "retrievable_symbols": ["obv"]
+    },
+    "SAR": {
+        "params": {},
+        "retrievable_symbols": ["sar"]
+    }
+}
