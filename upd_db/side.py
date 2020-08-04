@@ -31,6 +31,8 @@ class DataOps:
     STATUS_LIMIT_EXCEEDED = 429
     STATUS_SUCCESS = 200
 
+    UNAUTHED_STRING = "You don't have access to this resource."
+
     INIT_TIMESTAMP = 1260576000
     CURRENT_TIMESTAMP = int(time.time())
 
@@ -41,11 +43,11 @@ class DataOps:
             time.sleep(timeout_second)
     
     def iterate_proxies(self, val, delay):
-        if val == len(self.proxies):
-            val == 0 
-            self.proxies = proxy.get_proxies(delay=delay)    
+        if val == len(self.proxies)-1:
+            self.proxies = proxy.get_proxies(delay=delay) 
+            return 0   
         else:
-            val += 1
+            return val + 1
 
     # data
     def call_all_authed(self):
@@ -204,25 +206,33 @@ class DataOps:
         for item in self.symbols:
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
-            result = []
+            result = {}
             status = self.STATUS_LIMIT_EXCEEDED
             while status == self.STATUS_LIMIT_EXCEEDED:
                 print(self.proxies)
-                if self.proxies[i]["https"] in local_used_proxies:
-                    self.iterate_proxies(i, delay)
+                current_proxy = self.proxies[i]["https"]
+                if current_proxy in local_used_proxies:
+                    i = self.iterate_proxies(i, delay)
                     continue
                 try: 
                     response = requests.get(f"https://finnhub.io/api/v1/stock/financials?symbol={symbol}&statement=bs&freq=quarterly", proxies=self.proxies[i])
+                    if response.text == self.UNAUTHED_STRING:
+                        print(f'Unauthed for proxy {current_proxy}')
+                        i = self.iterate_proxies(i, delay)
+                        continue
                 except (ProxyError, SSLError):
-                    print("Proxy error occured")
-                    self.iterate_proxies(i, delay)
+                    print(f'Proxy error occured for proxy {current_proxy}')
+                    i = self.iterate_proxies(i, delay)
                     continue
                 status = response.status_code 
                 if status == self.STATUS_LIMIT_EXCEEDED:
-                    local_used_proxies[self.proxies[i]["https"]] = self.proxies[i]
-                    self.iterate_proxies(i, delay)
+                    local_used_proxies[current_proxy] = self.proxies[i]
+                    i = self.iterate_proxies(i, delay)
+                    continue
                 elif status != self.STATUS_SUCCESS:
                     print(f"{func_name}: Error {status} - {symbol} occured")
+                    i = self.iterate_proxies(i, delay)
+                    continue
                 else:
                     result = response.json()
             if result != {} and result["financials"] != []:
