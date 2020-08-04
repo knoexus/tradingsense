@@ -50,7 +50,7 @@ class DataOps:
     # data
     def call_all_authed(self):
         methods = [self.get_recommendation_trends, self.get_financials_reported, self.get_earnings_calendar, 
-                    self.get_candles, self.get_company_profile, self.get_technicals()]
+                    self.get_candles, self.get_company_profile, self.get_technicals]
         for method in methods:
             method()
             time.sleep(60)
@@ -60,6 +60,8 @@ class DataOps:
         self.get_financials()
 
     def get_recommendation_trends(self):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         self.db.recommendation_trends.create_index([("period", 1), ("symbol", 1)], unique=True)
         for idx, item in enumerate(self.symbols):
             self.set_timeout_based_on_current_index(idx)
@@ -70,12 +72,14 @@ class DataOps:
                 try:
                     self.db.recommendation_trends.insert_many(result)
                 except BulkWriteError as bwe:
-                    print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                    print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                     continue
             else:
-                print(f"{inspect.currentframe().f_code.co_name}: Cannot insert {symbol} as the response is empty")
+                print(f"{func_name}: Cannot insert {symbol} as the response is empty")
 
     def get_financials_reported(self):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         self.db.financials_reported.create_index([("accessNumber", 1), ("symbol", 1)], unique=True)
         for idx, item in enumerate(self.symbols):
             self.set_timeout_based_on_current_index(idx)
@@ -86,12 +90,14 @@ class DataOps:
                 try:
                     self.db.financials_reported.insert_many(result["data"])
                 except BulkWriteError as bwe:
-                    print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                    print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                     continue
             else:
-                print(f"{inspect.currentframe().f_code.co_name}: Cannot insert {symbol} as the response is empty")
+                print(f"{func_name}: Cannot insert {symbol} as the response is empty")
     
     def get_earnings_calendar(self):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         self.db.earnings_calendar.create_index([("date", 1), ("symbol", 1)], unique=True)
         for idx, item in enumerate(self.symbols):
             self.set_timeout_based_on_current_index(idx)
@@ -102,12 +108,14 @@ class DataOps:
                 try:
                     self.db.earnings_calendar.insert_many(result["earningsCalendar"])
                 except BulkWriteError as bwe:
-                    print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                    print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                     continue
             else:
-                print(f"{inspect.currentframe().f_code.co_name}: Cannot insert {symbol} as the response is empty")
+                print(f"{func_name}: Cannot insert {symbol} as the response is empty")
     
     def get_candles(self):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         self.db.candles.create_index([("timestamp", 1), ("symbol", 1)], unique=True)
         for idx, item in enumerate(self.symbols):
             self.set_timeout_based_on_current_index(idx)
@@ -130,12 +138,14 @@ class DataOps:
                         })
                     self.db.candles.insert_many(transformed)
                 except BulkWriteError as bwe:
-                    print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                    print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                     continue
             else:
-                print(f"{inspect.currentframe().f_code.co_name}: Cannot insert {symbol} as the response is empty")
+                print(f"{func_name}: Cannot insert {symbol} as the response is empty")
 
     def get_company_profile(self):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         self.db.company_profile.create_index([("symbol", 1), ("shareOutstanding", 1)], unique=True)
         data_list = []
         for idx, item in enumerate(self.symbols):
@@ -146,13 +156,15 @@ class DataOps:
             if result != {}:
                 data_list.append(result)
             else:
-                print(f"{inspect.currentframe().f_code.co_name}: Cannot insert {symbol} as the response is empty")
+                print(f"{func_name}: Cannot insert {symbol} as the response is empty")
         try:
             self.db.company_profile.insert_many(data_list) 
         except BulkWriteError as bwe:
-            print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+            print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
 
     def get_technicals(self, cut=30):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         with open('technicals.json') as json_technicals:
             technicals_dict = json.load(json_technicals)
             count_for_timeout = 0
@@ -179,10 +191,12 @@ class DataOps:
                 try:
                     self.db.technicals.replace_one({"symbol": symbol}, data_obj, upsert=True)
                 except BulkWriteError as bwe:
-                    print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                    print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                 
     # unauthed
     def get_financials(self):
+        func_name = inspect.currentframe().f_code.co_name
+        print(f"{func_name} has started executing")
         self.db.financials.create_index([("period", 1), ("symbol", 1), ('accumulatedDepreciationTotal', 1)], unique=True)
         i = 0
         delay = 15
@@ -208,7 +222,7 @@ class DataOps:
                     local_used_proxies[self.proxies[i]["https"]] = self.proxies[i]
                     self.iterate_proxies(i, delay)
                 elif status != self.STATUS_SUCCESS:
-                    print(f"{inspect.currentframe().f_code.co_name}: Error {status} - {symbol} occured")
+                    print(f"{func_name}: Error {status} - {symbol} occured")
                 else:
                     result = response.json()
             if result != {} and result["financials"] != []:
@@ -217,9 +231,9 @@ class DataOps:
                 try:
                     self.db.financials.insert_many(result["financials"]) 
                 except BulkWriteError as bwe:
-                    print(f"{inspect.currentframe().f_code.co_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+                    print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
             else:
-                print(f"{inspect.currentframe().f_code.co_name}: Cannot insert {symbol} as the response is empty")
+                print(f"{func_name}: Cannot insert {symbol} as the response is empty")
 
 
 
