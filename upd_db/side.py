@@ -24,7 +24,7 @@ class DataOps:
     _CURRENT_TIMESTAMP = int(time.time())
 
     # helper
-    def _set_timeout_based_on_current_index(self, idx, max_requests=60, timeout_second=61):
+    def _set_timeout_based_on_current_index(self, idx, max_requests=59, timeout_second=61):
         if idx != 0 and idx % max_requests == 0:
             print(f"{inspect.currentframe().f_code.co_name} timeout started")
             time.sleep(timeout_second)

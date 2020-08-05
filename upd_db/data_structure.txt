@@ -1,0 +1,8 @@
+candles: granularity - day for each symbol --- chart data
+company_profile: one symbol - one document, dates don't matter --- ? section data: right above or below charts
+earnings_calendar: 2019-2020 data, granularity - quarter for each symbol
+recommendation_trends: 2019-2020 data, granularity - month for each symbol
+financials: Ny data, granularity - quarter for each symbol, ~ 35-40 indicators --- 1st lower section data 
+financials_reported: Ny data, granularity - quarter for each symbol, inside - 3 arrays of indicators (approx. 40-75), 
+    from Q2 2019 cash flow isn't available, data varies --- 1st lower section data 
+technicals: Ny data for each symbol in single chunks --- 2nd lower section data 
