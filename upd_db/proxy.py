@@ -19,4 +19,4 @@ def get_proxies(delay=0):
         print("No proxies found currently")
         return get_proxies(delay=start_delay+delay)
     else:
-        return proxies
+        return list(proxies)

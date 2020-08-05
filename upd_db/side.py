@@ -23,10 +23,7 @@ class DataOps:
         self.symbols = get_symbol_list()[:number_of_assets]
         self.finnhub_client = finnhub_client
         self.db = db
-        self.proxies = list(map(lambda x: {
-            "http": x,
-            "https": x
-        }, list(proxy.get_proxies())))
+        self.proxies = self.map_proxies()
     
     STATUS_LIMIT_EXCEEDED = 429
     STATUS_SUCCESS = 200
@@ -42,9 +39,15 @@ class DataOps:
             print(f"{inspect.currentframe().f_code.co_name} timeout started")
             time.sleep(timeout_second)
     
+    def map_proxies(self, delay=0):
+        return list(map(lambda x: {
+            "http": x,
+            "https": x
+        }, proxy.get_proxies(delay=delay))) 
+
     def iterate_proxies(self, val, delay):
         if val == len(self.proxies)-1:
-            self.proxies = proxy.get_proxies(delay=delay) 
+            self.map_proxies(delay)
             return 0   
         else:
             return val + 1
