@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema } = require('graphql')
-const { _CompanyProfile } = require('./mongoose_models')
+const _CompanyProfile = require('./mongoose_models/CompanyProfile')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',

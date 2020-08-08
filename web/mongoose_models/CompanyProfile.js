@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const company_profile_schema = new Schema({
   country: {
@@ -53,6 +52,4 @@ const company_profile_schema = new Schema({
   }
 })
 
-module.exports = {
-    _CompanyProfile: mongoose.model('CompanyProfile', company_profile_schema, 'company_profile')
-}
+module.exports =  mongoose.model('CompanyProfile', company_profile_schema, 'company_profile')
