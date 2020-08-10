@@ -1,6 +1,7 @@
-const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema } = require('graphql')
+const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema, GraphQLBoolean, GraphQLScalarType } = require('graphql')
 const _CompanyProfile = require('./mongoose_models/CompanyProfile')
 const _FinancialsReported = require('./mongoose_models/FinancialsReported')
+const _Candle = require('./mongoose_models/Candle')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -55,6 +56,31 @@ const FinancialsReported = new GraphQLObjectType({
         report: { type: Report }
     })
 })
+
+const DateTime = new GraphQLScalarType({
+    name: 'DateTime',
+    parseValue(value) {
+        return new Date(value)
+    },
+    parseLiteral(ast) {
+        if (ast.kind === Kind.INT) {
+            return parseInt(ast.value, 10)
+        }
+        return null
+    }
+})
+
+const Candle = new GraphQLObjectType({
+    name: 'Candle',
+    fields: () => ({
+        symbol: { type: GraphQLString },
+        timestamp: { type: DateTime },
+        close: { type: GraphQLFloat },
+        high: { type: GraphQLFloat },
+        low: { type: GraphQLFloat },
+        volume: { type: GraphQLInt }
+    })
+})
  
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
@@ -93,6 +119,23 @@ const RootQuery = new GraphQLObjectType({
                         return obj
                     }
                 })
+            }
+        },
+        candles_for_period: {
+            type: new GraphQLList(Candle),
+            args: {
+                symbol: { type: GraphQLString },
+                startDate: { type: GraphQLInt },
+                endDate: { type: GraphQLInt }
+            },
+            async resolve(_, args) {
+                const candles = await _Candle.find({
+                    $and: [
+                        { symbol: args.symbol },
+                        { timestamp: { $gte: new Date(args.startDate*1000), $lte: new Date(args.endDate*1000) } }
+                    ]
+                })
+                return candles
             }
         }
     }
