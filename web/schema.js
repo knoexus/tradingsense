@@ -113,6 +113,16 @@ const Technicals = new GraphQLObjectType({
     })
 })
  
+const Mixin = new GraphQLObjectType({
+    name: 'Mixin',
+    fields: () => ({
+        company_profile: { type: CompanyProfile },
+        candles: { type: new GraphQLList(Candle) },
+        financials_reported: { type: FinancialsReported },
+        technicals: { type: Technicals }
+    })
+})
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: {
@@ -184,6 +194,64 @@ const RootQuery = new GraphQLObjectType({
                         return obj
                     }
                 })
+            }
+        },
+        mix: {
+            type: Mixin,
+            args: {
+                symbol: { type: GraphQLString },
+                startDate: { type: GraphQLInt },
+                endDate: { type: GraphQLInt },
+                year: { type: GraphQLInt },
+                quarter: { type: GraphQLInt }
+            },
+            async resolve(_, args) {
+                const callback = (err, obj) => {
+                    if (err) {
+                        return null
+                    }
+                    if (obj) {
+                        return obj
+                    }
+                }
+                let promises = []
+                //company_profile
+                const company_profile = _CompanyProfile.where({ ticker: args.symbol }).findOne(callback).then(res => ({
+                    company_profile: res
+                }))
+                //candles
+                const candles =  _Candle.find({
+                    $and: [
+                        { symbol: args.symbol },
+                        { timestamp: { $gte: new Date(args.startDate*1000), $lte: new Date(args.endDate*1000) } }
+                    ]
+                }).then(res => ({
+                    candles: res
+                }))
+                //financials_reported
+                const financials_reported = _FinancialsReported.where({ 
+                    symbol: args.symbol,
+                    year: args.year,
+                    quarter: args.quarter
+                }).findOne(callback).then(res => ({
+                    financials_reported: res
+                }))
+                //technicals
+                const technicals = _Technicals.where({ symbol: args.symbol }).findOne(callback).then(res => ({
+                    technicals: res
+                }))
+                promises.push(company_profile)
+                promises.push(candles)
+                promises.push(financials_reported)
+                promises.push(technicals)
+                return await Promise.all(promises)
+                    .then(vals => {
+                        return vals.reduce((acc, current) => {
+                            const key = Object.keys(current)[0] 
+                            acc[key] = current[key]
+                            return acc
+                        }, {})
+                    })
             }
         }
     }
