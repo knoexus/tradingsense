@@ -83,33 +83,26 @@ const Candle = new GraphQLObjectType({
     })
 })
 
-const Technicals_Data = new GraphQLObjectType({
-    name: 'Technicals_Data',
-    fields: () => ({
-        t: { type: new GraphQLList(DateTime) },
-        MACD: { type: new GraphQLList(GraphQLFloat) },
-        SLOWD: { type: new GraphQLList(GraphQLFloat) },
-        SLOWK: { type: new GraphQLList(GraphQLFloat) },
-        WILLR: { type: new GraphQLList(GraphQLFloat) },
-        ADX: { type: new GraphQLList(GraphQLFloat) },
-        APO: { type: new GraphQLList(GraphQLFloat) },
-        CCI: { type: new GraphQLList(GraphQLFloat) },
-        AROONOSC: { type: new GraphQLList(GraphQLFloat) },
-        UPPERBAND: { type: new GraphQLList(GraphQLFloat) },
-        MIDDLEBAND: { type: new GraphQLList(GraphQLFloat) },
-        LOWERBAND: { type: new GraphQLList(GraphQLFloat) },
-        AD: { type: new GraphQLList(GraphQLFloat) },
-        ATR: { type: new GraphQLList(GraphQLFloat) },
-        OBV: { type: new GraphQLList(GraphQLFloat) },
-        SAR: { type: new GraphQLList(GraphQLFloat) }
-    })
-})
-
 const Technicals = new GraphQLObjectType({
     name: 'Technicals',
     fields: () => ({
         symbol: { type: GraphQLString },
-        data: { type: Technicals_Data }
+        t: { type: DateTime },
+        MACD: { type: GraphQLFloat },
+        SLOWD: { type: GraphQLFloat },
+        SLOWK: { type: GraphQLFloat },
+        WILLR: { type: GraphQLFloat },
+        ADX: { type: GraphQLFloat },
+        APO: { type: GraphQLFloat },
+        CCI: { type: GraphQLFloat },
+        AROONOSC: { type: GraphQLFloat },
+        UPPERBAND: { type: GraphQLFloat },
+        MIDDLEBAND: { type: GraphQLFloat },
+        LOWERBAND: { type: GraphQLFloat },
+        AD: { type: GraphQLFloat },
+        ATR: { type: GraphQLFloat },
+        OBV: { type: GraphQLFloat },
+        SAR: { type: GraphQLFloat }
     })
 })
  
@@ -119,7 +112,7 @@ const Mixin = new GraphQLObjectType({
         company_profile: { type: CompanyProfile },
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
-        technicals: { type: Technicals }
+        technicals: { type: new GraphQLList(Technicals) }
     })
 })
 
@@ -179,23 +172,6 @@ const RootQuery = new GraphQLObjectType({
                 return candles
             }
         },
-        technicals: {
-            type: Technicals,
-            args: {
-                symbol: { type: GraphQLString }
-            },
-            resolve(_, args) {
-                const query = _Technicals.where({ ...args })
-                return query.findOne((err, obj) => {
-                    if (err) {
-                        return null
-                    }
-                    if (obj) {
-                        return obj
-                    }
-                })
-            }
-        },
         mix: {
             type: Mixin,
             args: {
@@ -237,7 +213,12 @@ const RootQuery = new GraphQLObjectType({
                     financials_reported: res
                 }))
                 //technicals
-                const technicals = _Technicals.where({ symbol: args.symbol }).findOne(callback).then(res => ({
+                const technicals = _Technicals.find({
+                    $and: [
+                        { symbol: args.symbol },
+                        { t: { $gte: new Date(args.startDate*1000), $lte: new Date(args.endDate*1000) } }
+                    ]
+                }).then(res => ({
                     technicals: res
                 }))
                 promises.push(company_profile)
