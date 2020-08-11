@@ -169,6 +169,7 @@ class DataOps:
     def get_technicals(self, cut=30):
         func_name = inspect.currentframe().f_code.co_name
         print(f"{func_name} has started executing")
+        self._db.technicals_split.create_index([("symbol", 1), ("t", 1)], unique=True)
         with open('technicals.json') as json_technicals:
             technicals_dict = json.load(json_technicals)
             count_for_timeout = 0
@@ -186,14 +187,22 @@ class DataOps:
                     result = self._finnhub_client.technical_indicator(symbol, "D", self._INIT_TIMESTAMP, self._CURRENT_TIMESTAMP, 
                         indicator, indicator_alias["params"])
                     if idx == 0:
-                        data_obj["data"]["t"] = result["t"][:-cut]
+                        data_obj["data"]["t"] = result["t"][cut:]
                     else:
-                        print(f'Timestamp lists equality: {data_obj["data"]["t"] == result["t"][:-cut]}, lengths: {len(data_obj["data"]["t"])+cut} - {len(result["t"])}')
+                        print(f'Timestamp lists equality: {data_obj["data"]["t"] == result["t"][cut:]}, lengths: {len(data_obj["data"]["t"])+cut} - {len(result["t"])}')
                     for s in indicator_alias["retrievable_symbols"]:
-                        data_obj["data"][str.upper(s)] = result[s][:-cut]
+                        data_obj["data"][str.upper(s)] = result[s][cut:]
                 data_obj["data"]["t"] = list(map(lambda x: datetime.datetime.fromtimestamp(x), data_obj["data"]["t"]))
+                db_arr = []
+                for i in range(0, len(data_obj["data"]["t"])):
+                    obj = {
+                        "symbol": data_obj["symbol"]
+                    }
+                    for key in data_obj["data"]:
+                        obj[key] = data_obj["data"][key][i]
+                    db_arr.append(obj)
                 try:
-                    self._db.technicals.replace_one({"symbol": symbol}, data_obj, upsert=True)
+                    self._db.technicals_split.insert_many(db_arr)
                 except BulkWriteError as bwe:
                     print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                 
