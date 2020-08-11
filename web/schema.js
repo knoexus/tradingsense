@@ -2,6 +2,7 @@ const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString,
 const _CompanyProfile = require('./mongoose_models/CompanyProfile')
 const _FinancialsReported = require('./mongoose_models/FinancialsReported')
 const _Candle = require('./mongoose_models/Candle')
+const _Technicals = require('./mongoose_models/Technicals')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -81,6 +82,36 @@ const Candle = new GraphQLObjectType({
         volume: { type: GraphQLInt }
     })
 })
+
+const Technicals_Data = new GraphQLObjectType({
+    name: 'Technicals_Data',
+    fields: () => ({
+        t: { type: new GraphQLList(DateTime) },
+        MACD: { type: new GraphQLList(GraphQLFloat) },
+        SLOWD: { type: new GraphQLList(GraphQLFloat) },
+        SLOWK: { type: new GraphQLList(GraphQLFloat) },
+        WILLR: { type: new GraphQLList(GraphQLFloat) },
+        ADX: { type: new GraphQLList(GraphQLFloat) },
+        APO: { type: new GraphQLList(GraphQLFloat) },
+        CCI: { type: new GraphQLList(GraphQLFloat) },
+        AROONOSC: { type: new GraphQLList(GraphQLFloat) },
+        UPPERBAND: { type: new GraphQLList(GraphQLFloat) },
+        MIDDLEBAND: { type: new GraphQLList(GraphQLFloat) },
+        LOWERBAND: { type: new GraphQLList(GraphQLFloat) },
+        AD: { type: new GraphQLList(GraphQLFloat) },
+        ATR: { type: new GraphQLList(GraphQLFloat) },
+        OBV: { type: new GraphQLList(GraphQLFloat) },
+        SAR: { type: new GraphQLList(GraphQLFloat) }
+    })
+})
+
+const Technicals = new GraphQLObjectType({
+    name: 'Technicals',
+    fields: () => ({
+        symbol: { type: GraphQLString },
+        data: { type: Technicals_Data }
+    })
+})
  
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
@@ -136,6 +167,23 @@ const RootQuery = new GraphQLObjectType({
                     ]
                 })
                 return candles
+            }
+        },
+        technicals: {
+            type: Technicals,
+            args: {
+                symbol: { type: GraphQLString }
+            },
+            resolve(_, args) {
+                const query = _Technicals.where({ ...args })
+                return query.findOne((err, obj) => {
+                    if (err) {
+                        return null
+                    }
+                    if (obj) {
+                        return obj
+                    }
+                })
             }
         }
     }
