@@ -174,7 +174,7 @@ class DataOps:
     def get_technicals(self, cut=30):
         func_name = inspect.currentframe().f_code.co_name
         print(f"{func_name} has started executing")
-        self._db.technicals_split.create_index([("symbol", 1), ("t", 1)], unique=True)
+        self._db.technicals.create_index([("symbol", 1), ("t", 1)], unique=True)
         with open('technicals.json') as json_technicals:
             technicals_dict = json.load(json_technicals)
             count_for_timeout = 0
@@ -191,12 +191,19 @@ class DataOps:
                     indicator_alias = technicals_dict[indicator]
                     result = self._finnhub_client.technical_indicator(symbol, "D", self._INIT_TIMESTAMP, self._CURRENT_TIMESTAMP, 
                         indicator, indicator_alias["params"])
+                    indicator_timestamp_list = result["t"]
+                    if len(indicator_timestamp_list) <= cut:
+                        print(f'Insufficient {indicator} data for {symbol}')
+                        break
                     if idx == 0:
-                        data_obj["data"]["t"] = result["t"][cut:]
+                        data_obj["data"]["t"] = indicator_timestamp_list[cut:]
+                        print(f'{indicator} length: {len(data_obj["data"]["t"])}')
                     else:
-                        print(f'{indicator} Timestamp lists equality: {data_obj["data"]["t"] == result["t"][cut:]}, lengths: {len(data_obj["data"]["t"])+cut} - {len(result["t"])}')
+                        print(f'{indicator} Timestamp lists equality: {data_obj["data"]["t"] == indicator_timestamp_list[cut:]}, lengths: {len(data_obj["data"]["t"])+cut} - {len(indicator_timestamp_list)}')
                     for s in indicator_alias["retrievable_symbols"]:
                         data_obj["data"][str.upper(s)] = result[s][cut:]
+                if data_obj["data"] == {}:
+                    break
                 data_obj["data"]["t"] = list(map(lambda x: datetime.datetime.fromtimestamp(x), data_obj["data"]["t"]))
                 db_arr = []
                 for i in range(0, len(data_obj["data"]["t"])):
