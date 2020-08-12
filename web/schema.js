@@ -118,6 +118,50 @@ const Mixin = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: {
+        company_profile: {
+            type: CompanyProfile,
+            args: {
+                ticker: { type: GraphQLString }
+            },
+            async resolve(_, args) {
+                return await getCompanyProfile(args.ticker)
+            }
+        },
+        financials_reported: {
+            type: FinancialsReported,
+            args: {
+                symbol: { type: GraphQLString },
+                year: { type: GraphQLInt },
+                quarter: { type: GraphQLInt }
+            },
+            async resolve(_, args) {
+                return await getFinancialsReported(args.symbol, args.year, args.quarter)
+            }
+        },
+        candles: {
+            type: new GraphQLList(Candle),
+            args: {
+                symbol: { type: GraphQLString },
+                startDate: { type: GraphQLInt },
+                endDate: { type: GraphQLInt }
+            },
+            async resolve(_, args) {
+                const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
+                return await getCandles(args.symbol, startDate, endDate)
+            }
+        },
+        technicals: {
+            type: new GraphQLList(Technicals),
+            args: {
+                symbol: { type: GraphQLString },
+                startDate: { type: GraphQLInt },
+                endDate: { type: GraphQLInt }
+            },
+            async resolve(_, args) {
+                const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
+                return await getTechnicals(args.symbol, startDate, endDate)
+            }
+        },
         mixin: {
             type: Mixin,
             args: {
@@ -129,10 +173,10 @@ const RootQuery = new GraphQLObjectType({
                 const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
                 const QY = getQuarterAndYear(startDate, endDate)
 
-                const company_profile = getCompanyProfile(args.symbol)
-                const candles = getCandles(args.symbol, startDate, endDate)
-                const financials_reported = getFinancialsReported(args.symbol, QY.year, QY.quarter)
-                const technicals = getTechnicals(args.symbol, startDate, endDate)
+                const company_profile = getCompanyProfile(args.symbol).then(company_profile => ({ company_profile }))
+                const candles = getCandles(args.symbol, startDate, endDate).then(candles => ({ candles }))
+                const financials_reported = getFinancialsReported(args.symbol, QY.year, QY.quarter).then(financials_reported => ({ financials_reported }))
+                const technicals = getTechnicals(args.symbol, startDate, endDate).then(technicals => ({ technicals }))
                 return await Promise.all([company_profile, candles, financials_reported, technicals])
                     .then(vals => {
                         return vals.reduce((acc, current) => {

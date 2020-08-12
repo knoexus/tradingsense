@@ -12,9 +12,6 @@ const getCompanyProfile = (ticker) => {
     return _CompanyProfile
         .where({ ticker })
         .findOne(callback)
-        .then(res => ({
-            company_profile: res
-        }))
 }
 
 const getCandles = (symbol, startDate, endDate) => {
@@ -24,9 +21,6 @@ const getCandles = (symbol, startDate, endDate) => {
                 { timestamp: { $gte: startDate, $lte: endDate } }
             ]
         }, callback)
-        .then(res => ({
-            candles: res
-        }))
 }
 
 const getFinancialsReported = (symbol, year, quarter) => {
@@ -36,9 +30,6 @@ const getFinancialsReported = (symbol, year, quarter) => {
             quarter
         })
         .findOne(callback)
-        .then(res => ({
-            financials_reported: res
-        }))
 }
 
 const getTechnicals = (symbol, startDate, endDate) => {
@@ -48,9 +39,6 @@ const getTechnicals = (symbol, startDate, endDate) => {
                 { t: { $gte: startDate, $lte: endDate } }
             ]
         }, callback)
-        .then(res => ({
-            technicals: res
-        }))
 }
 
 module.exports = { getCompanyProfile, getCandles, getFinancialsReported, getTechnicals }
