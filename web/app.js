@@ -12,12 +12,10 @@ const PORT = process.env.PORT || 5000
 
 const username = encodeURIComponent(process.env.MONGODB_USERNAME)
 const password = encodeURIComponent(process.env.MONGODB_PASSWORD)
+const dbname = encodeURIComponent(process.env.MONGODB_DB_NAME)
+const clusterUrl = encodeURIComponent(process.env.MONGODB_CLUSTER_URL)
 
-const clusterUrl = "cluster0.hqaye.mongodb.net"
-const authMechanism = "DEFAULT"
-const otherParams = "&replicaSet=atlas-13x1az-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
-
-const uri = `mongodb+srv://${username}:${password}@${clusterUrl}/${process.env.MONGODB_DB_NAME}?authMechanism=${authMechanism}${otherParams}`
+const uri = `mongodb+srv://${username}:${password}@${clusterUrl}/${dbname}`
 
 app.get('/', (_, res) => res.send("Hello from index"))
 
