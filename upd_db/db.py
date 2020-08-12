@@ -92,6 +92,11 @@ class DataOps:
             result = self._finnhub_client.financials_reported(symbol=symbol, freq='quarterly')
             if result != {} and result["data"] != []:
                 try:
+                    for entry in result["data"]:
+                        entry["startDate"] = datetime.datetime.strptime(entry["startDate"], '%Y-%m-%d %H:%M:%S')
+                        entry["endDate"] = datetime.datetime.strptime(entry["endDate"], '%Y-%m-%d %H:%M:%S')
+                        entry["filedDate"] = datetime.datetime.strptime(entry["filedDate"], '%Y-%m-%d %H:%M:%S')
+                        entry["acceptedDate"] = datetime.datetime.strptime(entry["acceptedDate"], '%Y-%m-%d %H:%M:%S')
                     self._db.financials_reported.insert_many(result["data"])
                 except BulkWriteError as bwe:
                     print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
