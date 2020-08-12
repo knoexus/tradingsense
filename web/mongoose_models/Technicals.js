@@ -21,4 +21,4 @@ const technicals_schema = new Schema({
     SAR: { type: Number, required: true }
 })
 
-module.exports =  mongoose.model('Technicals', technicals_schema, 'technicals_split')
+module.exports =  mongoose.model('Technicals', technicals_schema, 'technicals')

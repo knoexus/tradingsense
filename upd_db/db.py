@@ -194,7 +194,7 @@ class DataOps:
                     if idx == 0:
                         data_obj["data"]["t"] = result["t"][cut:]
                     else:
-                        print(f'Timestamp lists equality: {data_obj["data"]["t"] == result["t"][cut:]}, lengths: {len(data_obj["data"]["t"])+cut} - {len(result["t"])}')
+                        print(f'{indicator} Timestamp lists equality: {data_obj["data"]["t"] == result["t"][cut:]}, lengths: {len(data_obj["data"]["t"])+cut} - {len(result["t"])}')
                     for s in indicator_alias["retrievable_symbols"]:
                         data_obj["data"][str.upper(s)] = result[s][cut:]
                 data_obj["data"]["t"] = list(map(lambda x: datetime.datetime.fromtimestamp(x), data_obj["data"]["t"]))
@@ -207,7 +207,7 @@ class DataOps:
                         obj[key] = data_obj["data"][key][i]
                     db_arr.append(obj)
                 try:
-                    self._db.technicals_split.insert_many(db_arr)
+                    self._db.technicals.insert_many(db_arr)
                 except BulkWriteError as bwe:
                     print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
                 
