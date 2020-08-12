@@ -3,6 +3,8 @@ const _CompanyProfile = require('./mongoose_models/CompanyProfile')
 const _FinancialsReported = require('./mongoose_models/FinancialsReported')
 const _Candle = require('./mongoose_models/Candle')
 const _Technicals = require('./mongoose_models/Technicals')
+const dateOps = require('./util/dates')
+
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -177,9 +179,7 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 symbol: { type: GraphQLString },
                 startDate: { type: GraphQLInt },
-                endDate: { type: GraphQLInt },
-                year: { type: GraphQLInt },
-                quarter: { type: GraphQLInt }
+                endDate: { type: GraphQLInt }
             },
             async resolve(_, args) {
                 const callback = (err, obj) => {
@@ -191,6 +191,8 @@ const RootQuery = new GraphQLObjectType({
                     }
                 }
                 let promises = []
+                const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
+                console.log(startDate, endDate)
                 //company_profile
                 const company_profile = _CompanyProfile.where({ ticker: args.symbol }).findOne(callback).then(res => ({
                     company_profile: res
@@ -199,16 +201,17 @@ const RootQuery = new GraphQLObjectType({
                 const candles =  _Candle.find({
                     $and: [
                         { symbol: args.symbol },
-                        { timestamp: { $gte: new Date(args.startDate*1000), $lte: new Date(args.endDate*1000) } }
+                        { timestamp: { $gte: startDate, $lte: endDate } }
                     ]
                 }).then(res => ({
                     candles: res
                 }))
                 //financials_reported
+                const QY = dateOps.getQuarterAndYear(startDate, endDate)
                 const financials_reported = _FinancialsReported.where({ 
                     symbol: args.symbol,
-                    year: args.year,
-                    quarter: args.quarter
+                    year: QY.year,
+                    quarter: QY.quarter
                 }).findOne(callback).then(res => ({
                     financials_reported: res
                 }))
@@ -216,7 +219,7 @@ const RootQuery = new GraphQLObjectType({
                 const technicals = _Technicals.find({
                     $and: [
                         { symbol: args.symbol },
-                        { t: { $gte: new Date(args.startDate*1000), $lte: new Date(args.endDate*1000) } }
+                        { t: { $gte: startDate, $lte: endDate } }
                     ]
                 }).then(res => ({
                     technicals: res
