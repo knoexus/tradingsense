@@ -3,7 +3,7 @@ const _CompanyProfile = require('./mongoose_models/CompanyProfile')
 const _FinancialsReported = require('./mongoose_models/FinancialsReported')
 const _Candle = require('./mongoose_models/Candle')
 const _Technicals = require('./mongoose_models/Technicals')
-const dateOps = require('./util/dates')
+const { getQuarterAndYear } = require('./util/dates')
 
 
 const CompanyProfile = new GraphQLObjectType({
@@ -207,7 +207,7 @@ const RootQuery = new GraphQLObjectType({
                     candles: res
                 }))
                 //financials_reported
-                const QY = dateOps.getQuarterAndYear(startDate, endDate)
+                const QY = getQuarterAndYear(startDate, endDate)
                 const financials_reported = _FinancialsReported.where({ 
                     symbol: args.symbol,
                     year: QY.year,
