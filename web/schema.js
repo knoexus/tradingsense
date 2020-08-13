@@ -1,6 +1,6 @@
 const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema, GraphQLScalarType } = require('graphql')
-const { getQuarterAndYear } = require('./util/dates')
-const { getCompanyProfile, getCandles, getFinancialsReported, getTechnicals } = require('./mongoose_actions')
+const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
+const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals } = require('./mongoose_actions')
 
 
 const CompanyProfile = new GraphQLObjectType({
@@ -127,6 +127,12 @@ const RootQuery = new GraphQLObjectType({
                 return await getCompanyProfile(args.ticker)
             }
         },
+        company_profile_random: {
+            type: CompanyProfile,
+            async resolve() {
+                return await getRandomCompanyProfile()
+            }
+        },
         financials_reported: {
             type: FinancialsReported,
             args: {
@@ -185,6 +191,35 @@ const RootQuery = new GraphQLObjectType({
                             return acc
                         }, {})
                     })
+            }
+        },
+        mixinArgless: {
+            type: Mixin,
+            async resolve() {
+                const days_margin = 90
+                const init_date = new Date(process.env.INITIAL_DATE * 1000)
+                const difference_from_now = dateDiff(init_date, new Date(), "d")
+                const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-days_margin+1)))
+                const endDate = addDays(startDate, days_margin)
+                const QY = getQuarterAndYear(startDate, endDate)
+                
+                try {
+                    const company_profile = await getRandomCompanyProfile()
+                    const symbol = company_profile.ticker
+                    const candles = await getCandles(symbol, startDate, endDate)
+                    const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
+                    const technicals = await getTechnicals(symbol, startDate, endDate)
+                    
+                    return {
+                        company_profile,
+                        candles,
+                        financials_reported,
+                        technicals
+                    }
+                }
+                catch(err){
+                    console.error(err)
+                }
             }
         }
     }

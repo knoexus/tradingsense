@@ -14,6 +14,13 @@ const getCompanyProfile = (ticker) => {
         .findOne(callback)
 }
 
+const getRandomCompanyProfile = async () => {
+    const company_profile_random = await _CompanyProfile
+        .aggregate()
+        .sample(1)
+    return company_profile_random[0]
+}
+
 const getCandles = (symbol, startDate, endDate) => {
     return _Candle.find({
             $and: [
@@ -41,4 +48,4 @@ const getTechnicals = (symbol, startDate, endDate) => {
         }, callback)
 }
 
-module.exports = { getCompanyProfile, getCandles, getFinancialsReported, getTechnicals }
+module.exports = { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals }

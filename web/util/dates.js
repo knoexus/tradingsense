@@ -28,6 +28,10 @@ const dateDiff = (a, b, diffIn) => {
     return Math.floor((utc2 - utc1) / ms)
 }
 
-module.exports = {
-    getQuarterAndYear
+const addDays = (date, days) => {
+    let result = new Date(date)
+    result.setDate(result.getDate() + days)
+    return result
 }
+
+module.exports = { getQuarterAndYear, dateDiff, addDays }
