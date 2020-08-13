@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema, GraphQLScalarType } = require('graphql')
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals } = require('./mongoose_actions')
-
+const { getErrorMessage } = require('./util/errors')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -195,7 +195,7 @@ const RootQuery = new GraphQLObjectType({
         },
         mixinArgless: {
             type: Mixin,
-            async resolve() {
+            resolve: async function resolve() {
                 const days_margin = 90
                 const init_date = new Date(process.env.INITIAL_DATE * 1000)
                 const difference_from_now = dateDiff(init_date, new Date(), "d")
@@ -207,8 +207,11 @@ const RootQuery = new GraphQLObjectType({
                     const company_profile = await getRandomCompanyProfile()
                     const symbol = company_profile.ticker
                     const candles = await getCandles(symbol, startDate, endDate)
+                    if (candles == []) throw getErrorMessage("NULLRESPONSE", "candles")
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
+                    if (financials_reported == null) throw getErrorMessage("NULLRESPONSE", "financials_reported")
                     const technicals = await getTechnicals(symbol, startDate, endDate)
+                    if (candles == []) throw getErrorMessage("NULLRESPONSE", "candles")
                     
                     return {
                         company_profile,
@@ -219,6 +222,7 @@ const RootQuery = new GraphQLObjectType({
                 }
                 catch(err){
                     console.error(err)
+                    return resolve()
                 }
             }
         }
