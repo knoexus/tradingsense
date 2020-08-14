@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema, GraphQLScalarType } = require('graphql')
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals } = require('./mongoose_actions')
-const { getErrorMessage } = require('./util/errors')
+const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED}  } = require('./util/errors')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -195,23 +195,24 @@ const RootQuery = new GraphQLObjectType({
         },
         mixinArgless: {
             type: Mixin,
-            resolve: async function resolve() {
-                const days_margin = 90
-                const init_date = new Date(process.env.INITIAL_DATE * 1000)
-                const difference_from_now = dateDiff(init_date, new Date(), "d")
-                const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-days_margin+1)))
-                const endDate = addDays(startDate, days_margin)
-                const QY = getQuarterAndYear(startDate, endDate)
-                
+            resolve: async function resolve(r=0, r_threshold=7) {
                 try {
+                    if (r == r_threshold) throw RECURSIONEXCEEDED
+                    const days_margin = 90
+                    const init_date = new Date(process.env.INITIAL_DATE * 1000)
+                    const difference_from_now = dateDiff(init_date, new Date(), "d")
+                    const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-days_margin+1)))
+                    const endDate = addDays(startDate, days_margin)
+                    const QY = getQuarterAndYear(startDate, endDate)
+                
                     const company_profile = await getRandomCompanyProfile()
                     const symbol = company_profile.ticker
                     const candles = await getCandles(symbol, startDate, endDate)
-                    if (candles == []) throw getErrorMessage("NULLRESPONSE", "candles")
+                    if (candles == []) throw NULLRESPONSE
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
-                    if (financials_reported == null) throw getErrorMessage("NULLRESPONSE", "financials_reported")
+                    if (financials_reported == null) throw NULLRESPONSE
                     const technicals = await getTechnicals(symbol, startDate, endDate)
-                    if (candles == []) throw getErrorMessage("NULLRESPONSE", "candles")
+                    if (candles == []) throw NULLRESPONSE
                     
                     return {
                         company_profile,
@@ -220,9 +221,12 @@ const RootQuery = new GraphQLObjectType({
                         technicals
                     }
                 }
-                catch(err){
+                catch(err) {
                     console.error(err)
-                    return resolve()
+                    if (err == RECURSIONEXCEEDED)
+                        return
+                    else
+                        return resolve(r+1)
                 }
             }
         }

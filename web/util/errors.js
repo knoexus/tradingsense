@@ -1,7 +1,14 @@
+exports.errorTypes = {
+    NULLRESPONSE: "NULLRESPONSE",
+    RECURSIONEXCEEDED: "RECURSIONEXCEED"
+}
+
 exports.getErrorMessage = getErrorMessage = (type, ...args) => {
     switch (type) {
-        case "NULLRESPONSE":
-            return `Error: Null response for ${args[0]}`
+        case errorTypes.NULLRESPONSE:
+            return `Error: Null response`
+        case errorTypes.RECURSIONEXCEEDED:
+            return `Error: The threshold number of recursive calls has been exceeded`
         default:
             return `Error`
     }
