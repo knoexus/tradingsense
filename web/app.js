@@ -5,6 +5,7 @@ const { graphqlHTTP } = require('express-graphql')
 const schema = require('./schema')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+const cors = require('cors')
 
 const app = express()
 
@@ -18,6 +19,8 @@ const clusterUrl = encodeURIComponent(process.env.MONGODB_CLUSTER_URL)
 const uri = `mongodb+srv://${username}:${password}@${clusterUrl}/${dbname}`
 
 app.get('/', (_, res) => res.send("Hello from index"))
+
+app.use(cors())
 
 app.use(morgan("combined"))
 
