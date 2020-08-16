@@ -6,6 +6,7 @@ const MIXIN_ARGLESS = gql`
             company_profile {
                 ticker
                 name
+                logo
                 exchange
                 finnhubIndustry
             }
