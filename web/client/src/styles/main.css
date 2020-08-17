@@ -1,0 +1,6 @@
+.mixinCard{
+    margin: auto;
+    width: 550px;
+    height: 1000px;
+    overflow-y: scroll;
+}
