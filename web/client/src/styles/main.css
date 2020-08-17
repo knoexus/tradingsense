@@ -1,6 +1,27 @@
 .mixinCard{
-    margin: auto;
+    margin: 20px 0 auto;
     width: 550px;
-    height: 1000px;
+    height: 850px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
     overflow-y: scroll;
+    overflow-x: hidden;
+    border: 1px solid lightgrey;
+    border-radius: 2%;
+}
+
+.game{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 700px;
+}
+
+.button-FastForward{
+    font-size: 12pt;
+    cursor: pointer;
+    top: 10px;
+    width: 120px;
+    height: 40px;
+    padding: 6px;
 }

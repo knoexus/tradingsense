@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
-import Mixin from './components/Mixin'
+import Game from './components/Game'
 
 const client = new ApolloClient({
   uri: "http://localhost:5001/graphql",
@@ -12,7 +12,7 @@ function App() {
   return (
       <ApolloProvider client={client}>
         <div className="App">
-          <Mixin/>
+          <Game/>
         </div> 
       </ApolloProvider>     
   )
