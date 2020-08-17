@@ -9,7 +9,7 @@ export default function LineChart({data}) {
         dates.push(moment(e.timestamp).format('DD/MM/YYYY').toString())
         quotes.push(e.close)
     })
-    const [myChart, setChart] = useState({})
+    const [, setChart] = useState({})
     const chart = () => {
         setChart(
             new Chart(ctx.current, {

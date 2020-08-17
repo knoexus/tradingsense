@@ -25,3 +25,49 @@
     height: 40px;
     padding: 6px;
 }
+
+.companyProfile h2{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.companyProfile h3{
+    font-size: 18pt;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.companyProfile-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 80px;
+    padding: 2px;
+}
+
+.companyProfile-logo > img{
+    max-height: 100%;
+    max-width: 100%;
+    min-height: 60%;
+	min-width: 60%;
+}
+
+.companyProfile-content{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.companyProfile-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-left: 8px;
+}
+
+.companyProfile-info span{
+    font-size: 14pt;
+}
