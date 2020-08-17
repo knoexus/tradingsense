@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import moment from 'moment'
 import Chart from 'chart.js'
+import '../../styles/main.css'
 
 export default function LineChart({data}) {
     const ctx = useRef()
@@ -9,7 +10,7 @@ export default function LineChart({data}) {
         dates.push(moment(e.timestamp).format('DD/MM/YYYY').toString())
         quotes.push(e.close)
     })
-    const [, setChart] = useState({})
+    const [, setChart] = useState()
     const chart = () => {
         setChart(
             new Chart(ctx.current, {
@@ -17,7 +18,7 @@ export default function LineChart({data}) {
                 data: {
                     labels: dates,
                     datasets: [{
-                        label: `${data.length}-day interval Quotes`,
+                        label: `${data.length}-day interval Daily Quotes`,
                         data: quotes,
                         fill: false,
                         borderColor: [
@@ -32,9 +33,10 @@ export default function LineChart({data}) {
                                 display: false
                             },
                             ticks: {
+                                display: false,
                                 autoSkip: true,
                                 maxTicksLimit: 20
-                            }
+                            },
                         }]
                     }
                 }
@@ -44,9 +46,9 @@ export default function LineChart({data}) {
 
     useEffect(() => {
         chart()
-    }, [])
+    }, [data])
 
     return (
-        <canvas ref={ctx}></canvas>
+        <canvas className="canvas-lineChart" ref={ctx}></canvas>
     )
 }

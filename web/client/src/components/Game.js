@@ -6,10 +6,12 @@ import Mixin from './Mixin'
 import '../styles/main.css'
 
 export default function Game() {
-    const { loading, error, data, refetch } = useQuery(MIXIN_ARGLESS)
+    const { loading, error, data, refetch } = useQuery(MIXIN_ARGLESS, {
+        notifyOnNetworkStatusChange: true
+    })
     let result
     if (loading) result = <p>Loading...</p>
-    if (error) result = <p>Error :(</p>
+    if (error) result = <p>Error {error} :(</p>
     if (data) result = (
         <Fragment>
             <Mixin data={data}/>
