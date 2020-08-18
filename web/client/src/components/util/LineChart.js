@@ -10,8 +10,9 @@ export default function LineChart({data}) {
         dates.push(moment(e.timestamp).format('DD/MM/YYYY').toString())
         quotes.push(e.close)
     })
-    const [, setChart] = useState()
+    const [myChart, setChart] = useState()
     const chart = () => {
+        if (myChart) myChart.destroy()
         setChart(
             new Chart(ctx.current, {
                 type: 'line',
@@ -22,11 +23,17 @@ export default function LineChart({data}) {
                         data: quotes,
                         fill: false,
                         borderColor: [
-                            'rgba(255,77,83,0.8)'
+                            'rgba(244,0,0,0.8)'
                         ]
                     }]
                 },
                 options: {
+                    tooltips: {
+                        callbacks: {
+                           title: () => null,
+                           label: (tooltipItem) => tooltipItem.yLabel
+                        }
+                     },
                     scales: {
                         xAxes: [{
                             gridLines: {
