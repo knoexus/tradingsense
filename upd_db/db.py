@@ -208,10 +208,14 @@ class DataOps:
                 db_arr = []
                 for i in range(0, len(data_obj["data"]["t"])):
                     obj = {
-                        "symbol": data_obj["symbol"]
+                        "symbol": data_obj["symbol"],
+                        "indicators": {}
                     }
                     for key in data_obj["data"]:
-                        obj[key] = data_obj["data"][key][i]
+                        if key == "t":
+                            obj[key] = data_obj["data"][key][i]
+                        else:
+                            obj["indicators"][key] = data_obj["data"][key][i]
                     db_arr.append(obj)
                 try:
                     self._db.technicals.insert_many(db_arr)

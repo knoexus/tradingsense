@@ -46,14 +46,16 @@ const MIXIN_ARGLESS = gql`
             }
             technicals {
                 t
-                ATR
-                ADX
-                MACD
-                AD
-                AROONOSC
-                SAR
-                OBV
-                SLOWK
+                indicators {
+                    ATR
+                    ADX
+                    MACD
+                    AD
+                    AROONOSC
+                    SAR
+                    OBV
+                    SLOWK
+                }
             }
         }
     }

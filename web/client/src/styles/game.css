@@ -117,16 +117,16 @@
 
 .financials h2, .technicals h2{
     font-size: 18pt;
-    font-weight: 500;
-    font-family: 'Tajawal', sans-serif;
+    font-weight: 300;
+    font-family: 'Mukta Malar', sans-serif;
     margin-top: 10px !important;
     margin-bottom: 10px !important;
 }
 
-.financials span{
+.financials span, .technicals span{
     font-size: 14pt;
-    font-weight: 300;
-    font-family: 'Tajawal', sans-serif;
+    font-weight: 200;
+    font-family: 'Mukta Malar', sans-serif;
     padding-bottom: 8px;
 }
 

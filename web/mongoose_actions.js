@@ -48,4 +48,11 @@ const getTechnicals = (symbol, startDate, endDate) => {
         }, callback)
 }
 
-module.exports = { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals }
+const getTechnicalsSingle = (symbol, date) => {
+    return _Technicals.where({
+            symbol,
+            t: date
+        }).findOne(callback)
+}
+
+module.exports = { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals, getTechnicalsSingle }

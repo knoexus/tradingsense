@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const technicals_schema = new Schema({
-    symbol: { type: String, required: true },
-    t: { type: Date, required: true },
+const indicators_schema = new Schema({
     MACD: { type: Number, required: true },
     SLOWD: { type: Number, required: true },
     SLOWK: { type: Number, required: true },
@@ -19,6 +17,14 @@ const technicals_schema = new Schema({
     ATR: { type: Number, required: true },
     OBV: { type: Number, required: true },
     SAR: { type: Number, required: true }
+})
+
+mongoose.model('Indicators', indicators_schema)
+
+const technicals_schema = new Schema({
+    symbol: { type: String, required: true },
+    t: { type: Date, required: true },
+    indicators: { type: indicators_schema }
 })
 
 module.exports =  mongoose.model('Technicals', technicals_schema, 'technicals')

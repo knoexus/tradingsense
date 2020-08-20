@@ -82,11 +82,9 @@ const Candle = new GraphQLObjectType({
     })
 })
 
-const Technicals = new GraphQLObjectType({
-    name: 'Technicals',
+const Indicators = new GraphQLObjectType({
+    name: 'Indicators',
     fields: () => ({
-        symbol: { type: GraphQLString },
-        t: { type: DateTime },
         MACD: { type: GraphQLFloat },
         SLOWD: { type: GraphQLFloat },
         SLOWK: { type: GraphQLFloat },
@@ -102,6 +100,15 @@ const Technicals = new GraphQLObjectType({
         ATR: { type: GraphQLFloat },
         OBV: { type: GraphQLFloat },
         SAR: { type: GraphQLFloat }
+    })
+})
+ 
+const Technicals = new GraphQLObjectType({
+    name: 'Technicals',
+    fields: () => ({
+        symbol: { type: GraphQLString },
+        t: { type: DateTime },
+        indicators: { type: Indicators }
     })
 })
  

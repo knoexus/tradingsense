@@ -11,4 +11,4 @@ db = mongo_client[os.environ["MONGODB_DB_NAME"]]
 finnhub_client = FinnhubClient(api_key=os.environ['FINNHUB_API_KEY'])
 
 dataOps = dbops.DataOps(finnhub_client, db, 60)
-dataOps.call_all_authed()
+dataOps.get_technicals()
