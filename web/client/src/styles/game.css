@@ -82,12 +82,16 @@
 
 .companyProfile-info span{
     font-size: 14pt;
-    font-weight: 400;
+    font-weight: 300;
     word-break: break-all;
 }
 
 .companyProfile-info h3, .companyProfile-info span{
     font-family: 'Quicksand', sans-serif;
+}
+
+.companyProfile-content-item-sector > span {
+    font-weight: 400;
 }
 
 .item-locked{
@@ -111,7 +115,7 @@
     height: 24px;
 }
 
-.financials h2{
+.financials h2, .technicals h2{
     font-size: 18pt;
     font-weight: 500;
     font-family: 'Tajawal', sans-serif;

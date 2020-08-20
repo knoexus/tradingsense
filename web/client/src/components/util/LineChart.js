@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import moment from 'moment'
 import Chart from 'chart.js'
-import '../../styles/main.css'
 
 export default function LineChart({data}) {
     const ctx = useRef()

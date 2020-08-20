@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import MIXIN_ARGLESS from '../gql_queries/MixinArgless'
 import Mixin from './Mixin'
 
-import '../styles/main.css'
+import '../styles/game.css'
 
 export default function Game() {
     const { loading, error, data, refetch } = useQuery(MIXIN_ARGLESS, {
