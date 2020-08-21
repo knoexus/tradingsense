@@ -15,9 +15,11 @@ export default function TechnicalsSkeleton() {
                 </div>
             </div>
             <div className="technicals-indicators">
-                <div className="item-covered item-covered-technicals-indicators">
-                    <DefaultSkeleton/>
-                </div>
+                { Array.from(Array(8)).map(e =>
+                    <div key={e} className="item-covered item-covered-technicals-indicators-item">
+                        <DefaultSkeleton/>
+                    </div>
+                )}
             </div>
         </div>
     )

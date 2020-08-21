@@ -126,11 +126,10 @@
     margin-bottom: 10px !important;
 }
 
-.financials span, .technicals-indicators span{
+.financials span, .technicals-indicators-item span{
     font-size: 14pt;
     font-weight: 200;
     font-family: 'Mukta Malar', sans-serif;
-    padding-bottom: 8px;
 }
 
 .lock-icon-sm{
@@ -185,11 +184,32 @@
 }
 
 .technicals-datechanger-currentval-animated {
-    animation: head 2.5s; 
+    animation: changeDaysColor 2.5s ease-out; 
+}
+
+@keyframes changeDaysColor {
+    0% { color: rgb(29, 143, 9)}
+    25% { color: rgb(34, 128, 17)}
+    50% { color: rgb(41, 107, 29)}
+    75% { color: rgb(35, 68, 30)}
+    100% { color: rgb(0, 0, 0) }
+}
+
+.technicals-indicators{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.technicals-indicators > div:first-child{
+    margin-top: 10px;
+}
+
+.technicals-indicators > div:not(:first-child){
+    margin-top: 10px;
 }
 
 .item-covered-technicals{
-    height: 400px;
     width: 520px;
 }
 
@@ -207,10 +227,6 @@
     height: 300px;
 }
 
-@keyframes head {
-    0% { color: rgb(29, 143, 9)}
-    25% { color: rgb(34, 128, 17)}
-    50% { color: rgb(41, 107, 29)}
-    75% { color: rgb(35, 68, 30)}
-    100% { color: rgb(0, 0, 0) }
+.item-covered-technicals-indicators-item{
+    height: 31px;
 }

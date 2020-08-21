@@ -41,7 +41,7 @@ export default function Technicals({data}) {
             </div>
             <div className="technicals-indicators">
                 { Object.keys(indicators).map((key, idx) => 
-                    <div key={idx}>
+                    <div className="technicals-indicators-item" key={idx}>
                         <span>{key}: {(indicators[key]).toPrecision(2)}</span>
                     </div> 
                 )}
