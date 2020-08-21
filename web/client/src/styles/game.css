@@ -94,9 +94,12 @@
     font-weight: 400;
 }
 
-.item-locked{
+.item-covered{
     width: 100%;
     height: 100%;
+}
+
+.item-locked{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -107,11 +110,11 @@
     box-shadow: 0 0 3.5px rgba(0,0,0,0.5);;
 }
 
-.item-locked-companyProfile-content-name{
+.item-covered-companyProfile-content-name{
     height: 54px;
 }
 
-.item-locked-companyProfile-content-sector{
+.item-covered-companyProfile-content-sector{
     height: 24px;
 }
 
@@ -123,7 +126,7 @@
     margin-bottom: 10px !important;
 }
 
-.financials span, .technicals span{
+.financials span, .technicals-indicators span{
     font-size: 14pt;
     font-weight: 200;
     font-family: 'Mukta Malar', sans-serif;
@@ -148,8 +151,47 @@
     height: 100%;
 }
 
-
-.item-locked-quotesChart{
+.item-covered-quotesChart{
     height: 260px;
     width: 520px;
+}
+
+.technicals{
+    display: flex;
+    flex-direction: column;
+}
+
+.technicals-datechanger{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.technicals-datechanger-slider{
+    width: 80%;
+    margin: 0 6px;
+}
+
+.technicals-datechanger-currentval{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.technicals-datechanger-currentval > span {
+    margin-bottom: 5px;
+    word-break: break-all;
+}
+
+.technicals-datechanger-currentval-animated {
+    animation: head 2.5s; 
+}
+
+@keyframes head {
+    0% { color: rgb(29, 143, 9)}
+    25% { color: rgb(34, 128, 17)}
+    50% { color: rgb(41, 107, 29)}
+    75% { color: rgb(35, 68, 30)}
+    100% { color: rgb(0, 0, 0) }
 }

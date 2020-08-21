@@ -20,15 +20,15 @@ export default function CompanyProfile( { data: { ticker, name, logo, exchange, 
                             <h3>{name}</h3> 
                             <span>{exchange} / {ticker}</span>                              
                         </div>
-                    ), ['item-locked-companyProfile-content-name']) }
+                    ), ['item-covered-companyProfile-content-name']) }
                     { renderItemBasedOnLockState(!lock, 
                     (
-                     <div className="companyProfile-content-item">
+                    <div className="companyProfile-content-item">
                         <div className="companyProfile-content-item-sector">
                             <span>{finnhubIndustry}</span>
                         </div>
-                     </div>
-                    ), ['item-locked-companyProfile-content-sector'], "xl") }
+                    </div>
+                    ), ['item-covered-companyProfile-content-sector'], "xl") }
                 </div>
             </div>
         </div>

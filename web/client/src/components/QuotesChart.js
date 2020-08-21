@@ -10,6 +10,6 @@ export default function QuotesChart({data}) {
                 <LineChart data={data}/>
             </div>
         ), 
-        ["item-locked-quotesChart"], "sm")
+        ["item-covered-quotesChart"], "sm")
     )
 }
