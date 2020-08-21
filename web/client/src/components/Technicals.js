@@ -22,7 +22,7 @@ export default function Technicals({data}) {
 
     return (
         <div className="technicals">
-            <h2>Technicals</h2>
+            <div className="technicals-title"><h2>Technicals</h2></div>
             <div className="technicals-datechanger">
                 <div className="technicals-datechanger-slider">
                     <Slider

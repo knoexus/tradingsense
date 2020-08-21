@@ -188,6 +188,25 @@
     animation: head 2.5s; 
 }
 
+.item-covered-technicals{
+    height: 400px;
+    width: 520px;
+}
+
+.item-covered-technicals-title{
+    height: 40px;
+    width: 100px;
+    margin: 10px 0;
+}
+
+.item-covered-technicals-datechanger{
+    height: 31px;
+}
+
+.item-covered-technicals-indicators{
+    height: 300px;
+}
+
 @keyframes head {
     0% { color: rgb(29, 143, 9)}
     25% { color: rgb(34, 128, 17)}
