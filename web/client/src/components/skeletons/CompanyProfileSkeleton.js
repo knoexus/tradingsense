@@ -3,7 +3,7 @@ import DefaultSkeleton from './DefaultSkeleton'
 
 export default function CompanyProfileSkeleton() {
     return (
-        <div className="companyProfile">
+        <div>
             <div className="companyProfile-content">
                 <div className="companyProfile-logo">
                     <div className="item-covered">
