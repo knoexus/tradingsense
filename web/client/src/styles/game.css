@@ -1,4 +1,6 @@
 .mixinCard{
+    align-self: baseline;
+    grid-area: card;
     margin: 30px auto;
     width: 550px;
     height: 850px;
@@ -14,12 +16,20 @@
 }
 
 .game{
-    display: flex;
-    justify-content: center;
+    display: grid;
+    justify-items: center;
     align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    /* grid-auto-flow: row; */
+    grid-template-areas: 
+        ". uparrow ."
+        "leftarrow card rightarrow"
+        ". . .";
+    grid-template-rows: 60px 1fr 60px;
+    grid-template-columns: 150px 600px 150px;
+    grid-gap: 10px;
     margin: auto;
-    width: 700px;
+    width: 1000px;
 }
 
 .button-FastForward{
@@ -29,6 +39,20 @@
     width: 120px;
     height: 40px;
     padding: 6px;
+}
+
+.button-FastForward-up{
+    grid-area: uparrow;
+}
+
+.button-FastForward-left{
+    grid-area: leftarrow;
+    justify-self: end;
+}
+
+.button-FastForward-right{
+    grid-area: rightarrow;
+    justify-self: baseline;
 }
 
 .companyProfile {

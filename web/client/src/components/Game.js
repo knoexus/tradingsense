@@ -4,6 +4,7 @@ import GameWrapper from './util/GameWrapper'
 import MIXIN_ARGLESS from '../gql_queries/MixinArgless'
 import Mixin from './Mixin'
 import MixinSkeleton from './skeletons/MixinSkeleton'
+import Arrow from './util/Arrow'
 
 import '../styles/game.css'
 
@@ -16,7 +17,8 @@ export default function Game() {
     if (data) return (
         <GameWrapper>
             <Mixin data={data}/>
-            <button onClick={() => refetch()} className="button-FastForward">Refetch</button>
+            <Arrow side="right" clicked={() => refetch()}></Arrow>
+            <Arrow side="left" clicked={() => refetch()}></Arrow>
         </GameWrapper>
     )
 }
