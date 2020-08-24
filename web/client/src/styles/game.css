@@ -182,27 +182,57 @@
 }
 
 .technicals{
-    display: flex;
-    flex-direction: column;
+    display: block;
 }
 
 .technicals-datechanger{
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
+    display: grid;
+    grid-template-areas: 
+    "slider slider slider"
+    "description query currentval";
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 50% 25% 25%;
 }
 
 .technicals-datechanger-slider{
-    width: 80%;
-    margin: 0 3px 0 12px;
+    grid-area: slider;
+    margin: 0 12px 0 12px;
 }
 
 .technicals-datechanger-currentval{
-    width: 20%;
+    grid-area: currentval;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+.technicals-datechanger-description{
+    grid-area: description;
+    margin-left: 12px;
+    text-align: center;
+}
+
+.technicals-datechanger-description > span{
+    font-size: 12px;
+    color: grey;
+}
+
+.technicals-datechanger-fetcher{
+    grid-area: query;
+    justify-self: right;
+}
+
+.technicals-datechanger-fetcher > button{
+    width: 100px;
+    background: transparent;
+    border-radius: 3px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.technicals-datechanger-fetcher > button:active {
+    transform: translateX(0%) translateY(0%) scale(0.98);
+  }
 
 .technicals-datechanger-currentval > span {
     margin-bottom: 5px;
@@ -246,7 +276,7 @@
 }
 
 .item-covered-technicals-datechanger{
-    height: 31px;
+    height: 74px;
 }
 
 .item-covered-technicals-indicators{

@@ -14,6 +14,21 @@ export default function Technicals({data}) {
         el.style.animation = ''
     }
 
+    const ordinal_suffix_of = (i) => {
+        let j = i % 10,
+            k = i % 100;
+        if (j == 1 && k != 11) {
+            return i + "st";
+        }
+        if (j == 2 && k != 12) {
+            return i + "nd";
+        }
+        if (j == 3 && k != 13) {
+            return i + "rd";
+        }
+        return i + "th";
+    }
+
     const changeDays_ = (newDays) => {
         changeDays(newDays)
         restartAnimation()
@@ -37,6 +52,12 @@ export default function Technicals({data}) {
                 </div>
                 <div className="technicals-datechanger-currentval">
                     <span className={daysClassName} ref={spanRef}>+{days} days</span>
+                </div>
+                <div className="technicals-datechanger-fetcher">
+                    <button>Unlock next</button>
+                </div>
+                <div className="technicals-datechanger-description">
+                    <span>Show the unlocked indicators for the {ordinal_suffix_of(days)} day from the start.</span>
                 </div>
             </div>
             <div className="technicals-indicators">

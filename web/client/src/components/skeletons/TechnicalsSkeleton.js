@@ -9,10 +9,8 @@ export default function TechnicalsSkeleton() {
                     <DefaultSkeleton/>
                 </div>
             </div>
-            <div className="technicals-datechanger">
-                <div className="item-covered item-covered-technicals-datechanger">
-                    <DefaultSkeleton/>
-                </div>
+            <div className="item-covered item-covered-technicals-datechanger">
+                <DefaultSkeleton/>
             </div>
             <div className="technicals-indicators">
                 { Array.from(Array(8)).map((_, idx) =>
