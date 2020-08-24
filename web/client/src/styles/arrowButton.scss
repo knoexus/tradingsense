@@ -6,7 +6,7 @@
     transition: transform .1s;
     width: 80px;
     
-    $transition-time: .25s;
+    $transition-time: .1s;
     
     &-top,
     &-bottom {
@@ -41,12 +41,12 @@
     
     &-top {
       &-right{
-        transform: rotate(45deg);
+        transform: rotate(60deg);
         transform-origin: bottom right;
       }
 
       &-left{
-        transform: rotate(45deg);
+        transform: rotate(60deg);
         transform-origin: top left;
       }
       
@@ -59,12 +59,12 @@
     
     &-bottom {
       &-right{
-        transform: rotate(-45deg);
+        transform: rotate(-60deg);
         transform-origin: top right;
       }
 
       &-left{
-        transform: rotate(-45deg);
+        transform: rotate(-60deg);
         transform-origin: bottom left;
       }
       
