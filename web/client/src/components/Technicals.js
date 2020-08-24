@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
-import { Slider } from '@material-ui/core'
+import DaysSlider from './util/DaysSlider'
 
 export default function Technicals({data}) {
-    const [days, changeDays] = useState(0)
+    const [days, changeDays] = useState(1)
     const [daysClassName, changeDaysClassName] = useState('')
     const spanRef = useRef()
     const indicators = data[0]["indicators"]
@@ -25,11 +25,11 @@ export default function Technicals({data}) {
             <div className="technicals-title"><h2>Technicals</h2></div>
             <div className="technicals-datechanger">
                 <div className="technicals-datechanger-slider">
-                    <Slider
+                    <DaysSlider
                         onChange={(_,v) => changeDays_(v)}
                         defaultValue={1}
                         valueLabelDisplay="auto"
-                        step={1}
+                        step={3}
                         marks
                         min={1}
                         max={30}
