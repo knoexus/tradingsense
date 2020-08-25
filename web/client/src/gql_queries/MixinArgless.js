@@ -50,7 +50,6 @@ const MIXIN_ARGLESS = gql`
                     ATR
                     ADX
                     MACD
-                    AD
                     AROONOSC
                     SAR
                     OBV

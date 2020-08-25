@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import DaysSlider from './util/DaysSlider'
+import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
 
 export default function Technicals({data}) {
     const [days, changeDays] = useState(1)
@@ -61,11 +62,7 @@ export default function Technicals({data}) {
                 </div>
             </div>
             <div className="technicals-indicators">
-                { Object.keys(indicators).map((key, idx) => 
-                    <div className="technicals-indicators-item" key={idx}>
-                        <span>{key}: {(indicators[key]).toPrecision(2)}</span>
-                    </div> 
-                )}
+                <TechnicalIndicatorsTable indicators={indicators}/>
             </div>
         </div>
     )
