@@ -19,11 +19,19 @@ const StyledTableCell = withStyles(() => ({
     },
   }))(TableCell)
 
+const SimplePaper = withStyles(() => ({
+    root: {
+    },
+    elevation1: {
+        boxShadow: 'none'
+    }
+  }))(Paper)
+
 const useStyles = makeStyles({
   table: {
     maxWidth: 520
-  },
-});
+  }
+})
 
 export default function TechnicalIndicatorsTable({indicators}) {
   const classes = useStyles();
@@ -35,7 +43,7 @@ export default function TechnicalIndicatorsTable({indicators}) {
   )
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={SimplePaper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>

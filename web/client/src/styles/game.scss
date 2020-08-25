@@ -279,10 +279,6 @@
     margin-top: 10px;
 }
 
-.technicals-indicators > div:not(:first-child){
-    margin-top: 10px;
-}
-
 .item-covered-technicals{
     width: 520px;
 }
@@ -302,7 +298,11 @@
 }
 
 .item-covered-technicals-indicators-item{
-    height: 31px;
+    height: 30px;
+    margin-top: 3px;
+    &:first-child{
+        height: 36px;
+    }
 }
 
 .item-covered-techinicals-row{
