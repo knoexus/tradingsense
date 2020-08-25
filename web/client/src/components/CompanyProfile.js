@@ -2,9 +2,14 @@ import React from 'react'
 import { renderItemBasedOnLockState } from './util/renderHelper'
 
 export default function CompanyProfile( { data: { ticker, name, logo, exchange, finnhubIndustry } }) {
+    const backGrounds = ['red', 'green', 'yellow', 'pink', 'blue']
+    const getRandomColorClassName = (defaultClassName, colors) => `${defaultClassName}-color-${colors[Math.floor(Math.random() * colors.length)]}`
+
     const lock = true
+    const coloredBackground = false
+
     return (
-        <div className="companyProfile">
+        <div className={`companyProfile ${coloredBackground ? getRandomColorClassName("companyProfile", backGrounds) : ""}`}>
             <div className="companyProfile-content">
                 <div className="companyProfile-logo">
                     { renderItemBasedOnLockState(!lock, 

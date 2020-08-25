@@ -6,7 +6,7 @@ import Mixin from './Mixin'
 import MixinSkeleton from './skeletons/MixinSkeleton'
 import Arrow from './util/Arrow'
 
-import '../styles/game.css'
+import '../styles/game.scss'
 
 export default function Game() {
     const { loading, error, data, refetch } = useQuery(MIXIN_ARGLESS, {

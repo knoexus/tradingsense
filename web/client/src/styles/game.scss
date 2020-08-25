@@ -56,7 +56,24 @@
 }
 
 .companyProfile {
-    background: rgba(235, 232, 232, 0.7)
+    background: rgba(235, 232, 232, 0.5);
+    &-color {
+        &-red{
+            background: rgba(231, 139, 139, 0.25);
+        }
+        &-green{
+            background: rgba(128, 206, 132, 0.25);
+        }
+        &-yellow{
+            background: rgba(195, 202, 90, 0.25);
+        }
+        &-pink{
+            background: rgba(226, 148, 167, 0.25);
+        }
+        &-blue{
+            background: rgba(135, 193, 211, 0.25);
+        }
+    }
 }
 
 .companyProfile-logo{
