@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import DaysSlider from './util/DaysSlider'
 import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
+import { Button } from '@material-ui/core'
 
 export default function Technicals({data}) {
     const [days, changeDays] = useState(1)
@@ -55,14 +56,14 @@ export default function Technicals({data}) {
                     <span className={daysClassName} ref={spanRef}>+{days} days</span>
                 </div>
                 <div className="technicals-datechanger-fetcher">
-                    <button>Unlock next</button>
+                    <Button size={"small"} variant="outlined">Unlock</Button>
                 </div>
                 <div className="technicals-datechanger-description">
                     <span>Show the unlocked indicators for the {ordinal_suffix_of(days)} day from the start.</span>
                 </div>
             </div>
             <div className="technicals-indicators">
-                <TechnicalIndicatorsTable indicators={indicators}/>
+                <TechnicalIndicatorsTable indicators={indicators} dayX={days}/>
             </div>
         </div>
     )

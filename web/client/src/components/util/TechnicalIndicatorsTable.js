@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TechnicalIndicatorsTable({indicators}) {
+export default function TechnicalIndicatorsTable({indicators, dayX}) {
   const classes = useStyles();
 
   const lock = (
@@ -49,7 +49,7 @@ export default function TechnicalIndicatorsTable({indicators}) {
           <TableRow>
             <StyledTableCell align="left">Indicator Name</StyledTableCell>
             <StyledTableCell align="center">Day 0 Value</StyledTableCell>
-            <StyledTableCell align="center">Day X Value</StyledTableCell>
+            <StyledTableCell align="center">Day {dayX} Value</StyledTableCell>
             <StyledTableCell align="right">% change</StyledTableCell>
           </TableRow>
         </TableHead>
