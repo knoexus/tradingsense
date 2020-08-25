@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core'
 
 export default function Technicals({data}) {
     const [days, changeDays] = useState(1)
+    const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
     const spanRef = useRef()
     const indicators = data[0]["indicators"]
@@ -56,14 +57,20 @@ export default function Technicals({data}) {
                     <span className={daysClassName} ref={spanRef}>+{days} days</span>
                 </div>
                 <div className="technicals-datechanger-fetcher">
-                    <Button size={"small"} variant="outlined">Unlock</Button>
+                    <Button 
+                        onMouseEnter={() => changeHighlight(!highlightLockedIndicators)} 
+                        onMouseLeave={() => changeHighlight(!highlightLockedIndicators)}
+                        size={"small"} 
+                        variant="outlined">
+                        Unlock
+                    </Button>
                 </div>
                 <div className="technicals-datechanger-description">
                     <span>Show the unlocked indicators for the {ordinal_suffix_of(days)} day from the start.</span>
                 </div>
             </div>
             <div className="technicals-indicators">
-                <TechnicalIndicatorsTable indicators={indicators} dayX={days}/>
+                <TechnicalIndicatorsTable indicators={indicators} dayX={days} highlightLockedIndicators={highlightLockedIndicators}/>
             </div>
         </div>
     )

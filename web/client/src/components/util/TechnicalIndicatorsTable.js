@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TechnicalIndicatorsTable({indicators, dayX}) {
+export default function TechnicalIndicatorsTable({indicators, dayX, highlightLockedIndicators}) {
   const classes = useStyles();
 
   const lock = (
@@ -61,8 +61,16 @@ export default function TechnicalIndicatorsTable({indicators, dayX}) {
                   indicators[key].toPrecision(2) > 0.5 ? (
                     <Fragment>
                         <TableCell align="center">{indicators[key].toPrecision(2)}</TableCell>
-                        <TableCell align="center">???</TableCell>
-                        <TableCell align="right">???</TableCell>
+                        <TableCell 
+                            className={highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
+                            align="center">
+                            ???
+                        </TableCell>
+                        <TableCell 
+                            className={highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
+                            align="right">
+                            ???
+                        </TableCell>
                     </Fragment>
                   ) :
                     <TableCell colSpan={3}>{lock}</TableCell>
