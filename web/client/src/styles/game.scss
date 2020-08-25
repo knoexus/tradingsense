@@ -56,7 +56,8 @@
 }
 
 .companyProfile {
-    background: rgba(235, 232, 232, 0.5);
+    background: rgb(228,227,227);
+    background: linear-gradient(90deg, rgba(228,227,227,1) 16%, rgba(237,236,236,1) 47%, rgba(246,244,244,1) 77%);
     &-color {
         &-red{
             background: rgba(231, 139, 139, 0.25);
