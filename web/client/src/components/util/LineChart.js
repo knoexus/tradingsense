@@ -34,19 +34,26 @@ export default function LineChart({data}) {
                 },
                 plugins: [{
                     afterDraw: function(chart) {
-                        const ctx = chart.ctx
-                        const x = 520-3
-                        const topY = chart.scales['y-axis-0'].top
-                        const bottomY = chart.scales['y-axis-0'].bottom
-                        ctx.save()
-                        ctx.setLineDash([10, 2]);
-                        ctx.beginPath()
-                        ctx.moveTo(x, topY)
-                        ctx.lineTo(x, bottomY)
-                        ctx.lineWidth = 3
-                        ctx.strokeStyle = '#FFDC5E'
-                        ctx.stroke()
-                        ctx.restore()
+                        let x_coord = []
+                        try {
+                            const meta = chart.getDatasetMeta(0)
+                            x_coord.push(meta.data[quotesWithSpace.length-1-predictionGap]._model.x)
+                            x_coord.push(meta.data[quotesWithSpace.length-1]._model.x)
+                        } catch { return }
+                        x_coord.forEach(x => {
+                            const ctx = chart.ctx
+                            const topY = chart.scales['y-axis-0'].top
+                            const bottomY = chart.scales['y-axis-0'].bottom
+                            ctx.save()
+                            ctx.setLineDash([10, 2]);
+                            ctx.beginPath()
+                            ctx.moveTo(x, topY)
+                            ctx.lineTo(x, bottomY)
+                            ctx.lineWidth = 3
+                            ctx.strokeStyle = ''
+                            ctx.stroke()
+                            ctx.restore()
+                        })
                     }
                 }],
                 options: {
