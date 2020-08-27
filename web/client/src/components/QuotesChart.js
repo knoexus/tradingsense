@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import LineChart from './util/LineChart'
-import { renderItemBasedOnLockState } from './util/renderHelper'
+import LockedItem from './util/LockedItem'
 
 export default function QuotesChart({data}) {
-    const lock = true
+    const lock = false
     return (
-        renderItemBasedOnLockState(!lock,  (
-            <div className="quotesChart">
-                <LineChart data={data}/>
-            </div>
-        ), 
-        ["item-covered-quotesChart"], "sm")
+        <Fragment>
+            {
+                !lock ?
+                (
+                    <div className="quotesChart">
+                        <LineChart data={data}/>
+                    </div>
+                ) :
+                    <LockedItem extraClasses={["item-covered-quotesChart"]} lockSize={"sm"}/>
+            }
+        </Fragment>
     )
 }

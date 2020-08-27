@@ -14,6 +14,12 @@ const getCompanyProfile = (ticker) => {
         .findOne(callback)
 }
 
+const getCompanyProfileByID = (_id) => {
+    return _CompanyProfile
+        .where({ _id })
+        .findOne(callback)
+}
+
 const getRandomCompanyProfile = async () => {
     const company_profile_random = await _CompanyProfile
         .aggregate()
@@ -55,4 +61,5 @@ const getTechnicalsSingle = (symbol, date) => {
         }).findOne(callback)
 }
 
-module.exports = { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals, getTechnicalsSingle }
+module.exports = { getCompanyProfile, getCompanyProfileByID, getRandomCompanyProfile, getCandles, 
+    getFinancialsReported, getTechnicals, getTechnicalsSingle }

@@ -4,6 +4,7 @@ const MIXIN_ARGLESS = gql`
     query getMixinArgless {
         mixinArgless {
             company_profile {
+                _id
                 ticker
                 name
                 logo

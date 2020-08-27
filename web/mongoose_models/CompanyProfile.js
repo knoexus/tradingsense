@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const company_profile_schema = new Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true },
   country: { type: String, required: true },
   currency: { type: String, required: true },
   exchange: { type: String, required: true },

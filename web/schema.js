@@ -1,11 +1,12 @@
-const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLSchema, GraphQLScalarType } = require('graphql')
+const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLID, GraphQLSchema, GraphQLScalarType } = require('graphql')
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
-const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals } = require('./mongoose_actions')
+const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals, getCompanyProfileByID } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED}  } = require('./util/errors')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
     fields: () => ({
+        _id: { type: GraphQLID },
         country: { type: GraphQLString },
         currency: { type: GraphQLString },
         exchange: { type: GraphQLString },
@@ -128,10 +129,13 @@ const RootQuery = new GraphQLObjectType({
         company_profile: {
             type: CompanyProfile,
             args: {
-                ticker: { type: GraphQLString }
+                ticker: { type: GraphQLString },
+                _id: {type: GraphQLID }
             },
             async resolve(_, args) {
-                return await getCompanyProfile(args.ticker)
+                if ('ticker' in args)
+                    return await getCompanyProfile(args.ticker)
+                else return await getCompanyProfileByID(args._id)
             }
         },
         company_profile_random: {
