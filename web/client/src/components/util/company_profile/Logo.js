@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import { COMPANY_PROFILE_LOGO } from '../../gql_queries/CompanyProfile'
-import LockedItem from './LockedItem'
-import DefaultSkeleton from '../skeletons/DefaultSkeleton'
+import { COMPANY_PROFILE_LOGO } from '../../../gql_queries/CompanyProfile'
+import LockedItem from '../LockedItem'
+import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
 
 
 export default function Logo({data, fid}) {
@@ -40,7 +40,6 @@ const LogoGQL = ({fid, errorComponent}) => {
     if (data) return <LogoContent data={data.company_profile.logo}/>
 }
 
-//handle error
 const LogoContent = ({loading, data}) => {
     return (
         <div className="companyProfile-content-item">

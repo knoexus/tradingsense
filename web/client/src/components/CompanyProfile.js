@@ -1,6 +1,8 @@
 import React from 'react'
-import Logo from './util/Logo'
+import Logo from './util/company_profile/Logo'
 import LockedItem from './util/LockedItem'
+import NamingExpansion from './util/company_profile/NamingExpansion'
+import Industry from './util/company_profile/Industry'
 
 
 export default function CompanyProfile( { data: { _id, ticker, name, logo, exchange, finnhubIndustry } }) {
@@ -15,25 +17,8 @@ export default function CompanyProfile( { data: { _id, ticker, name, logo, excha
             <div className="companyProfile-content">
                 <Logo data={logo} fid={_id}/>
                 <div className="companyProfile-info">
-                    { !lock ? 
-                        (
-                            <div className="companyProfile-content-item">
-                                <h3>{name}</h3> 
-                                <span>{exchange} / {ticker}</span>                              
-                            </div>
-                        ) :
-                            <LockedItem extraClasses={['item-covered-companyProfile-content-name']}/>
-                    }
-                    { !lock ? 
-                        (
-                            <div className="companyProfile-content-item">
-                                <div className="companyProfile-content-item-sector">
-                                    <span>{finnhubIndustry}</span>
-                                </div>
-                            </div>
-                        ) :
-                            <LockedItem extraClasses={['item-covered-companyProfile-content-sector']} lockSize={"xl"}/>
-                    }
+                    <NamingExpansion data={{name, exchange, ticker}} fid={_id}/>
+                    <Industry data={finnhubIndustry} fid={_id}/>
                 </div>
             </div>
         </div>

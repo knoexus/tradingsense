@@ -8,11 +8,12 @@ const COMPANY_PROFILE_LOGO = gql`
     }
 `
 
-const COMPANY_PROFILE_NAME_EXCHANGE = gql`
+const COMPANY_PROFILE_NAME_EXCHANGE_TICKER = gql`
     query getCompanyProfileNameExchange($fid: ID!) {
         company_profile(_id: $fid) {
             name
             exchange
+            ticker
         }
     }
 `
@@ -25,4 +26,4 @@ const COMPANY_PROFILE_INDUSTRY = gql`
     }
 `
 
-export { COMPANY_PROFILE_LOGO, COMPANY_PROFILE_NAME_EXCHANGE, COMPANY_PROFILE_INDUSTRY }
+export { COMPANY_PROFILE_LOGO, COMPANY_PROFILE_NAME_EXCHANGE_TICKER, COMPANY_PROFILE_INDUSTRY }
