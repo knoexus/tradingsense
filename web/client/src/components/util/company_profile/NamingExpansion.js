@@ -43,7 +43,7 @@ const NamingExpansionGQL = ({fid, errorComponent}) => {
 //handle error
 const NamingExpansionContent = ({loading, data}) => {
     return (
-        <div className="companyProfile-content-item">
+        <div className="companyProfile-content-item-name">
             { loading && <DefaultSkeleton/> }
             { data && 
                 <Fragment>

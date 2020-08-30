@@ -43,13 +43,9 @@ const IndustryGQL = ({fid, errorComponent}) => {
 //handle error
 const IndustryContent = ({loading, data}) => {
     return (
-        <div className="companyProfile-content-item">
+        <div className="companyProfile-content-item-sector">
             { loading && <DefaultSkeleton/> }
-            { data && 
-                <div className="companyProfile-content-item-sector">
-                    <span>{data}</span>
-                </div>
-            }
+            { data && <span>{data}</span> }
         </div>
     )
 }
