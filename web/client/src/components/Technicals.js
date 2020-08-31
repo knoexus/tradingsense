@@ -3,7 +3,7 @@ import DaysSlider from './util/DaysSlider'
 import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
 import { Button } from '@material-ui/core'
 
-export default function Technicals({data}) {
+export default function Technicals({data, startDate}) {
     const [days, changeDays] = useState(1)
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')

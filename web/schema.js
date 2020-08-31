@@ -1,7 +1,9 @@
 const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLID, GraphQLSchema, GraphQLScalarType } = require('graphql')
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
-const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, getTechnicals, getCompanyProfileByID } = require('./mongoose_actions')
+const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
+        getTechnicals, getTechnicalsSingle, getCompanyProfileByID } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED}  } = require('./util/errors')
+const { getSplitTechnicals } = require('./util/technicals') 
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -116,10 +118,21 @@ const Technicals = new GraphQLObjectType({
 const Mixin = new GraphQLObjectType({
     name: 'Mixin',
     fields: () => ({
+        startDate: { type: GraphQLInt },
+        endDate: { type: GraphQLInt },
+        gap_to_endpoint: { type: GraphQLInt },
         company_profile: { type: CompanyProfile },
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
         technicals: { type: new GraphQLList(Technicals) }
+    })
+})
+
+const Split_Technicals_Names = new GraphQLObjectType({
+    name: 'Split_Technicals_Names',
+    fields: () => ({
+        locked: { type: new GraphQLList(GraphQLString) },
+        unlocked: { type: new GraphQLList(GraphQLString) }
     })
 })
 
@@ -179,6 +192,27 @@ const RootQuery = new GraphQLObjectType({
                 return await getTechnicals(args.symbol, startDate, endDate)
             }
         },
+        technicals_single: {
+            type: Technicals,
+            args: {
+                symbol: { type: GraphQLString },
+                date: { type: GraphQLInt },
+            },
+            async resolve(_, args) {
+                const date = new Date(args.date*1000)
+                return await getTechnicalsSingle(args.symbol, date)
+            }
+        },
+        technicals_names: {
+            type: Split_Technicals_Names,
+            args: {
+                takeInPercent: { type: GraphQLFloat },
+                lockedFromTakeInPercent: { type: GraphQLFloat }
+            },
+            resolve(_, args) {
+                return getSplitTechnicals(args.takeInPercent, args.lockedFromTakeInPercent)
+            }
+        },
         mixin: {
             type: Mixin,
             args: {
@@ -226,6 +260,9 @@ const RootQuery = new GraphQLObjectType({
                     if (candles == []) throw NULLRESPONSE
                     
                     return {
+                        startDate: startDate.getTime() / 1000,
+                        endDate: endDate.getTime() / 1000,
+                        gap_to_endpoint: 30,
                         company_profile,
                         candles,
                         financials_reported,

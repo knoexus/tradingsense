@@ -55,9 +55,11 @@ const getTechnicals = (symbol, startDate, endDate) => {
 }
 
 const getTechnicalsSingle = (symbol, date) => {
+    let plusDate = new Date()
+    plusDate.setDate(date.getDate() + 1)
     return _Technicals.where({
             symbol,
-            t: date
+            t:  { $gte: date, $lte: plusDate } 
         }).findOne(callback)
 }
 

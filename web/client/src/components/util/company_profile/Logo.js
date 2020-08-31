@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import { COMPANY_PROFILE_LOGO } from '../../../gql_queries/CompanyProfile'
+import { COMPANY_PROFILE_LOGO } from '../../../gql_queries/CompanyProfile__GQL'
 import LockedItem from '../LockedItem'
 import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
 

@@ -2,16 +2,14 @@ import React, { useRef, useState, useEffect } from 'react'
 import moment from 'moment'
 import Chart from 'chart.js'
 
-export default function LineChart({data}) {
-    const predictionGap = 30
-
+export default function LineChart({data, gap_to_endpoint}) {
     const ctx = useRef()
     let dates = [], quotes = []
     data.forEach(e => {
         dates.push(moment(e.timestamp).format('DD/MM/YYYY').toString())
         quotes.push(e.close)
     })
-    const mockArray = Array.from(Array(predictionGap).map(e => null))
+    const mockArray = Array.from(Array(gap_to_endpoint).map(e => null))
     const quotesWithSpace = quotes.concat(mockArray)
     const datesWithSpace = dates.concat(mockArray)
     const [myChart, setChart] = useState()
@@ -37,7 +35,7 @@ export default function LineChart({data}) {
                         let x_coord = []
                         try {
                             const meta = chart.getDatasetMeta(0)
-                            x_coord.push(meta.data[quotesWithSpace.length-1-predictionGap]._model.x)
+                            x_coord.push(meta.data[quotesWithSpace.length-1-gap_to_endpoint]._model.x)
                             x_coord.push(meta.data[quotesWithSpace.length-1]._model.x)
                         } catch { return }
                         x_coord.forEach(x => {
@@ -81,7 +79,7 @@ export default function LineChart({data}) {
                                     if (i == xLabels.length-1){
                                         xLabels[i] = 'Day X'
                                     }
-                                    else if (i == xLabels.length-1-predictionGap) {
+                                    else if (i == xLabels.length-1-gap_to_endpoint) {
                                         xLabels[i] = 'Day 0'
                                     }
                                     else {

@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import { useQuery } from '@apollo/client'
-import { COMPANY_PROFILE_NAME_EXCHANGE_TICKER } from '../../../gql_queries/CompanyProfile'
+import { COMPANY_PROFILE_NAME_EXCHANGE_TICKER } from '../../../gql_queries/CompanyProfile__GQL'
 import LockedItem from '../LockedItem'
 import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
 
