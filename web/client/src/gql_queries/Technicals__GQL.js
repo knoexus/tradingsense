@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const TECHNICALS_NEXT_FOR_ALL_AVAILABLE = gql`
-    query getCompanyProfileLogo($fid: ID!) {
+    query getTechnicalsForAllAvailable($next_date: Int!, ) {
         company_profile(_id: $fid) {
             logo
         }
@@ -9,7 +9,7 @@ const TECHNICALS_NEXT_FOR_ALL_AVAILABLE = gql`
 `
 
 const TECHNICALS_NEXT_FOR_SINGLE = gql`
-    query getCompanyProfileNameExchange($fid: ID!) {
+    query getTechnicalsForSingle($next_date: Int!, $symbol: String!) {
         company_profile(_id: $fid) {
             name
             exchange
