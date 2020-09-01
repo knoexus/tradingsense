@@ -164,11 +164,12 @@ const RootQuery = new GraphQLObjectType({
                 symbol: { type: GraphQLString },
                 startDate: { type: GraphQLInt },
                 endDate: { type: GraphQLInt },
-                returnItems: { type: GraphQLInt }
+                returnItems: { type: GraphQLInt },
+                lockItems: { type: GraphQLInt }
             },
             async resolve(_, args) {
                 const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
-                return await getTechnicals(args.symbol, startDate, endDate, args.returnItems)
+                return await getTechnicals(args.symbol, startDate, endDate, args.returnItems, args.lockItems)
             }
         },
         technicals_single: {
@@ -182,40 +183,17 @@ const RootQuery = new GraphQLObjectType({
                 return await getTechnicalsSingle(args.symbol, date)
             }
         },
-        mixinDated: {
-            type: Mixin,
-            args: {
-                symbol: { type: GraphQLString },
-                startDate: { type: GraphQLInt },
-                endDate: { type: GraphQLInt }
-            },
-            async resolve(_, args) {
-                const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
-                const QY = getQuarterAndYear(startDate, endDate)
-
-                const company_profile = getCompanyProfile(args.symbol).then(company_profile => ({ company_profile }))
-                const candles = getCandles(args.symbol, startDate, endDate).then(candles => ({ candles }))
-                const financials_reported = getFinancialsReported(args.symbol, QY.year, QY.quarter).then(financials_reported => ({ financials_reported }))
-                const technicals = getTechnicals(args.symbol, startDate, endDate).then(technicals => ({ technicals }))
-                return await Promise.all([company_profile, candles, financials_reported, technicals])
-                    .then(vals => {
-                        return vals.reduce((acc, current) => {
-                            const key = Object.keys(current)[0] 
-                            acc[key] = current[key]
-                            return acc
-                        }, {})
-                    })
-            }
-        },
         mixin: {
             type: Mixin,
             args: {
-                returnTechnicals: { type: GraphQLInt }
+                daysMargin: { type: GraphQLInt },
+                returnTechnicals: { type: GraphQLInt },
+                lockTechnicals: { type: GraphQLInt }
             },
             resolve: async function resolve(_, args, r=0, r_threshold=7) {
                 try {
                     if (r == r_threshold) throw RECURSIONEXCEEDED
-                    const days_margin = 90
+                    const days_margin = args.daysMargin || 90
                     const init_date = new Date(process.env.INITIAL_DATE * 1000)
                     const difference_from_now = dateDiff(init_date, new Date(), "d")
                     const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-days_margin+1)))
@@ -228,7 +206,7 @@ const RootQuery = new GraphQLObjectType({
                     if (candles == []) throw NULLRESPONSE
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
                     if (financials_reported == null) throw NULLRESPONSE
-                    const technicals = await getTechnicals(symbol, startDate, endDate, args.returnTechnicals)
+                    const technicals = await getTechnicals(symbol, startDate, endDate, args.returnTechnicals, args.lockTechnicals)
                     if (candles == []) throw NULLRESPONSE
                     
                     return {

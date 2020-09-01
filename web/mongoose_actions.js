@@ -46,7 +46,7 @@ const getFinancialsReported = (symbol, year, quarter) => {
         .findOne(callback)
 }
 
-const getTechnicals = (symbol, startDate, endDate, returnItems) => {
+const getTechnicals = (symbol, startDate, endDate, returnItems, lockItems) => {
     return  _Technicals.find({
             $and: [
                 { symbol },
@@ -55,7 +55,7 @@ const getTechnicals = (symbol, startDate, endDate, returnItems) => {
         }, callback)
         .then(data => data.map(e => ({
             ...e,
-            indicators: getMixedTechnicals(returnItems, 2, e.indicators)
+            indicators: getMixedTechnicals(returnItems, lockItems, e.indicators)
         })))
 }
 

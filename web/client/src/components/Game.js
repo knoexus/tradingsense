@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
 import GameWrapper from './util/GameWrapper'
-import { MIXIN_W_TECHNICALS } from '../gql_queries/MixinArgless__GQL'
+import { MIXIN_W_TECHNICALS } from '../gql_queries/Mixin__GQL'
 import Mixin from './Mixin'
 import MixinSkeleton from './skeletons/MixinSkeleton'
 import Arrow from './util/Arrow'
@@ -11,7 +11,9 @@ import '../styles/game.scss'
 export default function Game() {
     const { loading, error, data, refetch } = useQuery(MIXIN_W_TECHNICALS, {
         variables: {
-            returnTechnicals: 7
+            daysMargin: 90,
+            returnTechnicals: 7,
+            lockTechnicals: 2
         },
         notifyOnNetworkStatusChange: true
     })
