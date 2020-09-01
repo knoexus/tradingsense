@@ -3,7 +3,7 @@ import DaysSlider from './util/DaysSlider'
 import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
 import { Button } from '@material-ui/core'
 
-export default function Technicals({data, startDate}) {
+export default function Technicals({data, gapToEndpoint, startDate}) {
     const [days, changeDays] = useState(1)
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
@@ -17,19 +17,13 @@ export default function Technicals({data, startDate}) {
         el.style.animation = ''
     }
 
-    const ordinal_suffix_of = (i) => {
+    const ordinal_suffix_of = i => {
         let j = i % 10,
-            k = i % 100;
-        if (j == 1 && k != 11) {
-            return i + "st";
-        }
-        if (j == 2 && k != 12) {
-            return i + "nd";
-        }
-        if (j == 3 && k != 13) {
-            return i + "rd";
-        }
-        return i + "th";
+            k = i % 100
+        if (j == 1 && k != 11) return i + "st"
+        if (j == 2 && k != 12) return i + "nd"
+        if (j == 3 && k != 13) return i + "rd"
+        return i + "th"
     }
 
     const changeDays_ = (newDays) => {
@@ -47,10 +41,10 @@ export default function Technicals({data, startDate}) {
                         onChange={(_,v) => changeDays_(v)}
                         defaultValue={1}
                         valueLabelDisplay="auto"
-                        step={3}
+                        step={gapToEndpoint % 3 == 0 ? 3 : 2}
                         marks
                         min={1}
-                        max={30}
+                        max={gapToEndpoint}
                     />
                 </div>
                 <div className="technicals-datechanger-currentval">
