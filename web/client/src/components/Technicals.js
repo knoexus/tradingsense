@@ -3,7 +3,10 @@ import DaysSlider from './util/DaysSlider'
 import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
 import { Button } from '@material-ui/core'
 
-export default function Technicals({data, gapToEndpoint, startDate}) {
+import { useQuery } from '@apollo/client'
+import { TECHNICALS_MANY } from '../gql_queries/Technicals__GQL'
+
+export default function Technicals({data, fid, gapToEndpoint, startDate}) {
     const [days, changeDays] = useState(1)
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
@@ -64,7 +67,8 @@ export default function Technicals({data, gapToEndpoint, startDate}) {
                 </div>
             </div>
             <div className="technicals-indicators">
-                <TechnicalIndicatorsTable indicators={indicators} dayX={days} highlightLockedIndicators={highlightLockedIndicators}/>
+                <TechnicalIndicatorsTable indicators={indicators} dayX={days} fid={fid} 
+                    highlightLockedIndicators={highlightLockedIndicators} startDate={startDate}/>
             </div>
         </div>
     )

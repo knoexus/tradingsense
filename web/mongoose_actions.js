@@ -3,6 +3,7 @@ const _FinancialsReported = require('./mongoose_models/FinancialsReported')
 const _Candle = require('./mongoose_models/Candle')
 const _Technicals = require('./mongoose_models/Technicals')
 const { getMixedTechnicals } = require('./util/technicals') 
+const { addDays } = require('./util/dates')
 
 const callback = (err, obj) => {
     if (err) return null
@@ -60,8 +61,7 @@ const getTechnicals = (symbol, startDate, endDate, returnItems, lockItems) => {
 }
 
 const getTechnicalsSingle = (symbol, date) => {
-    let plusDate = new Date()
-    plusDate.setDate(date.getDate() + 1)
+    const plusDate = addDays(date, 1)
     return _Technicals.where({
             symbol,
             t:  { $gte: date, $lte: plusDate } 

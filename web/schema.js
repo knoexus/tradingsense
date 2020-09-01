@@ -92,6 +92,16 @@ const Indicator = new GraphQLObjectType({
         value: { type: GraphQLFloat }
     })
 })
+
+const IndicatorWNext = new GraphQLObjectType({
+    name: 'IndicatorWNext',
+    fields: () => ({
+        name: { type: GraphQLString },
+        value: { type: GraphQLFloat },
+        valueX: { type: GraphQLFloat },
+        percentChange: { type: GraphQLFloat }
+    })
+})
  
 const Technicals = new GraphQLObjectType({
     name: 'Technicals',
@@ -173,15 +183,29 @@ const RootQuery = new GraphQLObjectType({
                 return await getTechnicals(args.symbol, startDate, endDate, args.returnItems, args.lockItems)
             }
         },
-        technicals_single: {
-            type: Technicals,
+        technicals_single_w_next: {
+            type: IndicatorWNext,
             args: {
-                symbol: { type: GraphQLString },
-                date: { type: GraphQLInt },
+                current_date: { type: GraphQLInt },
+                plus_days: { type: GraphQLInt },
+                _id: { type: GraphQLID },
+                indicator: { type: GraphQLString },
             },
             async resolve(_, args) {
-                const date = new Date(args.date*1000)
-                return await getTechnicalsSingle(args.symbol, date)
+                const realDate = new Date(args.current_date*1000)
+                const forDate = addDays(realDate, args.plus_days)
+                const company_profile = await getCompanyProfileByID(args._id)
+                const symbol = company_profile.ticker
+                const techinicals = await getTechnicalsSingle(symbol, realDate)
+                const technicalsX = await getTechnicalsSingle(symbol, forDate)
+                const value = techinicals.indicators.find(x => x.name == args.indicator).value
+                const valueX = technicalsX.indicators.find(x => x.name == args.indicator).value
+                return {
+                    indicator: args.indicator,
+                    value,
+                    valueX,
+                    percentChange: (valueX-value)/value*100
+                }
             }
         },
         mixin: {

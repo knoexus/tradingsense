@@ -1,13 +1,13 @@
-import React, {Fragment} from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Lock from './Lock'
+import React from 'react'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Paper from '@material-ui/core/Paper'
+import TechnicalIndicatorsTableRow from './technicals/TechnicalIndicatorsTableRow'
 
 const StyledTableCell = withStyles(() => ({
     head: {
@@ -33,15 +33,8 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TechnicalIndicatorsTable({indicators, dayX, highlightLockedIndicators}) {
-  const classes = useStyles();
-
-  const lock = (
-      <div className="item-covered item-locked item-covered-techinicals-row">
-          <Lock size="xl"/>
-      </div>
-  )
-
+export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlightLockedIndicators, startDate}) {
+  const classes = useStyles()
   return (
     <TableContainer component={SimplePaper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
@@ -54,29 +47,10 @@ export default function TechnicalIndicatorsTable({indicators, dayX, highlightLoc
           </TableRow>
         </TableHead>
         <TableBody>
-          {indicators.map((e, idx) => (
-            <TableRow key={idx}>
-              <TableCell align="left">{e.name}</TableCell>
-              {
-                  e.value !== null ? (
-                    <Fragment>
-                        <TableCell align="center">{e.value.toPrecision(2)}</TableCell>
-                        <TableCell 
-                            className={highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
-                            align="center">
-                            ???
-                        </TableCell>
-                        <TableCell 
-                            className={highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
-                            align="right">
-                            ???
-                        </TableCell>
-                    </Fragment>
-                  ) :
-                    <TableCell colSpan={3}>{lock}</TableCell>
-              }
-            </TableRow>
-          ))}
+          {indicators.map((e, idx) => 
+            <TechnicalIndicatorsTableRow key={idx} data={e} fid={fid} highlightLockedIndicators={highlightLockedIndicators} 
+              current_date={startDate} plus_days={dayX}/>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

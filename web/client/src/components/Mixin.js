@@ -11,7 +11,7 @@ export default function Mixin({data}) {
             <CompanyProfile data={company_profile}/>
             <QuotesChart data={candles} gapToEndpoint={gapToEndpoint}/>
             {/* <FinancialsReported data={financials_reported}/> */}
-            <Technicals data={technicals} gapToEndpoint={gapToEndpoint} startDate={startDate}/>
+            <Technicals data={technicals} fid={company_profile._id} gapToEndpoint={gapToEndpoint} startDate={startDate}/>
         </div>
     )
 }
