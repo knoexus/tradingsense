@@ -1,4 +1,11 @@
-const technicals = ['ATR', 'AD', 'OBV', 'MACD', 'SLOWD', 'SLOWK', 'WILLR', 'ADX', 'APO', 'CCI', 'AROONOSC', 'SAR']
+const getRandomNumbers = (min, max, n) => {
+    let arr = []
+    while(arr.length < n){
+        const r = Math.floor(Math.random() * (max - min) + min)
+        if(arr.indexOf(r) === -1) arr.push(r)
+    }
+    return arr
+}
 
 const shuffle = (a) => {
     let array = [...a]
@@ -13,15 +20,12 @@ const shuffle = (a) => {
     return array
 }
 
-const getSplitTechnicals = (takeInPercent, lockedFromTakeInPercent) => {
-    if (lockedFromTakeInPercent > 100 || takeInPercent > 100) return null
-    const num_taken_items = Math.floor(technicals.length * takeInPercent/100)
-    const num_locked_items = Math.floor(num_taken_items * lockedFromTakeInPercent/100)
-    const taken_arr = shuffle(technicals).slice(0, num_taken_items)
-    return {
-        locked: taken_arr.slice(0, num_locked_items),
-        unlocked: taken_arr.slice(num_locked_items, taken_arr.length)
-    }
+const getMixedTechnicals = (take, lock, technicals) => {
+    if (take > technicals.length || lock > take || take <= 0 || lock < 0) return null
+    let taken_arr = shuffle(technicals).slice(0, take)
+    const randArr = getRandomNumbers(0, taken_arr.length-1, lock)
+    randArr.forEach(e => taken_arr[e].value = null)
+    return taken_arr
 }
 
-module.exports = { getSplitTechnicals }
+module.exports = { getMixedTechnicals }

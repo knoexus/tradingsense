@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
-import PreGameSetup from './components/PreGameSetup'
+import Game from './components/Game'
 
 const client = new ApolloClient({
   uri: "http://localhost:5001/graphql",
@@ -14,7 +14,7 @@ function App() {
   return (
       <ApolloProvider client={client}>
         <div className="App">
-          <PreGameSetup/>
+          <Game/>
         </div> 
       </ApolloProvider>     
   )

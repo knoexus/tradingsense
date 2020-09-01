@@ -3,7 +3,6 @@ const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
         getTechnicals, getTechnicalsSingle, getCompanyProfileByID } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED}  } = require('./util/errors')
-const { getSplitTechnicals } = require('./util/technicals') 
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -85,24 +84,11 @@ const Candle = new GraphQLObjectType({
     })
 })
 
-const Indicators = new GraphQLObjectType({
-    name: 'Indicators',
+const Indicator = new GraphQLObjectType({
+    name: 'Indicator',
     fields: () => ({
-        MACD: { type: GraphQLFloat },
-        SLOWD: { type: GraphQLFloat },
-        SLOWK: { type: GraphQLFloat },
-        WILLR: { type: GraphQLFloat },
-        ADX: { type: GraphQLFloat },
-        APO: { type: GraphQLFloat },
-        CCI: { type: GraphQLFloat },
-        AROONOSC: { type: GraphQLFloat },
-        UPPERBAND: { type: GraphQLFloat },
-        MIDDLEBAND: { type: GraphQLFloat },
-        LOWERBAND: { type: GraphQLFloat },
-        AD: { type: GraphQLFloat },
-        ATR: { type: GraphQLFloat },
-        OBV: { type: GraphQLFloat },
-        SAR: { type: GraphQLFloat }
+        name: { type: GraphQLString },
+        value: { type: GraphQLFloat }
     })
 })
  
@@ -111,7 +97,7 @@ const Technicals = new GraphQLObjectType({
     fields: () => ({
         symbol: { type: GraphQLString },
         t: { type: DateTime },
-        indicators: { type: Indicators }
+        indicators: { type: new GraphQLList(Indicator) }
     })
 })
  
@@ -125,14 +111,6 @@ const Mixin = new GraphQLObjectType({
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
         technicals: { type: new GraphQLList(Technicals) }
-    })
-})
-
-const Split_Technicals_Names = new GraphQLObjectType({
-    name: 'Split_Technicals_Names',
-    fields: () => ({
-        locked: { type: new GraphQLList(GraphQLString) },
-        unlocked: { type: new GraphQLList(GraphQLString) }
     })
 })
 
@@ -185,11 +163,12 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 symbol: { type: GraphQLString },
                 startDate: { type: GraphQLInt },
-                endDate: { type: GraphQLInt }
+                endDate: { type: GraphQLInt },
+                returnItems: { type: GraphQLInt }
             },
             async resolve(_, args) {
                 const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
-                return await getTechnicals(args.symbol, startDate, endDate)
+                return await getTechnicals(args.symbol, startDate, endDate, args.returnItems)
             }
         },
         technicals_single: {
@@ -203,17 +182,7 @@ const RootQuery = new GraphQLObjectType({
                 return await getTechnicalsSingle(args.symbol, date)
             }
         },
-        technicals_names: {
-            type: Split_Technicals_Names,
-            args: {
-                takeInPercent: { type: GraphQLFloat },
-                lockedFromTakeInPercent: { type: GraphQLFloat }
-            },
-            resolve(_, args) {
-                return getSplitTechnicals(args.takeInPercent, args.lockedFromTakeInPercent)
-            }
-        },
-        mixin: {
+        mixinDated: {
             type: Mixin,
             args: {
                 symbol: { type: GraphQLString },
@@ -238,9 +207,12 @@ const RootQuery = new GraphQLObjectType({
                     })
             }
         },
-        mixinArgless: {
+        mixin: {
             type: Mixin,
-            resolve: async function resolve(r=0, r_threshold=7) {
+            args: {
+                returnTechnicals: { type: GraphQLInt }
+            },
+            resolve: async function resolve(_, args, r=0, r_threshold=7) {
                 try {
                     if (r == r_threshold) throw RECURSIONEXCEEDED
                     const days_margin = 90
@@ -256,7 +228,7 @@ const RootQuery = new GraphQLObjectType({
                     if (candles == []) throw NULLRESPONSE
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
                     if (financials_reported == null) throw NULLRESPONSE
-                    const technicals = await getTechnicals(symbol, startDate, endDate)
+                    const technicals = await getTechnicals(symbol, startDate, endDate, args.returnTechnicals)
                     if (candles == []) throw NULLRESPONSE
                     
                     return {
@@ -274,7 +246,7 @@ const RootQuery = new GraphQLObjectType({
                     if (err == RECURSIONEXCEEDED)
                         return
                     else
-                        return resolve(r+1)
+                        return resolve(_, args, r=r+1)
                 }
             }
         }

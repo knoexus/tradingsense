@@ -2,6 +2,7 @@ const _CompanyProfile = require('./mongoose_models/CompanyProfile')
 const _FinancialsReported = require('./mongoose_models/FinancialsReported')
 const _Candle = require('./mongoose_models/Candle')
 const _Technicals = require('./mongoose_models/Technicals')
+const { getMixedTechnicals } = require('./util/technicals') 
 
 const callback = (err, obj) => {
     if (err) return null
@@ -45,13 +46,17 @@ const getFinancialsReported = (symbol, year, quarter) => {
         .findOne(callback)
 }
 
-const getTechnicals = (symbol, startDate, endDate) => {
+const getTechnicals = (symbol, startDate, endDate, returnItems) => {
     return  _Technicals.find({
             $and: [
                 { symbol },
                 { t: { $gte: startDate, $lte: endDate } }
             ]
         }, callback)
+        .then(data => data.map(e => ({
+            ...e,
+            indicators: getMixedTechnicals(returnItems, 2, e.indicators)
+        })))
 }
 
 const getTechnicalsSingle = (symbol, date) => {

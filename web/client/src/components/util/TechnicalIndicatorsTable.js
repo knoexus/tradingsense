@@ -54,13 +54,13 @@ export default function TechnicalIndicatorsTable({indicators, dayX, highlightLoc
           </TableRow>
         </TableHead>
         <TableBody>
-          {Object.keys(indicators).map((key, idx) => (
+          {indicators.map((e, idx) => (
             <TableRow key={idx}>
-              <TableCell align="left">{key}</TableCell>
+              <TableCell align="left">{e.name}</TableCell>
               {
-                  indicators[key].toPrecision(2) > 0.5 ? (
+                  e.value !== null ? (
                     <Fragment>
-                        <TableCell align="center">{indicators[key].toPrecision(2)}</TableCell>
+                        <TableCell align="center">{e.value.toPrecision(2)}</TableCell>
                         <TableCell 
                             className={highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
                             align="center">

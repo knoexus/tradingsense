@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-const MIXIN_ARGLESS_W_TECHNICALS = (_unlocked) => gql`
-    query getMixinArglessWTechnicals {
-        mixinArgless {
+const MIXIN_W_TECHNICALS = gql`
+    query getMixinWTechnicals($returnTechnicals: Int!) {
+        mixin(returnTechnicals: $returnTechnicals) {
             startDate
             gap_to_endpoint
             company_profile {
@@ -23,7 +23,8 @@ const MIXIN_ARGLESS_W_TECHNICALS = (_unlocked) => gql`
             technicals {
                 t
                 indicators {
-                    ${_unlocked.join(' ')}
+                    name
+                    value
                 }
             }
         }
@@ -81,4 +82,4 @@ const MIXIN_ARGLESS_W_FINANCIALS = gql`
     }
 `
 
-export { MIXIN_ARGLESS_W_TECHNICALS, MIXIN_ARGLESS_W_FINANCIALS }
+export { MIXIN_W_TECHNICALS, MIXIN_ARGLESS_W_FINANCIALS }

@@ -5,7 +5,7 @@ import FinancialsReported from './FinancialsReported'
 import Technicals from './Technicals'
 
 export default function Mixin({data}) {
-    const { mixinArgless: { startDate, gap_to_endpoint, company_profile, financials_reported, candles, technicals }} = data
+    const { mixin: { startDate, gap_to_endpoint, company_profile, financials_reported, candles, technicals }} = data
     return (
         <div className="mixinCard">
             <CompanyProfile data={company_profile}/>
