@@ -3,6 +3,7 @@ const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
         getTechnicals, getTechnicalsSingle, getCompanyProfileByID } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED}  } = require('./util/errors')
+const { getRandomMarginsAndGaps } = require('./util/chartDays')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -106,7 +107,7 @@ const Mixin = new GraphQLObjectType({
     fields: () => ({
         startDate: { type: GraphQLInt },
         endDate: { type: GraphQLInt },
-        gap_to_endpoint: { type: GraphQLInt },
+        gapToEndpoint: { type: GraphQLInt },
         company_profile: { type: CompanyProfile },
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
@@ -187,17 +188,27 @@ const RootQuery = new GraphQLObjectType({
             type: Mixin,
             args: {
                 daysMargin: { type: GraphQLInt },
+                gapToEndpoint: { type: GraphQLInt },
                 returnTechnicals: { type: GraphQLInt },
                 lockTechnicals: { type: GraphQLInt }
             },
             resolve: async function resolve(_, args, r=0, r_threshold=7) {
                 try {
                     if (r == r_threshold) throw RECURSIONEXCEEDED
-                    const days_margin = args.daysMargin || 90
+                    let daysMargin, gapToEndpoint
+                    if (args.daysMargin && args.gapToEndpoint) {
+                        daysMargin = args.daysMargin
+                        gapToEndpoint = args.gapToEndpoint
+                    }
+                    else {
+                        const params = getRandomMarginsAndGaps()
+                        daysMargin = params[0]
+                        gapToEndpoint = params[1]
+                    }
                     const init_date = new Date(process.env.INITIAL_DATE * 1000)
                     const difference_from_now = dateDiff(init_date, new Date(), "d")
-                    const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-days_margin+1)))
-                    const endDate = addDays(startDate, days_margin)
+                    const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-daysMargin+1)))
+                    const endDate = addDays(startDate, daysMargin)
                     const QY = getQuarterAndYear(startDate, endDate)
                 
                     const company_profile = await getRandomCompanyProfile()
@@ -212,7 +223,7 @@ const RootQuery = new GraphQLObjectType({
                     return {
                         startDate: startDate.getTime() / 1000,
                         endDate: endDate.getTime() / 1000,
-                        gap_to_endpoint: 30,
+                        gapToEndpoint,
                         company_profile,
                         candles,
                         financials_reported,

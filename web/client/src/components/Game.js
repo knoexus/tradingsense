@@ -11,7 +11,6 @@ import '../styles/game.scss'
 export default function Game() {
     const { loading, error, data, refetch } = useQuery(MIXIN_W_TECHNICALS, {
         variables: {
-            daysMargin: 90,
             returnTechnicals: 7,
             lockTechnicals: 2
         },

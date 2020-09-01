@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client'
 
 const MIXIN_W_TECHNICALS = gql`
-    query getMixinWTechnicals($daysMargin: Int!, $returnTechnicals: Int!, $lockTechnicals: Int!) {
-        mixin(daysMargin: $daysMargin, returnTechnicals: $returnTechnicals, lockTechnicals: $lockTechnicals) {
+    query getMixinWTechnicals($returnTechnicals: Int!, $lockTechnicals: Int!) {
+        mixin(returnTechnicals: $returnTechnicals, lockTechnicals: $lockTechnicals) {
             startDate
-            gap_to_endpoint
+            gapToEndpoint
             company_profile {
                 _id
                 ticker
