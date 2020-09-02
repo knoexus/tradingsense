@@ -55,7 +55,8 @@ const getTechnicals = (symbol, startDate, endDate, returnItems, lockItems) => {
             ]
         }, callback)
         .then(data => data.map(e => ({
-            ...e,
+            symbol,
+            t: e.t,
             indicators: getMixedTechnicals(returnItems, lockItems, e.indicators)
         })))
 }
