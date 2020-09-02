@@ -1,8 +1,8 @@
 const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLID, GraphQLSchema, GraphQLScalarType } = require('graphql')
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
-        getTechnicals, getTechnicalsSingle, getCompanyProfileByID } = require('./mongoose_actions')
-const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED}  } = require('./util/errors')
+        getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange } = require('./mongoose_actions')
+const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH }  } = require('./util/errors')
 const { getRandomMarginsAndGaps } = require('./util/chartDays')
 
 const CompanyProfile = new GraphQLObjectType({
@@ -202,7 +202,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             }
         },
-        technicals_single_w_next: {
+        technicals_single_w_next:{
             type: IndicatorWNext,
             args: {
                 current_date: { type: GraphQLInt },
@@ -212,11 +212,10 @@ const RootQuery = new GraphQLObjectType({
             },
             async resolve(_, args) {
                 const realDate = new Date(args.current_date*1000)
-                const forDate = addDays(realDate, args.plus_days)
                 const company_profile = await getCompanyProfileByID(args._id)
                 const symbol = company_profile.ticker
                 const techinicals = await getTechnicalsSingle(symbol, realDate)
-                const technicalsX = await getTechnicalsSingle(symbol, forDate)
+                const technicalsX = await getTechnicalsSingleFromRange(symbol, realDate, args.plus_days)
                 const value = techinicals.indicators.find(x => x.name == args.indicator).value
                 const valueX = technicalsX.indicators.find(x => x.name == args.indicator).value
                 return {
@@ -235,7 +234,7 @@ const RootQuery = new GraphQLObjectType({
                 returnTechnicals: { type: GraphQLInt },
                 lockTechnicals: { type: GraphQLInt }
             },
-            resolve: async function resolve(_, args, r=0, r_threshold=7) {
+            resolve: async function resolve(_, args, r=0, r_threshold=9) {
                 try {
                     if (r == r_threshold) throw RECURSIONEXCEEDED
                     let daysMargin, gapToEndpoint
@@ -252,6 +251,8 @@ const RootQuery = new GraphQLObjectType({
                     const difference_from_now = dateDiff(init_date, new Date(), "d")
                     const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-daysMargin+1)))
                     const endDate = addDays(startDate, daysMargin)
+                    const tech_startDate = addDays(endDate, -1)
+                    const tech_endDate = addDays(endDate, gapToEndpoint)
                     const QY = getQuarterAndYear(startDate, endDate)
                 
                     const company_profile = await getRandomCompanyProfile()
@@ -260,8 +261,9 @@ const RootQuery = new GraphQLObjectType({
                     if (candles == []) throw NULLRESPONSE
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
                     if (financials_reported == null) throw NULLRESPONSE
-                    const technicals = await getTechnicals(symbol, startDate, endDate, args.returnTechnicals, args.lockTechnicals)
-                    if (candles == []) throw NULLRESPONSE
+                    const technicals = await getTechnicals(symbol, tech_startDate, tech_endDate, args.returnTechnicals, args.lockTechnicals)
+                    if (technicals == []) throw NULLRESPONSE
+                    if (candles[candles.length-1].timestamp.toString() !== technicals[0].t.toString()) throw DATAMISMATCH
                     
                     return {
                         startDate: startDate.getTime() / 1000,

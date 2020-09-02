@@ -69,5 +69,12 @@ const getTechnicalsSingle = (symbol, date) => {
         }).findOne(callback)
 }
 
+const getTechnicalsSingleFromRange = (symbol, startDate, plus_days) => {
+    return _Technicals.find({ 
+        symbol,
+        t:  { $gte: startDate } 
+    }).limit(plus_days).skip(plus_days).findOne(callback)
+}
+
 module.exports = { getCompanyProfile, getCompanyProfileByID, getRandomCompanyProfile, getCandles, 
-    getFinancialsReported, getTechnicals, getTechnicalsSingle }
+    getFinancialsReported, getTechnicals, getTechnicalsSingle, getTechnicalsSingleFromRange }
