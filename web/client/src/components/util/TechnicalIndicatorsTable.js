@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlightLockedIndicators, startDate}) {
+export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlightLockedIndicators, startDate, lockedQ}) {
   const classes = useStyles()
   return (
     <TableContainer component={SimplePaper}>
@@ -49,7 +49,7 @@ export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlig
         <TableBody>
           {indicators.map((e, idx) => 
             <TechnicalIndicatorsTableRow key={idx} data={e} fid={fid} highlightLockedIndicators={highlightLockedIndicators} 
-              current_date={startDate} plus_days={dayX}/>
+              current_date={startDate} plus_days={dayX} lockedQ={lockedQ}/>
           )}
         </TableBody>
       </Table>

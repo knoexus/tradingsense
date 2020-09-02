@@ -183,6 +183,25 @@ const RootQuery = new GraphQLObjectType({
                 return await getTechnicals(args.symbol, startDate, endDate, args.returnItems, args.lockItems)
             }
         },
+        technicals_single: {
+            type: Indicator,
+            args: {
+                current_date: { type: GraphQLInt },
+                _id: { type: GraphQLID },
+                indicator: { type: GraphQLString },
+            },
+            async resolve(_, args) {
+                const realDate = new Date(args.current_date*1000)
+                const company_profile = await getCompanyProfileByID(args._id)
+                const symbol = company_profile.ticker
+                const techinicals = await getTechnicalsSingle(symbol, realDate)
+                const value = techinicals.indicators.find(x => x.name == args.indicator).value
+                return {
+                    name: args.indicator,
+                    value
+                }
+            }
+        },
         technicals_single_w_next: {
             type: IndicatorWNext,
             args: {
@@ -201,7 +220,7 @@ const RootQuery = new GraphQLObjectType({
                 const value = techinicals.indicators.find(x => x.name == args.indicator).value
                 const valueX = technicalsX.indicators.find(x => x.name == args.indicator).value
                 return {
-                    indicator: args.indicator,
+                    name: args.indicator,
                     value,
                     valueX,
                     percentChange: (valueX-value)/value*100

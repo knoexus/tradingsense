@@ -37,7 +37,6 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
     }
 
     const changelockedStateQ_ = (newLockState) => {
-        console.log('a')
         changelockedStateQ(newLockState)
     }
 
@@ -76,7 +75,7 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
             </div>
             <div className="technicals-indicators">
                 <TechnicalIndicatorsTable indicators={indicators} dayX={days} fid={fid} 
-                    highlightLockedIndicators={highlightLockedIndicators} startDate={startDate}/>
+                    highlightLockedIndicators={highlightLockedIndicators} startDate={startDate} lockedQ={lockedQ}/>
             </div>
         </div>
     )

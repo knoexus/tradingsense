@@ -1,13 +1,13 @@
 import React, { useState, Fragment } from 'react'
 import { useQuery } from '@apollo/client'
-import { TECHNICALS_SINGLE_ALL_UNLOCKED } from '../../../gql_queries/Technicals__GQL'
+import { TECHNICALS_SINGLE_ALL_UNLOCKED, TECHNICALS_SINGLE_NEXT_LOCKED } from '../../../gql_queries/Technicals__GQL'
 import LockedItem from '../LockedItem'
 import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 
 
-export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedIndicators, current_date, plus_days}) {
+export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedIndicators, current_date, plus_days, lockedQ}) {
     const [lock, changeLock] = useState(data.value === null)
     const [needFetch, changeFetchNeeded] = useState(false)
     const logoUnlockTry = () => {
@@ -26,23 +26,25 @@ export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedI
             <TableCell align="left">{data.name}</TableCell>
             { lock ? 
                 LI
-            : needFetch ? 
-                <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date} plus_days={plus_days} 
-                    errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
-            :
-                <TechnicalIndicatorsTableRowContent data={data} highlightLockedIndicators={highlightLockedIndicators}/>
+                : !needFetch ? 
+                    <TechnicalIndicatorsTableRowContent data={data} highlightLockedIndicators={highlightLockedIndicators}/> 
+                    : !lockedQ ?
+                    <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date}
+                        errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
+                        : <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date} plus_days={plus_days} 
+                            errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
             }
          </TableRow>
     )
 }
 
-const TechnicalIndicatorsTableRowGQL = ({fid, indicator, errorComponent, current_date, plus_days, highlightLockedIndicators}) => {
-    const { loading, error, data } = useQuery(TECHNICALS_SINGLE_ALL_UNLOCKED, {
+const TechnicalIndicatorsTableRowGQL = ({fid, indicator, errorComponent, current_date, highlightLockedIndicators, plus_days}) => {
+    const { loading, error, data } = useQuery((plus_days ? TECHNICALS_SINGLE_ALL_UNLOCKED : TECHNICALS_SINGLE_NEXT_LOCKED), {
         variables: { 
             fid,
             indicator,
-            plus_days,
-            current_date
+            current_date,
+            ...(plus_days && { plus_days })
         }
     })
     if (loading) return <TechnicalIndicatorsTableRowContent loading={loading}/>
@@ -50,7 +52,8 @@ const TechnicalIndicatorsTableRowGQL = ({fid, indicator, errorComponent, current
         console.error(error)
         return errorComponent
     }
-    if (data) return <TechnicalIndicatorsTableRowContent data={data.technicals_single_w_next} highlightLockedIndicators={highlightLockedIndicators}/>
+    if (data) return <TechnicalIndicatorsTableRowContent data={plus_days ? data.technicals_single_w_next : data.technicals_single } 
+        highlightLockedIndicators={highlightLockedIndicators}/>
 }
 
 const TechnicalIndicatorsTableRowContent = ({loading, data, highlightLockedIndicators}) => {

@@ -21,11 +21,9 @@ const TECHNICALS_SINGLE_ALL_UNLOCKED = gql`
 `
 
 const TECHNICALS_SINGLE_NEXT_LOCKED = gql`
-    query getTechnicalsForAllAvailable($next_date: Int!) {
-        technicals_single(next_date: $next_date) {
-            day0
-            dayX
-            percentChange
+    query getTechnicalsForAllAvailable($current_date: Int!, $fid: ID!, $indicator: String!) {
+        technicals_single(current_date: $current_date, _id: $fid, indicator: $indicator) {
+            value
         }
     }
 `
