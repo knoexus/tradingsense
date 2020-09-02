@@ -218,6 +218,11 @@
     "description query currentval";
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 50% 25% 25%;
+
+    &[disabled]{
+        pointer-events: none;
+        opacity: 0.5;
+    }
 }
 
 .technicals-datechanger-slider{

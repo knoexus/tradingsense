@@ -8,6 +8,7 @@ import { TECHNICALS_MANY } from '../gql_queries/Technicals__GQL'
 
 export default function Technicals({data, fid, gapToEndpoint, startDate}) {
     const [days, changeDays] = useState(1)
+    const [lockedQ, changelockedStateQ] = useState(false)
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
     const spanRef = useRef()
@@ -35,13 +36,18 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
         changeDaysClassName('technicals-datechanger-currentval-animated')
     }
 
+    const changelockedStateQ_ = (newLockState) => {
+        console.log('a')
+        changelockedStateQ(newLockState)
+    }
+
     return (
         <div className="technicals">
             <div className="technicals-title"><h2>Technicals</h2></div>
-            <div className="technicals-datechanger">
+            <div className="technicals-datechanger" disabled={lockedQ}>
                 <div className="technicals-datechanger-slider">
                     <DaysSlider
-                        onChange={(_,v) => changeDays_(v)}
+                        onChange={lockedQ ? x=>x : (_,v) => changeDays_(v)}
                         defaultValue={1}
                         valueLabelDisplay="auto"
                         step={gapToEndpoint % 3 == 0 ? 3 : 2}
@@ -55,10 +61,12 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
                 </div>
                 <div className="technicals-datechanger-fetcher">
                     <Button 
-                        onMouseEnter={() => changeHighlight(!highlightLockedIndicators)} 
-                        onMouseLeave={() => changeHighlight(!highlightLockedIndicators)}
+                        onMouseEnter={lockedQ ? x=>x : () => changeHighlight(!highlightLockedIndicators)} 
+                        onMouseLeave={lockedQ ? x=>x : () => changeHighlight(!highlightLockedIndicators)}
+                        onClick={lockedQ ? x=>x : () => changelockedStateQ_(true)}
                         size={"small"} 
-                        variant="outlined">
+                        variant="outlined"
+                        disabled={lockedQ}>
                         Unlock
                     </Button>
                 </div>
