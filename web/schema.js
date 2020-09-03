@@ -2,7 +2,7 @@ const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString,
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
         getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange } = require('./mongoose_actions')
-const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH }  } = require('./util/errors')
+const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH, INSUFFICIENTDATA }  } = require('./util/errors')
 const { getRandomMarginsAndGaps } = require('./util/chartDays')
 
 const CompanyProfile = new GraphQLObjectType({
@@ -121,7 +121,7 @@ const Mixin = new GraphQLObjectType({
         company_profile: { type: CompanyProfile },
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
-        technicals: { type: new GraphQLList(Technicals) }
+        technicals_day0: { type: Technicals }
     })
 })
 
@@ -194,8 +194,8 @@ const RootQuery = new GraphQLObjectType({
                 const realDate = new Date(args.current_date*1000)
                 const company_profile = await getCompanyProfileByID(args._id)
                 const symbol = company_profile.ticker
-                const techinicals = await getTechnicalsSingle(symbol, realDate)
-                const value = techinicals.indicators.find(x => x.name == args.indicator).value
+                const technicals = await getTechnicalsSingle(symbol, realDate)
+                const value = technicals.indicators.find(x => x.name == args.indicator).value
                 return {
                     name: args.indicator,
                     value
@@ -214,9 +214,9 @@ const RootQuery = new GraphQLObjectType({
                 const realDate = new Date(args.current_date*1000)
                 const company_profile = await getCompanyProfileByID(args._id)
                 const symbol = company_profile.ticker
-                const techinicals = await getTechnicalsSingle(symbol, realDate)
+                const technicals = await getTechnicalsSingle(symbol, realDate)
                 const technicalsX = await getTechnicalsSingleFromRange(symbol, realDate, args.plus_days)
-                const value = techinicals.indicators.find(x => x.name == args.indicator).value
+                const value = technicals.indicators.find(x => x.name == args.indicator).value
                 const valueX = technicalsX.indicators.find(x => x.name == args.indicator).value
                 return {
                     name: args.indicator,
@@ -262,17 +262,18 @@ const RootQuery = new GraphQLObjectType({
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
                     if (financials_reported == null) throw NULLRESPONSE
                     const technicals = await getTechnicals(symbol, tech_startDate, tech_endDate, args.returnTechnicals, args.lockTechnicals)
-                    if (technicals == []) throw NULLRESPONSE
-                    if (candles[candles.length-1].timestamp.toString() !== technicals[0].t.toString()) throw DATAMISMATCH
-                    
+                    console.log(technicals.length-1, gapToEndpoint)
+                    const technicals_day0 = technicals[0]
+                    if (technicals_day0 == []) throw NULLRESPONSE
+                    if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString()) throw DATAMISMATCH
                     return {
-                        startDate: startDate.getTime() / 1000,
-                        endDate: endDate.getTime() / 1000,
+                        startDate: tech_startDate.getTime() / 1000,
+                        endDate: tech_endDate.getTime() / 1000,
                         gapToEndpoint,
                         company_profile,
                         candles,
                         financials_reported,
-                        technicals
+                        technicals_day0
                     }
                 }
                 catch(err) {

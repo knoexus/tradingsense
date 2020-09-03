@@ -5,13 +5,13 @@ import FinancialsReported from './FinancialsReported'
 import Technicals from './Technicals'
 
 export default function Mixin({data}) {
-    const { mixin: { startDate, gapToEndpoint, company_profile, financials_reported, candles, technicals }} = data
+    const { mixin: { startDate, gapToEndpoint, company_profile, financials_reported, candles, technicals_day0 }} = data
     return (
         <div className="mixinCard">
             <CompanyProfile data={company_profile}/>
             <QuotesChart data={candles} gapToEndpoint={gapToEndpoint}/>
             {/* <FinancialsReported data={financials_reported}/> */}
-            <Technicals data={technicals} fid={company_profile._id} gapToEndpoint={gapToEndpoint} startDate={startDate}/>
+            <Technicals data={technicals_day0} fid={company_profile._id} gapToEndpoint={gapToEndpoint} startDate={startDate}/>
         </div>
     )
 }

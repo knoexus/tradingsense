@@ -12,7 +12,7 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
     const spanRef = useRef()
-    const indicators = data[0]["indicators"]
+    const indicators = data["indicators"]
     
     const restartAnimation = () => {
         const el = spanRef.current

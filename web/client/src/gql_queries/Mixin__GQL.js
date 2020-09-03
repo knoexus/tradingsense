@@ -20,7 +20,7 @@ const MIXIN_W_TECHNICALS = gql`
                 low
                 timestamp
             }
-            technicals {
+            technicals_day0 {
                 t
                 indicators {
                     name

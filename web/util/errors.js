@@ -1,7 +1,8 @@
 exports.errorTypes = {
     NULLRESPONSE: "NULLRESPONSE",
     DATAMISMATCH: "DATAMISMATCH",
-    RECURSIONEXCEEDED: "RECURSIONEXCEED"
+    RECURSIONEXCEEDED: "RECURSIONEXCEED",
+    INSUFFICIENTDATA: "INSUFFICIENTDATA"
 }
 
 exports.getErrorMessage = getErrorMessage = (type, ...args) => {

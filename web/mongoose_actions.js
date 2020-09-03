@@ -69,6 +69,19 @@ const getTechnicalsSingle = (symbol, date) => {
         }).findOne(callback)
 }
 
+const getTechnicalsSingleMixed = (symbol, startDate, returnItems, lockItems) => {
+    const plusDate = addDays(startDate, 1)
+    return  _Technicals.where({
+            symbol,
+            t: { $gte: startDate, $lte: plusDate }
+    }).findOne(callback)
+    .then(data => ({
+        symbol,
+        t: data.t,
+        indicators: getMixedTechnicals(returnItems, lockItems, data.indicators)
+    }))
+}
+
 const getTechnicalsSingleFromRange = (symbol, startDate, plus_days) => {
     return _Technicals.find({ 
         symbol,
@@ -77,4 +90,5 @@ const getTechnicalsSingleFromRange = (symbol, startDate, plus_days) => {
 }
 
 module.exports = { getCompanyProfile, getCompanyProfileByID, getRandomCompanyProfile, getCandles, 
-    getFinancialsReported, getTechnicals, getTechnicalsSingle, getTechnicalsSingleFromRange }
+    getFinancialsReported, getTechnicals, getTechnicalsSingle, getTechnicalsSingleFromRange,
+    getTechnicalsSingleMixed }

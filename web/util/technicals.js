@@ -28,4 +28,15 @@ const getMixedTechnicals = (take, lock, technicals) => {
     return taken_arr
 }
 
-module.exports = { getMixedTechnicals }
+const checkTechnicalsHaveNullValues = technicals => {
+    technicals.forEach(e => {
+        e.indicators.forEach(i => {
+            for (value in Object.values(i)) {
+                if (value == null) return true
+            }
+        })
+    })
+    return false
+}
+
+module.exports = { getMixedTechnicals, checkTechnicalsHaveNullValues }
