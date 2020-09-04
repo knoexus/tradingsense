@@ -3,10 +3,10 @@
     cursor: pointer;
     height: 120px;
     transform: translateX(0%) translateY(0%);
-    transition: transform .1s;
+    transition: transform .3s;
     width: 80px;
     
-    $transition-time: .1s;
+    $transition-time: .3s;
     
     &-top,
     &-bottom {
@@ -53,7 +53,14 @@
       &-right:after, &-left:after {
         left: 100%;
         right: 0;
+      }
+
+      &-right:after{
         transition-delay: 0s;
+      }
+
+      &-left::after{
+        transition-delay: $transition-time;
       }
     }
     
@@ -71,8 +78,16 @@
       &-right:after, &-left:after {
         left: 0;
         right: 100%;
+      }
+
+      &-right:after{
         transition-delay: $transition-time;
       }
+
+      &-left:after{
+        transition-delay: 0s;
+      }
+
     }
     
     &:hover & {
@@ -90,6 +105,14 @@
       }
 
       &-bottom-right:after {
+        transition-delay: 0s;
+      }
+
+      &-bottom-left:after {
+        transition-delay: $transition-time;
+      }
+
+      &-top-left:after {
         transition-delay: 0s;
       }
     }
