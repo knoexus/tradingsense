@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { COMPANY_PROFILE_INDUSTRY} from '../../../gql_queries/CompanyProfile__GQL'
 import LockedItem from '../LockedItem'
-import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
+import IndustrySkeleton from '../../skeletons/company_profile/IndustrySkeleton'
+import { Fragment } from 'react'
 
 
 export default function Industry({data, fid}) {
@@ -16,7 +17,7 @@ export default function Industry({data, fid}) {
     const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-sector']} lockSize={"xl"}/>
 
     return (
-        <div className="companyProfile-content-item">
+        <Fragment>
             { lock ? 
                 LI
             : needFetch ? 
@@ -24,7 +25,7 @@ export default function Industry({data, fid}) {
             :
                 <IndustryContent data={data}></IndustryContent>
             }
-        </div>
+        </Fragment>
     )
 }
 
@@ -43,9 +44,15 @@ const IndustryGQL = ({fid, errorComponent}) => {
 //handle error
 const IndustryContent = ({loading, data}) => {
     return (
-        <div className="companyProfile-content-item-sector">
-            { loading && <DefaultSkeleton/> }
-            { data && <span>{data}</span> }
-        </div>
+        <Fragment>
+            { loading && <IndustrySkeleton/>}
+            { data && 
+                <div className="companyProfile-content-item">
+                    <div className="companyProfile-content-item-sector">
+                        <span>{data}</span> 
+                    </div>
+                </div>
+            }
+        </Fragment>
     )
 }

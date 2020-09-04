@@ -81,14 +81,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 86px;
-    min-width: 86px;
-    max-height: 86px;
-    max-width: 86px;
-    padding: 2px;
+    align-self: center;
+    height: 88px;
+    width: 88px;
 }
 
-.companyProfile-logo > div > img{
+.companyProfile-logo img{
     max-height: 100%;
     max-width: 100%;
     min-height: 60%;
@@ -109,7 +107,7 @@
     flex-direction: column;
     justify-content: center;
     padding: 2px 1px;
-    margin-left: 15px;
+    margin-left: 20px;
 }
 
 .companyProfile-info > div:not(:first-child) {
@@ -152,6 +150,12 @@
     z-index: 1;
     background: linear-gradient(90deg, rgba(221,221,224,1) 19%, rgba(225,225,228,1) 44%, rgba(232,232,234,1) 64%, rgba(236,236,238,1) 77%, rgba(240,240,242,1) 89%);
     box-shadow: 0 0 3.5px rgba(0,0,0,0.5);;
+}
+
+.item-covered-companyProfile-logo{
+    align-self: center;
+    height: 88px;
+    width: 88px;
 }
 
 .item-covered-companyProfile-content-name{
@@ -319,7 +323,7 @@
     }
 }
 
-.item-covered-techinicals-row{
+.item-covered-technicals-row{
     height: 20px;
 }
 

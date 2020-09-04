@@ -1,22 +1,17 @@
 import React from 'react'
 import DefaultSkeleton from './DefaultSkeleton'
+import LogoSkeleton from './company_profile/LogoSkeleton'
+import IndustrySkeleton from './company_profile/IndustrySkeleton'
+import NamingExpansionSkeleton from './company_profile/NamingExpansionSkeleton'
 
 export default function CompanyProfileSkeleton() {
     return (
         <div>
             <div className="companyProfile-content">
-                <div className="companyProfile-logo">
-                    <div className="item-covered">
-                        <DefaultSkeleton/>
-                    </div>
-                </div>
+                <LogoSkeleton/>
                 <div className="companyProfile-info">
-                    <div className="item-covered item-covered-companyProfile-content-name">
-                        <DefaultSkeleton/>
-                    </div>
-                    <div className="item-covered item-covered-companyProfile-content-item-sector">
-                        <DefaultSkeleton/> 
-                    </div>
+                    <NamingExpansionSkeleton/>
+                    <IndustrySkeleton/>
                 </div>
             </div>
         </div>

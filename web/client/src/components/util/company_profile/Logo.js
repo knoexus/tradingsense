@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { COMPANY_PROFILE_LOGO } from '../../../gql_queries/CompanyProfile__GQL'
 import LockedItem from '../LockedItem'
-import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
+import LogoSkeleton from '../../skeletons/company_profile/LogoSkeleton'
+import { Fragment } from 'react'
 
 
 export default function Logo({data, fid}) {
@@ -13,10 +14,10 @@ export default function Logo({data, fid}) {
         changeFetchNeeded(!needFetch)
     }
 
-    const LI = <LockedItem unlockTry={logoUnlockTry}/>
+    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={["item-covered-companyProfile-logo"]}/>
 
     return (
-        <div className="companyProfile-logo">
+        <Fragment>
             { lock ? 
                 LI
             : needFetch ? 
@@ -24,7 +25,7 @@ export default function Logo({data, fid}) {
             :
                 <LogoContent data={data}></LogoContent>
             }
-        </div>
+        </Fragment>
     )
 }
 
@@ -42,9 +43,15 @@ const LogoGQL = ({fid, errorComponent}) => {
 
 const LogoContent = ({loading, data}) => {
     return (
-        <div className="companyProfile-content-item">
-            { loading && <DefaultSkeleton/> }
-            { data && <img alt={"Logo"} src={data}></img> }
-        </div>
+        <Fragment>
+            { loading && <LogoSkeleton/> }
+            { data && 
+                <div className="companyProfile-logo">
+                    <div className="companyProfile-content-item">
+                        <img alt={"Logo"} src={data}></img> 
+                    </div>
+                </div>
+            }
+        </Fragment>
     )
 }

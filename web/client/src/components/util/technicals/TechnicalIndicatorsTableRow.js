@@ -17,7 +17,7 @@ export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedI
 
     const LI = (
         <TableCell colSpan={3}>
-             <LockedItem unlockTry={logoUnlockTry} extraClasses={["item-covered-techinicals-row"]} lockSize={"xl"}/>
+             <LockedItem unlockTry={logoUnlockTry} extraClasses={["item-covered-technicals-row"]} lockSize={"xl"}/>
         </TableCell>
     )
 
@@ -59,7 +59,12 @@ const TechnicalIndicatorsTableRowGQL = ({fid, indicator, errorComponent, current
 const TechnicalIndicatorsTableRowContent = ({loading, data, highlightLockedIndicators}) => {
     return (
         <Fragment>
-            { loading && <TableCell colSpan={3}><DefaultSkeleton/></TableCell> } 
+            { loading && 
+                <TableCell colSpan={3}>
+                    <div className="item-covered item-covered-technicals-row">
+                        <DefaultSkeleton/>
+                    </div>
+                </TableCell> } 
             { data && 
                 <Fragment>
                     <TableCell align="center">{data.value.toPrecision(2)}</TableCell>

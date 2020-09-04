@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react'
 import { useQuery } from '@apollo/client'
 import { COMPANY_PROFILE_NAME_EXCHANGE_TICKER } from '../../../gql_queries/CompanyProfile__GQL'
 import LockedItem from '../LockedItem'
-import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
+import NamingExpansionSkeleton from '../../skeletons/company_profile/NamingExpansionSkeleton'
 
 
 export default function NamingExpansion({data, fid}) {
@@ -16,7 +16,7 @@ export default function NamingExpansion({data, fid}) {
     const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-name']}/>
 
     return (
-        <div className="companyProfile-content-item">
+        <Fragment>
             { lock ? 
                 LI
             : needFetch ? 
@@ -24,7 +24,7 @@ export default function NamingExpansion({data, fid}) {
             :
                 <NamingExpansionContent data={data}></NamingExpansionContent>
             }
-        </div>
+        </Fragment>
     )
 }
 
@@ -43,14 +43,16 @@ const NamingExpansionGQL = ({fid, errorComponent}) => {
 //handle error
 const NamingExpansionContent = ({loading, data}) => {
     return (
-        <div className="companyProfile-content-item-name">
-            { loading && <DefaultSkeleton/> }
-            { data && 
-                <Fragment>
-                    <h3>{data.name}</h3> 
-                    <span>{data.exchange} / {data.ticker}</span>         
-                </Fragment>
+        <Fragment>
+            { loading && <NamingExpansionSkeleton/> }
+            { data &&
+                <div className="companyProfile-content-item">
+                    <div className="companyProfile-content-item-name">
+                        <h3>{data.name}</h3> 
+                        <span>{data.exchange} / {data.ticker}</span>         
+                    </div>                 
+                </div>
             }
-        </div>
+        </Fragment>
     )
 }
