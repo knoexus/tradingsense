@@ -21,19 +21,33 @@ export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedI
         </TableCell>
     )
 
+    const C = (() => {
+        if (lock) return LI
+        else {
+            if (!needFetch) {
+                if (!lockedQ) return <TechnicalIndicatorsTableRowContent data={data} highlightLockedIndicators={highlightLockedIndicators}/> 
+                else return (
+                    <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date} plus_days={plus_days} 
+                            errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
+                )
+            }
+            else {
+                if (!lockedQ) return (
+                    <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date}
+                        errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
+                )
+                else return (
+                    <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date} plus_days={plus_days} 
+                            errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
+                )
+            }
+        }
+    })()
+
     return (
         <TableRow>
             <TableCell align="left">{data.name}</TableCell>
-            { lock ? 
-                LI
-                : !needFetch ? 
-                    <TechnicalIndicatorsTableRowContent data={data} highlightLockedIndicators={highlightLockedIndicators}/> 
-                    : !lockedQ ?
-                    <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date}
-                        errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
-                        : <TechnicalIndicatorsTableRowGQL fid={fid} indicator={data.name} current_date={current_date} plus_days={plus_days} 
-                            errorComponent={LI} highlightLockedIndicators={highlightLockedIndicators}/>
-            }
+            { C }
          </TableRow>
     )
 }
