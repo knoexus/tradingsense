@@ -3,10 +3,10 @@
     cursor: pointer;
     height: 120px;
     transform: translateX(0%) translateY(0%);
-    transition: transform .3s;
+    transition: transform .15s;
     width: 80px;
     
-    $transition-time: .3s;
+    $transition-time: .15s;
     
     &-top,
     &-bottom {

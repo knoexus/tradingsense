@@ -14,7 +14,7 @@ export default function Industry({data, fid}) {
         changeFetchNeeded(!needFetch)
     }
 
-    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-sector']} lockSize={"xl"}/>
+    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-item-sector']} lockSize={"xl"}/>
 
     return (
         <Fragment>

@@ -13,7 +13,7 @@ export default function NamingExpansion({data, fid}) {
         changeFetchNeeded(!needFetch)
     }
 
-    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-name']}/>
+    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-item-name']}/>
 
     return (
         <Fragment>
