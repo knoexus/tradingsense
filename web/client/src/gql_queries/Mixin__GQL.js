@@ -5,6 +5,7 @@ const MIXIN_W_TECHNICALS = gql`
         mixin(returnTechnicals: $returnTechnicals, lockTechnicals: $lockTechnicals) {
             startDate
             gapToEndpoint
+            daysMargin
             company_profile {
                 _id
                 ticker
@@ -22,6 +23,12 @@ const MIXIN_W_TECHNICALS = gql`
             }
             technicals_day0 {
                 t
+                indicators {
+                    name
+                    value
+                }
+            }
+            technicals {
                 indicators {
                     name
                     value

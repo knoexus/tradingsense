@@ -118,10 +118,12 @@ const Mixin = new GraphQLObjectType({
         startDate: { type: GraphQLInt },
         endDate: { type: GraphQLInt },
         gapToEndpoint: { type: GraphQLInt },
+        daysMargin: { type: GraphQLInt },
         company_profile: { type: CompanyProfile },
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
-        technicals_day0: { type: Technicals }
+        technicals_day0: { type: Technicals },
+        technicals: { type: new GraphQLList(Technicals) }
     })
 })
 
@@ -262,7 +264,6 @@ const RootQuery = new GraphQLObjectType({
                     const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
                     if (financials_reported == null) throw NULLRESPONSE
                     const technicals = await getTechnicals(symbol, tech_startDate, tech_endDate, args.returnTechnicals, args.lockTechnicals)
-                    console.log(technicals.length-1, gapToEndpoint)
                     const technicals_day0 = technicals[0]
                     if (technicals_day0 == []) throw NULLRESPONSE
                     if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString()) throw DATAMISMATCH
@@ -270,10 +271,12 @@ const RootQuery = new GraphQLObjectType({
                         startDate: tech_startDate.getTime() / 1000,
                         endDate: tech_endDate.getTime() / 1000,
                         gapToEndpoint,
+                        daysMargin,
                         company_profile,
                         candles,
                         financials_reported,
-                        technicals_day0
+                        technicals_day0,
+                        technicals
                     }
                 }
                 catch(err) {

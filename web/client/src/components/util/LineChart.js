@@ -2,14 +2,14 @@ import React, { useRef, useState, useEffect } from 'react'
 import moment from 'moment'
 import Chart from 'chart.js'
 
-export default function LineChart({data, gapToEndpoint}) {
+export default function LineChart({data, gapToEndpoint, actual_gapToEndPoint, daysMargin}) {
     const ctx = useRef()
     let dates = [], quotes = []
     data.forEach(e => {
         dates.push(moment(e.timestamp).format('DD/MM/YYYY').toString())
         quotes.push(e.close)
     })
-    const mockArray = Array.from(Array(gapToEndpoint).map(e => null))
+    const mockArray = Array.from(Array(actual_gapToEndPoint).map(e => null))
     const quotesWithSpace = quotes.concat(mockArray)
     const datesWithSpace = dates.concat(mockArray)
     const [myChart, setChart] = useState()
@@ -22,7 +22,7 @@ export default function LineChart({data, gapToEndpoint}) {
                 data: {
                     labels: datesWithSpace,
                     datasets: [{
-                        label: `${data.length}-day interval Daily Quotes`,
+                        label: `${daysMargin}-day interval Daily Quotes (${data.length} trading days)`,
                         data: quotesWithSpace,
                         fill: false,
                         borderColor: [
@@ -33,13 +33,13 @@ export default function LineChart({data, gapToEndpoint}) {
                 plugins: [{
                     afterDraw: function(chart) {
                         let x_coord = []
+                        const ctx = chart.ctx
                         try {
                             const meta = chart.getDatasetMeta(0)
-                            x_coord.push(meta.data[quotesWithSpace.length-1-gapToEndpoint]._model.x)
+                            x_coord.push(meta.data[quotesWithSpace.length-1-actual_gapToEndPoint]._model.x)
                             x_coord.push(meta.data[quotesWithSpace.length-1]._model.x)
                         } catch { return }
                         x_coord.forEach(x => {
-                            const ctx = chart.ctx
                             const topY = chart.scales['y-axis-0'].top
                             const bottomY = chart.scales['y-axis-0'].bottom
                             ctx.save()
@@ -79,7 +79,7 @@ export default function LineChart({data, gapToEndpoint}) {
                                     if (i == xLabels.length-1){
                                         xLabels[i] = 'Day X'
                                     }
-                                    else if (i == xLabels.length-1-gapToEndpoint) {
+                                    else if (i == xLabels.length-1-actual_gapToEndPoint) {
                                         xLabels[i] = 'Day 0'
                                     }
                                     else {

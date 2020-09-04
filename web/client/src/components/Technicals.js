@@ -6,13 +6,13 @@ import { Button } from '@material-ui/core'
 import { useQuery } from '@apollo/client'
 import { TECHNICALS_MANY } from '../gql_queries/Technicals__GQL'
 
-export default function Technicals({data, fid, gapToEndpoint, startDate}) {
+export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoint, startDate}) {
     const [days, changeDays] = useState(1)
     const [lockedQ, changelockedStateQ] = useState(false)
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
     const spanRef = useRef()
-    const indicators = data["indicators"]
+    const indicators = data.indicators
     
     const restartAnimation = () => {
         const el = spanRef.current
@@ -52,7 +52,7 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
                         step={gapToEndpoint % 3 == 0 ? 3 : 2}
                         marks
                         min={1}
-                        max={gapToEndpoint}
+                        max={actual_gapToEndPoint}
                     />
                 </div>
                 <div className="technicals-datechanger-currentval">
@@ -70,7 +70,7 @@ export default function Technicals({data, fid, gapToEndpoint, startDate}) {
                     </Button>
                 </div>
                 <div className="technicals-datechanger-description">
-                    <span>Show the unlocked indicators for the {ordinal_suffix_of(days)} day from the start.</span>
+                    <span>Show the unlocked indicators for the {ordinal_suffix_of(days)} trading day from the start.</span>
                 </div>
             </div>
             <div className="technicals-indicators">
