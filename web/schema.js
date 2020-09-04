@@ -261,8 +261,8 @@ const RootQuery = new GraphQLObjectType({
                     const symbol = company_profile.ticker
                     const candles = await getCandles(symbol, startDate, endDate)
                     if (candles == []) throw NULLRESPONSE
-                    const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
-                    if (financials_reported == null) throw NULLRESPONSE
+                    // const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
+                    // if (financials_reported == null) throw NULLRESPONSE
                     const technicals = await getTechnicals(symbol, tech_startDate, tech_endDate, args.returnTechnicals, args.lockTechnicals)
                     const technicals_day0 = technicals[0]
                     if (technicals_day0 == []) throw NULLRESPONSE
@@ -274,7 +274,6 @@ const RootQuery = new GraphQLObjectType({
                         daysMargin,
                         company_profile,
                         candles,
-                        financials_reported,
                         technicals_day0,
                         technicals
                     }

@@ -5,7 +5,7 @@ import FinancialsReported from './FinancialsReported'
 import Technicals from './Technicals'
 
 export default function Mixin({data}) {
-    const { mixin: { startDate, gapToEndpoint, company_profile, financials_reported, 
+    const { mixin: { startDate, gapToEndpoint, company_profile, 
         daysMargin, candles, technicals_day0, technicals }} = data
     const actual_gapToEndPoint = technicals.length
     return (
