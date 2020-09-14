@@ -1,9 +1,6 @@
-const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLID, GraphQLSchema, GraphQLScalarType } = require('graphql')
-const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
-const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
-        getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange } = require('./mongoose_actions')
-const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH, INSUFFICIENTDATA }  } = require('./util/errors')
-const { getRandomMarginsAndGaps } = require('./util/chartDays')
+const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLID, 
+        GraphQLSchema, GraphQLScalarType } = require('graphql')
+const resolvers = require('./resolvers')
 
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
@@ -127,6 +124,22 @@ const Mixin = new GraphQLObjectType({
     })
 })
 
+const GameParams = new GraphQLObjectType({
+    name: 'GameParams',
+    fields: () => ({
+        secondsToPlay: { type: GraphQLInt },
+        numberOfStocks: { type: GraphQLInt },
+    })
+})
+
+const Game = new GraphQLObjectType({
+    name: 'Game',
+    fields: () => ({
+        gameParams: { type: GameParams },
+        mixin: { type: Mixin }
+    })
+})
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: {
@@ -136,17 +149,11 @@ const RootQuery = new GraphQLObjectType({
                 ticker: { type: GraphQLString },
                 _id: {type: GraphQLID }
             },
-            async resolve(_, args) {
-                if ('ticker' in args)
-                    return await getCompanyProfile(args.ticker)
-                else return await getCompanyProfileByID(args._id)
-            }
+            resolve: resolvers.companyProfileResolver
         },
         company_profile_random: {
             type: CompanyProfile,
-            async resolve() {
-                return await getRandomCompanyProfile()
-            }
+            resolve: resolvers.companyProfileRandomResolver
         },
         financials_reported: {
             type: FinancialsReported,
@@ -155,9 +162,7 @@ const RootQuery = new GraphQLObjectType({
                 year: { type: GraphQLInt },
                 quarter: { type: GraphQLInt }
             },
-            async resolve(_, args) {
-                return await getFinancialsReported(args.symbol, args.year, args.quarter)
-            }
+            resolve: resolvers.financialsReportedResolver
         },
         candles: {
             type: new GraphQLList(Candle),
@@ -166,10 +171,7 @@ const RootQuery = new GraphQLObjectType({
                 startDate: { type: GraphQLInt },
                 endDate: { type: GraphQLInt }
             },
-            async resolve(_, args) {
-                const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
-                return await getCandles(args.symbol, startDate, endDate)
-            }
+            resolve: resolvers.candlesResolver
         },
         technicals: {
             type: new GraphQLList(Technicals),
@@ -180,10 +182,7 @@ const RootQuery = new GraphQLObjectType({
                 returnItems: { type: GraphQLInt },
                 lockItems: { type: GraphQLInt }
             },
-            async resolve(_, args) {
-                const startDate = new Date(args.startDate*1000), endDate = new Date(args.endDate*1000)
-                return await getTechnicals(args.symbol, startDate, endDate, args.returnItems, args.lockItems)
-            }
+            resolve: resolvers.technicalsResolver
         },
         technicals_single: {
             type: Indicator,
@@ -192,17 +191,7 @@ const RootQuery = new GraphQLObjectType({
                 _id: { type: GraphQLID },
                 indicator: { type: GraphQLString },
             },
-            async resolve(_, args) {
-                const realDate = new Date(args.current_date*1000)
-                const company_profile = await getCompanyProfileByID(args._id)
-                const symbol = company_profile.ticker
-                const technicals = await getTechnicalsSingle(symbol, realDate)
-                const value = technicals.indicators.find(x => x.name == args.indicator).value
-                return {
-                    name: args.indicator,
-                    value
-                }
-            }
+            resolve: resolvers.technicalsSingleResolver
         },
         technicals_single_w_next:{
             type: IndicatorWNext,
@@ -212,21 +201,7 @@ const RootQuery = new GraphQLObjectType({
                 _id: { type: GraphQLID },
                 indicator: { type: GraphQLString },
             },
-            async resolve(_, args) {
-                const realDate = new Date(args.current_date*1000)
-                const company_profile = await getCompanyProfileByID(args._id)
-                const symbol = company_profile.ticker
-                const technicals = await getTechnicalsSingle(symbol, realDate)
-                const technicalsX = await getTechnicalsSingleFromRange(symbol, realDate, args.plus_days)
-                const value = technicals.indicators.find(x => x.name == args.indicator).value
-                const valueX = technicalsX.indicators.find(x => x.name == args.indicator).value
-                return {
-                    name: args.indicator,
-                    value,
-                    valueX,
-                    percentChange: (valueX-value)/value*100
-                }
-            }
+            resolve: resolvers.technicalsSingleWNextResolver
         },
         mixin: {
             type: Mixin,
@@ -236,61 +211,20 @@ const RootQuery = new GraphQLObjectType({
                 returnTechnicals: { type: GraphQLInt },
                 lockTechnicals: { type: GraphQLInt }
             },
-            resolve: async function resolve(_, args, r=0, r_threshold=9) {
-                try {
-                    if (r == r_threshold) throw RECURSIONEXCEEDED
-                    let daysMargin, gapToEndpoint
-                    if (args.daysMargin && args.gapToEndpoint) {
-                        daysMargin = args.daysMargin
-                        gapToEndpoint = args.gapToEndpoint
-                    }
-                    else {
-                        const params = getRandomMarginsAndGaps()
-                        daysMargin = params[0]
-                        gapToEndpoint = params[1]
-                    }
-                    const init_date = new Date(process.env.INITIAL_DATE * 1000)
-                    const difference_from_now = dateDiff(init_date, new Date(), "d")
-                    const startDate = addDays(init_date, Math.floor(Math.random() * (difference_from_now-daysMargin+1)))
-                    const endDate = addDays(startDate, daysMargin)
-                    const tech_startDate = addDays(endDate, -1)
-                    const tech_endDate = addDays(endDate, gapToEndpoint)
-                    const QY = getQuarterAndYear(startDate, endDate)
-                
-                    const company_profile = await getRandomCompanyProfile()
-                    const symbol = company_profile.ticker
-                    const candles = await getCandles(symbol, startDate, endDate)
-                    if (candles == [] || candles == null) throw NULLRESPONSE
-                    // const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
-                    // if (financials_reported == null) throw NULLRESPONSE
-                    const technicals = await getTechnicals(symbol, tech_startDate, tech_endDate, args.returnTechnicals, args.lockTechnicals)
-                    if (technicals == [] || candles == null) throw NULLRESPONSE
-                    const technicals_day0 = technicals[0]
-                    if (technicals_day0 == []) throw NULLRESPONSE
-                    if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString()) throw DATAMISMATCH
-                    return {
-                        startDate: tech_startDate.getTime() / 1000,
-                        endDate: tech_endDate.getTime() / 1000,
-                        gapToEndpoint,
-                        daysMargin,
-                        company_profile,
-                        candles,
-                        technicals_day0,
-                        technicals
-                    }
-                }
-                catch(err) {
-                    console.error(err)
-                    if (err == RECURSIONEXCEEDED)
-                        return
-                    else
-                        return resolve(_, args, r=r+1)
-                }
-            }
+            resolve: resolvers.mixinResolver
+        },
+        game: {
+            type: Game,
+            args: {
+                daysMargin: { type: GraphQLInt },
+                gapToEndpoint: { type: GraphQLInt },
+                returnTechnicals: { type: GraphQLInt },
+                lockTechnicals: { type: GraphQLInt }
+            },
+            resolve: resolvers.gameResolver
         }
     }
 })
-
 
 module.exports = new GraphQLSchema({
     query: RootQuery
