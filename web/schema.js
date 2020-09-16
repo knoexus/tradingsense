@@ -213,6 +213,10 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve: resolvers.mixinResolver
         },
+        gameParams: {
+            type: GameParams,
+            resolve: resolvers.gameParamsResolver
+        },
         game: {
             type: Game,
             args: {

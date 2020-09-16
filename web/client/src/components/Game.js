@@ -1,28 +1,17 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
 import GameWrapper from './util/GameWrapper'
-import { GAME } from '../gql_queries/Game__GQL'
 import Mixin from './Mixin'
-import MixinSkeleton from './skeletons/MixinSkeleton'
 import Arrow from './util/Arrow'
 import AmountSelectionModal from './util/AmountSelectionModal'
+import GameSentinel from './GameSentinel'
 
 import '../styles/game.scss'
 
 export default function Game() {
     const [action, setAction] = useState(-1)
     const [modalOpen, setModal] = useState(false)
-    const variables = {
-        returnTechnicals: 7,
-        lockTechnicals: 2,
-        setup: true
-    }
-    const params = {
-        variables,
-        notifyOnNetworkStatusChange: true,
-        returnPartialData: true
-    }
-    const { loading, error, data, refetch } = useQuery(GAME, params)
+    const [mixinUpdater, setMixinUpdate] = useState(false)
+    const [stocksPassed, setStocksLeft] = useState(0)
 
     const openModal = (pos) => {
         setModal(true)
@@ -32,28 +21,17 @@ export default function Game() {
     const proceed = () => {
         setModal(false)
         setAction(-1)
-        refetch({
-            ...params,
-            variables: {
-                ...variables,
-                setup: false
-            }
-        })
+        setMixinUpdate(!mixinUpdater)
+        setStocksLeft(stocksPassed + 1)
     }
 
-    if (loading) return <GameWrapper><MixinSkeleton status={"loading"}/></GameWrapper>
-    if (error) return <GameWrapper><p>Error {error} :(</p></GameWrapper>
-    if (data) {
-        const { game: { gameParams, mixin } } = data
-        return (
-            <GameWrapper>
-                <Mixin data={mixin}/>
-                <Arrow side="right" clicked={() => openModal(0)}/>
-                <Arrow side="left" clicked={() => openModal(1)}/>
-                {/* Timer */}
-                {/* CardsCounter */}
-                <AmountSelectionModal open={modalOpen} action={action} proceed={() => proceed()}/>
-            </GameWrapper>
-        )
-    }
+    return (
+        <GameWrapper>
+            <Mixin updater={mixinUpdater}/>
+            <Arrow side="right" clicked={() => openModal(0)}/>
+            <Arrow side="left" clicked={() => openModal(1)}/>
+            <GameSentinel stocksPassed={stocksPassed}/>
+            <AmountSelectionModal open={modalOpen} action={action} proceed={() => proceed()}/>
+        </GameWrapper>
+    )
 }

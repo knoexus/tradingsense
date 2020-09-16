@@ -108,12 +108,16 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
     }
 }
 
-exports.gameResolver = gameResolver = async (_, args) => {
+exports.gameParamsResolver = gameParamsResolver = () => {
     const [secondsToPlay, numberOfStocks] = getRandomSecondsAndStocks()
-    const gameParams = {
+    return {
         secondsToPlay,
         numberOfStocks
     }
+}
+
+exports.gameResolver = gameResolver = async (_, args) => {
+    const gameParams = gameParamsResolver()
     const mixin = await mixinResolver(_, args)
     return {
         gameParams,

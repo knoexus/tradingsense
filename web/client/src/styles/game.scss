@@ -22,7 +22,7 @@
     justify-content: center;
     /* grid-auto-flow: row; */
     grid-template-areas: 
-        ". uparrow ."
+        "cardsleft uparrow timer"
         "leftarrow card rightarrow"
         ". . .";
     grid-template-rows: 60px 1fr 60px;
@@ -53,6 +53,24 @@
 .button-FastForward-right{
     grid-area: rightarrow;
     justify-self: baseline;
+}
+
+.timer{
+    width: 140px;
+    height: 50px;
+    background: wheat;
+    grid-area: timer;
+    justify-self: baseline;
+    align-self: end;
+}
+
+.cardsCounter{
+    width: 140px;
+    height: 50px;
+    background: blueviolet;
+    grid-area: cardsleft;
+    justify-self: end;
+    align-self: end;
 }
 
 .companyProfile {
