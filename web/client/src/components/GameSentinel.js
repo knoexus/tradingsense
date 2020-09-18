@@ -1,6 +1,7 @@
 import React from 'react'
-import Timer from './util/Timer'
-import CardsCounter from './util/CardsCounter'
+import Timer from './util/game_sentinel/Timer'
+import CardsCounter from './util/game_sentinel/CardsCounter'
+import CurrentPoints from './util/game_sentinel/CurrentPoints'
 import { Fragment } from 'react'
 
 import { useQuery } from '@apollo/client'
@@ -15,8 +16,9 @@ export default function GameSentinel(props) {
         const { gameParams: { secondsToPlay, numberOfStocks } } = data
         return (
             <Fragment>
-                <Timer/>
                 <CardsCounter max={numberOfStocks} current={props.stocksPassed}/>
+                <CurrentPoints/>
+                <Timer/>
             </Fragment>
         )
     }
