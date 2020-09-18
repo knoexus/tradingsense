@@ -2,7 +2,7 @@ import { QUERY_INIT_STATE } from './queries'
 
 const store = {
     wi: 1,
-    loadingMixing: false
+    loadingMixin: false
 }
 
 export default function createStore(client){

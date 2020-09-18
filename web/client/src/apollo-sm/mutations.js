@@ -8,4 +8,12 @@ const MUTATION_SET_WI = gql`
     }
     `
 
-export { MUTATION_SET_WI }
+const MUTATION_SET_LOADING_MIXIN = gql`
+    mutation changeMixinLoading($newLoading: Boolean!) {
+        changeMixinLoading(newLoading: $newLoading) @client {
+            loadingMixin
+        }
+    }
+    `
+
+export { MUTATION_SET_WI, MUTATION_SET_LOADING_MIXIN }

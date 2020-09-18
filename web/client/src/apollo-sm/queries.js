@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 const QUERY_INIT_STATE = gql`{
     wi @client
-    loadingMixing @client
+    loadingMixin @client
   }
   `
 
@@ -11,7 +11,7 @@ const QUERY_WI = gql`{
   }
   `
 const QUERY_LOADING_MIXIN = gql`{
-    loadingMixing @client
+    loadingMixin @client
   }
   `
 

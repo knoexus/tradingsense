@@ -9,6 +9,9 @@ import { useQuery } from '@apollo/client'
 import { MIXIN_W_TECHNICALS } from '../gql_queries/Mixin__GQL'
 import { useEffect } from 'react'
 
+import { useMutation } from '@apollo/client'
+import { MUTATION_SET_LOADING_MIXIN } from '../apollo-sm/mutations'
+
 export default function Mixin({updater}) {
     const variables = {
         returnTechnicals: 7,
@@ -20,15 +23,29 @@ export default function Mixin({updater}) {
         notifyOnNetworkStatusChange: true
     }
 
+    const [changeMXN] = useMutation(MUTATION_SET_LOADING_MIXIN)
+
     const { loading, error, data, refetch } = useQuery(MIXIN_W_TECHNICALS, params)
 
     useEffect(() => {
         refetch()
     }, [updater])
 
-    if (loading) return <MixinSkeleton status={"loading"}/>
+    if (loading) {
+        changeMXN({
+            variables: {
+                newLoading: true
+            }
+        })
+        return <MixinSkeleton status={"loading"}/>
+    }
     if (error) return <p>Error {error} :(</p>
     if (data) {
+        changeMXN({
+            variables: {
+                newLoading: false
+            }
+        })
         const { mixin: { startDate, gapToEndpoint, company_profile, 
             daysMargin, candles, technicals_day0, technicals } } = data
         const actual_gapToEndPoint = technicals.length
