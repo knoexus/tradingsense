@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { useApolloClient, useQuery,  gql } from '@apollo/client'
+import React from 'react'
+import { useQuery } from '@apollo/client'
+import { QUERY_WI } from '../../../apollo-sm/queries'
 
 
 export default function Timer() {
-    const query = 
-        gql`{
-           wi @client
-        }
-        `
-    const { data: { wi } } = useQuery(query)
+    const { data: { wi } } = useQuery(QUERY_WI)
     return (
         <div className="timer">
             <h3>{wi}</h3>

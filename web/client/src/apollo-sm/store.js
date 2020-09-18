@@ -1,13 +1,13 @@
-import { queryWi } from './queries'
+import { QUERY_INIT_STATE } from './queries'
 
 const store = {
     wi: 1,
-    // loadingMixing: false
+    loadingMixing: false
 }
 
 export default function createStore(client){
     client.writeQuery({
-        query: queryWi,
+        query: QUERY_INIT_STATE,
         data: store
     })
 }

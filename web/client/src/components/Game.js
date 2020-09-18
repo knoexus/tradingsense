@@ -5,7 +5,8 @@ import Arrow from './util/Arrow'
 import AmountSelectionModal from './util/AmountSelectionModal'
 import GameSentinel from './GameSentinel'
 
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
+import { MUTATION_SET_WI } from '../apollo-sm/mutations'
 
 import '../styles/game.scss'
 
@@ -27,14 +28,7 @@ export default function Game() {
         setStocksLeft(stocksPassed + 1)
     }
 
-    const SET_WASTE = gql`
-        mutation addWi($plus: Int!) {
-            addWi(plus: $plus) @client {
-                wi
-            }
-        }
-    `
-    const [wiMutate] = useMutation(SET_WASTE)
+    const [wiMutate] = useMutation(MUTATION_SET_WI)
 
     return (
         <GameWrapper>
