@@ -1,48 +1,19 @@
 import React from 'react'
 import './App.css'
-import { ApolloProvider, ApolloClient, InMemoryCache, gql } from '@apollo/client'
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import Game from './components/Game'
-
-const queryWi = gql`{
-  wi @client
-}
-`
+import createStore from './apollo-sm/store'
+import resolvers from './apollo-sm/resolvers'
 
 const client = new ApolloClient({
   uri: "http://localhost:5001/graphql",
   cache: new InMemoryCache({
     addTypename: false
   }),
-  resolvers: {
-    Mutation: {
-      addWi
-      :
-       (_, { }, { cache }) => {
-            const queryResult = cache.readQuery({
-              query: queryWi
-            })      
-            if (queryResult) {
-              const { wi } = queryResult   
-              const data = {
-                wi: wi + 1
-              }    
-              cache.writeQuery({ query: queryWi, data })
-              return data.wi
-            }
-            return null
-          }
-        }
-      }
+  resolvers
 })
 
-const initialState = {
-  wi: 1
-}
-
-client.writeQuery({
-  query: queryWi,
-  data: initialState
-})
+createStore(client)
 
 function App() {
   return (
