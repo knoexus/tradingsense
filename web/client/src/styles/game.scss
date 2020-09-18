@@ -55,28 +55,27 @@
     justify-self: baseline;
 }
 
-.timer{
+.timer, .currentPoints, .cardsCounter {
     width: 140px;
     height: 50px;
-    background: wheat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer{
     grid-area: timer;
     justify-self: baseline;
     align-self: end;
 }
 
 .currentPoints{
-    width: 140px;
-    height: 50px;
-    background: aquamarine;
     grid-area: currentpoints;
     justify-self: center;
     align-self: end;
 }
 
 .cardsCounter{
-    width: 140px;
-    height: 50px;
-    background: blueviolet;
     grid-area: cardsleft;
     justify-self: end;
     align-self: end;

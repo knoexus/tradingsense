@@ -18,9 +18,11 @@ export default function NTimer({seconds}) {
                     !loadingMixin && resume()
                     return (
                         <Fragment>
-                            <Timer.Minutes />
-                            :
-                            <Timer.Seconds formatValue={v => v.toString().length < 2 ? '0' + v : v} />
+                            <h2>
+                                <Timer.Minutes />
+                                :
+                                <Timer.Seconds formatValue={v => v.toString().length < 2 ? '0' + v : v} />
+                            </h2>
                         </Fragment>
                     )
                 }}

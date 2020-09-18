@@ -17,7 +17,7 @@ export default class CardsCounter extends Component {
         const { realMax } = this.state
         return (
             <div className="cardsCounter">
-                <h2>{realMax-current}/{realMax}</h2>
+                <h2>Card {realMax-current}/{realMax}</h2>
             </div>
         )
     }
