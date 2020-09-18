@@ -1,5 +1,5 @@
 import React from 'react'
-import Timer from './util/game_sentinel/Timer'
+import NTimer from './util/game_sentinel/Timer'
 import CardsCounter from './util/game_sentinel/CardsCounter'
 import CurrentPoints from './util/game_sentinel/CurrentPoints'
 import { Fragment } from 'react'
@@ -18,7 +18,7 @@ export default function GameSentinel(props) {
             <Fragment>
                 <CardsCounter max={numberOfStocks} current={props.stocksPassed}/>
                 <CurrentPoints/>
-                <Timer/>
+                <NTimer seconds={secondsToPlay}/>
             </Fragment>
         )
     }

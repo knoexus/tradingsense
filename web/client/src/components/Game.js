@@ -5,9 +5,6 @@ import Arrow from './util/Arrow'
 import AmountSelectionModal from './util/AmountSelectionModal'
 import GameSentinel from './GameSentinel'
 
-import { useMutation } from '@apollo/client'
-import { MUTATION_SET_WI } from '../apollo-sm/mutations'
-
 import '../styles/game.scss'
 
 export default function Game() {
@@ -28,8 +25,6 @@ export default function Game() {
         setStocksLeft(stocksPassed + 1)
     }
 
-    const [wiMutate] = useMutation(MUTATION_SET_WI)
-
     return (
         <GameWrapper>
             <Mixin updater={mixinUpdater}/>
@@ -37,15 +32,6 @@ export default function Game() {
             <Arrow side="left" clicked={() => openModal(1)}/>
             <GameSentinel stocksPassed={stocksPassed}/>
             <AmountSelectionModal open={modalOpen} action={action} proceed={() => proceed()}/>
-            <button
-                onClick={() => {
-                    wiMutate({
-                        variables: {
-                            plus: 1
-                        }
-                    })
-                }}
-            >Apollo Test</button>
         </GameWrapper>
     )
 }
