@@ -2,7 +2,7 @@ const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
         getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH, INSUFFICIENTDATA }  } = require('./util/errors')
-const { getRandomMarginsAndGaps, getRandomSecondsAndStocks } = require('./util/gameParams')
+const { getRandomMarginsAndGaps, getRandomSecondsAndStocks, getInitialSum } = require('./util/gameParams')
 
 exports.companyProfileResolver = companyProfileResolver = async (_, args) => {
     if ('ticker' in args)
@@ -110,9 +110,11 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
 
 exports.gameParamsResolver = gameParamsResolver = () => {
     const [secondsToPlay, numberOfStocks] = getRandomSecondsAndStocks()
+    const initialSum = getInitialSum()
     return {
         secondsToPlay,
-        numberOfStocks
+        numberOfStocks,
+        initialSum
     }
 }
 

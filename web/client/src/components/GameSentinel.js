@@ -13,11 +13,11 @@ export default function GameSentinel(props) {
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error {error} :(</p>
     if (data) {
-        const { gameParams: { secondsToPlay, numberOfStocks } } = data
+        const { gameParams: { secondsToPlay, numberOfStocks, initialSum } } = data
         return (
             <Fragment>
                 <CardsCounter max={numberOfStocks} current={props.stocksPassed}/>
-                <CurrentPoints/>
+                <CurrentPoints amount={initialSum}/>
                 <NTimer seconds={secondsToPlay}/>
             </Fragment>
         )

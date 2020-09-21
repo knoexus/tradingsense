@@ -16,5 +16,10 @@ const secondsAndStocks = [
     [180, 30]
 ]
 
+const initialSum = [
+    10000
+]
+
 exports.getRandomMarginsAndGaps = () => daysMarginsAndGaps[getRandomIndex(daysMarginsAndGaps)]
 exports.getRandomSecondsAndStocks = () => secondsAndStocks[getRandomIndex(secondsAndStocks)]
+exports.getInitialSum = () => initialSum[0]

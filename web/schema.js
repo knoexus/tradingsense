@@ -129,6 +129,7 @@ const GameParams = new GraphQLObjectType({
     fields: () => ({
         secondsToPlay: { type: GraphQLInt },
         numberOfStocks: { type: GraphQLInt },
+        initialSum: { type: GraphQLFloat }
     })
 })
 

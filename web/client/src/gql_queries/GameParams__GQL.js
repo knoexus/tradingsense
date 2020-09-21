@@ -5,6 +5,7 @@ const GAME_PARAMS = gql`
         gameParams {
             secondsToPlay
             numberOfStocks
+            initialSum
         }
     }
 `
