@@ -52,7 +52,7 @@ exports.technicalsSingleWNextResolver = technicalsSingleWNextResolver = async (_
         name: args.indicator,
         value,
         valueX,
-        percentChange: (valueX-value)/value*100
+        percentChange: value == 0 ? 0 : (valueX-value)/value*100
     }
 }
 
