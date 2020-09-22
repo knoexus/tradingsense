@@ -3,12 +3,12 @@ import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
     root: {
-        color: '#481796',
-        height: 8,
+        color: '#dbb448',
+        height: 6,
     },
     thumb: {
-        height: 24,
-        width: 24,
+        height: 20,
+        width: 20,
         backgroundColor: '#fff',
         border: '2px solid currentColor',
         marginTop: -8,
@@ -19,7 +19,7 @@ const styles = {
     },
     active: {},
     mark: {
-        height: 8,
+        height: 6,
         '&[data-index="0"]':{
             display: 'none'
         }
@@ -28,12 +28,12 @@ const styles = {
         left: 'calc(-50% + 4px)',
     },
     track: {
-        height: 8,
-        borderRadius: 4,
+        height: 6,
+        borderRadius: 3,
     },
     rail: {
-        height: 8,
-        borderRadius: 4,
+        height: 6,
+        borderRadius: 3,
     },
 }
 

@@ -56,7 +56,7 @@
 }
 
 .timer, .currentPoints, .cardsCounter {
-    width: 140px;
+    width: 400px;
     height: 50px;
     display: flex;
     justify-content: center;
@@ -357,3 +357,36 @@
     border-bottom: 0.25px dashed  rgb(41, 46, 51) !important;
     color: rgb(52, 101, 124) !important;
 }
+
+.modal-stocks-inner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-stocks-inner h2 {
+    margin: 0;
+    font-size: 20pt;
+    font-weight: 500;
+    font-family: 'Mukta Malar', sans-serif;
+}
+
+.currentPoints h2, .cardsCounter h2, .timer h2{
+    margin: 0;
+    font-size: 20pt;
+    font-weight: 500;
+    font-family: 'Quicksand', sans-serif;
+}
+
+// .modal-stocks-inner button {
+//     cursor: pointer;
+//     padding: 4px;
+//     width: 120px;
+//     height: 30px;
+//     font-size: 14px;
+//     background-color: rgba(155,241,94,0.53);
+//     border: none;
+//     border-radius: 1.5pt;
+//     color: black;
+// }

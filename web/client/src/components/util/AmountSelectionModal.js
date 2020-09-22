@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
+import MinMaxStocksSlider from '../util/MinMaxStocksSlider'
+import Button from '@material-ui/core/Button'
 
 const actions = {
     0: "Buy",
@@ -22,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    borderRadius: 5,
+    border: '1px solid #000',
+    borderRadius: 7,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    padding: theme.spacing(3, 3),
     '&:focus': {
         outline: 'none'
     }
@@ -35,17 +37,37 @@ const useStyles = makeStyles((theme) => ({
 export default function AmountSelectionModal({ action, open, proceed, minMaxStocks }) {
   const classes = useStyles()
   const [modalStyle] = useState(getModalStyle)
+
+  const [stocks, changeStocks] = useState(0)
   const [_open, setOpen] = useState(open)
 
   const minStocks = minMaxStocks?.minStocks
   const maxStocks = minMaxStocks?.maxStocks
 
+  useEffect(() => {
+    changeStocks(minMaxStocks ? minMaxStocks.minStocks : 0)
+  }, [minMaxStocks])
+
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2>{actions[action]} the chosen number of stocks</h2>
-      <p>Min: {minStocks}</p>
-      <p>Max: {maxStocks}</p>
-      <button onClick={() => proceed()}>Confirm</button>
+      <div className="modal-stocks-inner">
+        <h2>{actions[action]} the selected number of stocks</h2>
+        <MinMaxStocksSlider
+          onChange={(_, v) => changeStocks(v)}
+          defaultValue={minStocks}
+          valueLabelDisplay="auto"
+          step={Math.floor((maxStocks-minStocks)/10)}
+          marks
+          min={minStocks}
+          max={maxStocks}
+        />
+        <Button 
+          onClick={() => proceed()}
+          size={"small"} 
+          variant="outlined"
+        >Confirm {actions[action]}ing {stocks} stocks
+        </Button>
+      </div>
     </div>
   )
 
@@ -59,8 +81,6 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
         disableAutoFocus
         disableEnforceFocus
         open={_open}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
       >
         {body}
       </Modal>

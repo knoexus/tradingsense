@@ -19,7 +19,7 @@ export default function NTimer({seconds}) {
                     return (
                         <Fragment>
                             <h2>
-                                <Timer.Minutes />
+                                Time: <Timer.Minutes />
                                 :
                                 <Timer.Seconds formatValue={v => v.toString().length < 2 ? '0' + v : v} />
                             </h2>
