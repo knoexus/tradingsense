@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { MUTATION_SET_LOADING_MIXIN } from '../apollo-sm/mutations'
 
-export default function Mixin({updater}) {
+export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
     const variables = {
         returnTechnicals: 7,
         lockTechnicals: 2,
@@ -26,6 +26,10 @@ export default function Mixin({updater}) {
     const [changeMXN] = useMutation(MUTATION_SET_LOADING_MIXIN)
 
     const { loading, error, data, refetch } = useQuery(MIXIN_W_TECHNICALS, params)
+
+    useEffect(() => {
+        preUpdater && data && setMinMaxStocks(data.mixin.minMaxStocks)
+    }, [preUpdater])
 
     useEffect(() => {
         refetch()

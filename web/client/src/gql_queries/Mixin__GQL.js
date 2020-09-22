@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 const MIXIN_W_TECHNICALS = gql`
     query getMixinWTechnicals($returnTechnicals: Int!, $lockTechnicals: Int!) {
         mixin(returnTechnicals: $returnTechnicals, lockTechnicals: $lockTechnicals) {
+            id
             startDate
             gapToEndpoint
             daysMargin
@@ -33,6 +34,10 @@ const MIXIN_W_TECHNICALS = gql`
                     name
                     value
                 }
+            }
+            minMaxStocks {
+                minStocks
+                maxStocks
             }
         }
     }

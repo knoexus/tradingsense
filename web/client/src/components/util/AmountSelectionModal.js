@@ -32,16 +32,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function AmountSelectionModal({ action, open, proceed }) {
+export default function AmountSelectionModal({ action, open, proceed, minMaxStocks }) {
   const classes = useStyles()
   const [modalStyle] = useState(getModalStyle)
   const [_open, setOpen] = useState(open)
 
+  const minStocks = minMaxStocks?.minStocks
+  const maxStocks = minMaxStocks?.maxStocks
+
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2>{actions[action]} the chosen number of stocks</h2>
-      <p>Min: 0</p>
-      <p>Max: 12000</p>
+      <p>Min: {minStocks}</p>
+      <p>Max: {maxStocks}</p>
       <button onClick={() => proceed()}>Confirm</button>
     </div>
   )

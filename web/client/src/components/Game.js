@@ -12,6 +12,7 @@ export default function Game() {
     const [modalOpen, setModal] = useState(false)
     const [mixinUpdater, setMixinUpdate] = useState(false)
     const [stocksPassed, setStocksLeft] = useState(0)
+    const [currentMinMaxStocks, setCurrentMinMaxStocks] = useState(null)
 
     const openModal = (pos) => {
         setModal(true)
@@ -27,11 +28,12 @@ export default function Game() {
 
     return (
         <GameWrapper>
-            <Mixin updater={mixinUpdater}/>
+            <Mixin updater={mixinUpdater} preUpdater={modalOpen} setMinMaxStocks={m => setCurrentMinMaxStocks(m)}/>
             <Arrow side="right" clicked={() => openModal(0)}/>
             <Arrow side="left" clicked={() => openModal(1)}/>
             <GameSentinel stocksPassed={stocksPassed}/>
-            <AmountSelectionModal open={modalOpen} action={action} proceed={() => proceed()}/>
+            <AmountSelectionModal open={modalOpen} action={action} 
+                minMaxStocks={currentMinMaxStocks} proceed={() => proceed()}/>
         </GameWrapper>
     )
 }

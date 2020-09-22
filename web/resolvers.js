@@ -3,6 +3,7 @@ const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsRep
         getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH, INSUFFICIENTDATA }  } = require('./util/errors')
 const { getRandomMarginsAndGaps, getRandomSecondsAndStocks, getInitialSum } = require('./util/gameParams')
+const { v4 } = require('uuid')
 
 exports.companyProfileResolver = companyProfileResolver = async (_, args) => {
     if ('ticker' in args)
@@ -88,7 +89,13 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
         const technicals_day0 = technicals[0]
         if (technicals_day0 == []) throw NULLRESPONSE
         if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString()) throw DATAMISMATCH
+
+        const minMaxStocks = minMaxStocksResolver(_, {
+            lastPrice: candles[candles.length-1].close
+        })
+
         return {
+            id: v4(),
             startDate: tech_startDate.getTime() / 1000,
             endDate: tech_endDate.getTime() / 1000,
             gapToEndpoint,
@@ -96,7 +103,8 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
             company_profile,
             candles,
             technicals_day0,
-            technicals
+            technicals,
+            minMaxStocks
         }
     }
     catch(err) {
@@ -124,5 +132,16 @@ exports.gameResolver = gameResolver = async (_, args) => {
     return {
         gameParams,
         mixin
+    }
+}
+
+exports.minMaxStocksResolver = minMaxStocksResolver = (_, args) => {
+    const { lastPrice } = args
+    const maxPointsPerRound = 5000
+    const maxStocks = Math.floor(maxPointsPerRound/lastPrice)
+    const minStocks = Math.floor(maxStocks/Math.ceil(Math.log10(maxPointsPerRound) + 1))
+    return {
+        minStocks,
+        maxStocks
     }
 }

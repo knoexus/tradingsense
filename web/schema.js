@@ -112,6 +112,7 @@ const Technicals = new GraphQLObjectType({
 const Mixin = new GraphQLObjectType({
     name: 'Mixin',
     fields: () => ({
+        id: { type: GraphQLID },
         startDate: { type: GraphQLInt },
         endDate: { type: GraphQLInt },
         gapToEndpoint: { type: GraphQLInt },
@@ -120,7 +121,8 @@ const Mixin = new GraphQLObjectType({
         candles: { type: new GraphQLList(Candle) },
         financials_reported: { type: FinancialsReported },
         technicals_day0: { type: Technicals },
-        technicals: { type: new GraphQLList(Technicals) }
+        technicals: { type: new GraphQLList(Technicals) },
+        minMaxStocks: { type: MinMaxStocks }
     })
 })
 
@@ -138,6 +140,14 @@ const Game = new GraphQLObjectType({
     fields: () => ({
         gameParams: { type: GameParams },
         mixin: { type: Mixin }
+    })
+})
+
+const MinMaxStocks = new GraphQLObjectType({
+    name: 'MinMaxStocks',
+    fields: () => ({
+        minStocks: { type: GraphQLInt },
+        maxStocks: { type: GraphQLInt }
     })
 })
 
