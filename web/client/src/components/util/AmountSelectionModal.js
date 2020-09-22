@@ -52,8 +52,10 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
   const minStocks = minMaxStocks?.minStocks
   const maxStocks = minMaxStocks?.maxStocks
 
+  const midValue = Math.ceil((maxStocks+minStocks)/2)
+
   useEffect(() => {
-    changeStocks(minMaxStocks ? minMaxStocks.minStocks : 0)
+    changeStocks(midValue)
   }, [minMaxStocks])
 
   const body = (
@@ -62,7 +64,7 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
         <h2>{actions[action]} the selected number of stocks</h2>
         <MinMaxStocksSlider
           onChange={(_, v) => changeStocks(v)}
-          defaultValue={minStocks}
+          defaultValue={midValue}
           valueLabelDisplay="auto"
           step={Math.floor((maxStocks-minStocks)/10)}
           marks
