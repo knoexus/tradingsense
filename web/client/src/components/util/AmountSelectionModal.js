@@ -32,6 +32,14 @@ const useStyles = makeStyles((theme) => ({
         outline: 'none'
     }
   },
+  buttonDanger: {
+    color: '#FF0000',
+    borderColor: '#FF0000'
+  },
+  buttonSuccess: {
+    color: '#008000',
+    borderColor: '#008000'
+  },
 }))
 
 export default function AmountSelectionModal({ action, open, proceed, minMaxStocks }) {
@@ -62,9 +70,11 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
           max={maxStocks}
         />
         <Button 
+          className={actions[action] == "Buy" ? classes.buttonSuccess : classes.buttonDanger }
           onClick={() => proceed()}
           size={"small"} 
           variant="outlined"
+          color="#fff"
         >Confirm {actions[action]}ing {stocks} stocks
         </Button>
       </div>

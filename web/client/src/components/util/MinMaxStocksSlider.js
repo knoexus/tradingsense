@@ -3,8 +3,10 @@ import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
     root: {
-        color: '#dbb448',
+        color: '#727687',
         height: 6,
+        marginTop: 10,
+        marginBottom: 10
     },
     thumb: {
         height: 20,
