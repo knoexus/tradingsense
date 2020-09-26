@@ -8,7 +8,6 @@ export default function CurrentPoints({amount}) {
     const [total, changeTotal] = useState(amount)
     const [lastChange, setLastChange] = useState(null)
     const calculateChange = (action, amount, oldPrice, newPrice) => {
-        console.log(oldPrice, newPrice, amount)
         if (action == 'Buy') return (newPrice-oldPrice) * amount
         else return (oldPrice-newPrice) * amount
     }

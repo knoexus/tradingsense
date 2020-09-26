@@ -61,12 +61,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    display: flex;
 }
 
 .timer{
     grid-area: timer;
     justify-self: baseline;
     align-self: end;
+    justify-content: flex-start;
 }
 
 .currentPoints{
@@ -80,6 +82,7 @@
     grid-area: cardsleft;
     justify-self: end;
     align-self: end;
+    justify-content: flex-end;
 }
 
 .companyProfile {
@@ -379,15 +382,3 @@
     font-weight: 500;
     font-family: 'Quicksand', sans-serif;
 }
-
-// .modal-stocks-inner button {
-//     cursor: pointer;
-//     padding: 4px;
-//     width: 120px;
-//     height: 30px;
-//     font-size: 14px;
-//     background-color: rgba(155,241,94,0.53);
-//     border: none;
-//     border-radius: 1.5pt;
-//     color: black;
-// }
