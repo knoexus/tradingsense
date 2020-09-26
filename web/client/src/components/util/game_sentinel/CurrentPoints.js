@@ -6,6 +6,7 @@ import { PROFIT_LOSS } from '../../../gql_queries/ProfitLoss__GQL'
 
 export default function CurrentPoints({amount}) {
     const [total, changeTotal] = useState(amount)
+    const [lastChange, setLastChange] = useState(null)
     const calculateChange = (action, amount, oldPrice, newPrice) => {
         console.log(oldPrice, newPrice, amount)
         if (action == 'Buy') return (newPrice-oldPrice) * amount
@@ -26,12 +27,17 @@ export default function CurrentPoints({amount}) {
         if (data) {
             const { profit_loss_params: { stocks, action, lastPrice } } = dataPLP
             const { profitLoss } = data
-            changeTotal(total + calculateChange(action, stocks, lastPrice, profitLoss))   
+            const change = calculateChange(action, stocks, lastPrice, profitLoss)
+            changeTotal(total + change)   
+            setLastChange(change)
         }
     }, [data])
     return (
         <div className="currentPoints">
-            <h2>Current balance: {total.toPrecision(6)}$</h2>
+            <h2>Current balance: {total.toFixed(2)}$ 
+                {lastChange ? 
+                    lastChange > 0 ? ` (+${lastChange.toFixed(2)})` : ` (${lastChange.toFixed(2)})`
+                    : ''}</h2>
         </div>
     )
 }

@@ -17,7 +17,7 @@ const secondsAndStocks = [
 ]
 
 const initialSum = [
-    50000
+    3000
 ]
 
 exports.getRandomMarginsAndGaps = () => daysMarginsAndGaps[getRandomIndex(daysMarginsAndGaps)]
