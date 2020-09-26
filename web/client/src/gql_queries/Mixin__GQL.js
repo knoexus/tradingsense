@@ -5,6 +5,7 @@ const MIXIN_W_TECHNICALS = gql`
         mixin(returnTechnicals: $returnTechnicals, lockTechnicals: $lockTechnicals) {
             id
             startDate
+            endDate
             gapToEndpoint
             daysMargin
             company_profile {

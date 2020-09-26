@@ -237,6 +237,14 @@ const RootQuery = new GraphQLObjectType({
                 lockTechnicals: { type: GraphQLInt }
             },
             resolve: resolvers.gameResolver
+        },
+        profitLoss: {
+            type: GraphQLFloat,
+            args: {
+                date: { type: GraphQLInt },
+                _id: { type: GraphQLID }
+            },
+            resolve: resolvers.profitLossResolver
         }
     }
 })

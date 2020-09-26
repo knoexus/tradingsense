@@ -89,6 +89,14 @@ const getTechnicalsSingleFromRange = (symbol, startDate, plus_days) => {
     }).limit(plus_days).skip(plus_days).findOne(callback)
 }
 
+const getCandlesSingle = (symbol, date) => {
+    const plusDate = addDays(date, 1)
+    return _Candle.where({
+            symbol,
+            timestamp:  { $gte: date, $lte: plusDate } 
+        }).findOne(callback)
+}
+
 module.exports = { getCompanyProfile, getCompanyProfileByID, getRandomCompanyProfile, getCandles, 
     getFinancialsReported, getTechnicals, getTechnicalsSingle, getTechnicalsSingleFromRange,
-    getTechnicalsSingleMixed }
+    getTechnicalsSingleMixed, getCandlesSingle }

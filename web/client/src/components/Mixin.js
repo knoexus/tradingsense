@@ -28,7 +28,12 @@ export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
     const { loading, error, data, refetch } = useQuery(MIXIN_W_TECHNICALS, params)
 
     useEffect(() => {
-        preUpdater && data && setMinMaxStocks(data.mixin.minMaxStocks)
+        preUpdater && data && setMinMaxStocks({
+            minMaxStocks: data.mixin.minMaxStocks,
+            endDate: data.mixin.endDate,
+            fid: data.mixin.company_profile._id,
+            lastPrice: data.mixin.candles[data.mixin.candles.length-1].close
+        })
     }, [preUpdater])
 
     useEffect(() => {
@@ -56,8 +61,8 @@ export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
         return (
             <div className="mixinCard">
                 <CompanyProfile data={company_profile}/>
-                <QuotesChart data={candles} gapToEndpoint={gapToEndpoint} actual_gapToEndPoint={actual_gapToEndPoint} 
-                    daysMargin={daysMargin} technicals={technicals}/>
+                <QuotesChart data={candles} actual_gapToEndPoint={actual_gapToEndPoint} 
+                    daysMargin={daysMargin}/>
                 {/* <FinancialsReported data={financials_reported}/> */}
                 <Technicals data={technicals_day0} fid={company_profile._id} gapToEndpoint={gapToEndpoint} 
                     actual_gapToEndPoint={actual_gapToEndPoint} startDate={startDate}/>

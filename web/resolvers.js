@@ -1,6 +1,7 @@
 const { getQuarterAndYear, addDays, dateDiff } = require('./util/dates')
 const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsReported, 
-        getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange } = require('./mongoose_actions')
+        getTechnicals, getTechnicalsSingle, getCompanyProfileByID, getTechnicalsSingleFromRange, 
+        getCandlesSingle } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH, INSUFFICIENTDATA }  } = require('./util/errors')
 const { getRandomMarginsAndGaps, getRandomSecondsAndStocks, getInitialSum } = require('./util/gameParams')
 const { v4 } = require('uuid')
@@ -82,6 +83,8 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
         const symbol = company_profile.ticker
         const candles = await getCandles(symbol, startDate, endDate)
         if (candles == [] || candles == null) throw NULLRESPONSE
+        const final_candle = await getCandlesSingle(symbol, tech_endDate)
+        if (final_candle == null) throw NULLRESPONSE
         // const financials_reported = await getFinancialsReported(symbol, QY.year, QY.quarter)
         // if (financials_reported == null) throw NULLRESPONSE
         const technicals = await getTechnicals(symbol, tech_startDate, tech_endDate, args.returnTechnicals, args.lockTechnicals)
@@ -144,4 +147,12 @@ exports.minMaxStocksResolver = minMaxStocksResolver = (_, args) => {
         minStocks,
         maxStocks
     }
+}
+
+exports.profitLossResolver = profitLossResolver = async (_, args) => {
+    const realDate = new Date(args.date*1000)
+    const company_profile = await getCompanyProfileByID(args._id)
+    const symbol = company_profile.ticker
+    const candle = await getCandlesSingle(symbol, realDate)
+    return candle.close
 }

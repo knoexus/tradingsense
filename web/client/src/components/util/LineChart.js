@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import moment from 'moment'
 import Chart from 'chart.js'
 
-export default function LineChart({data, gapToEndpoint, actual_gapToEndPoint, daysMargin}) {
+export default function LineChart({data, actual_gapToEndPoint, daysMargin}) {
     const ctx = useRef()
     let dates = [], quotes = []
     data.forEach(e => {

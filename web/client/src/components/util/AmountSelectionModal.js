@@ -4,6 +4,9 @@ import Modal from '@material-ui/core/Modal'
 import MinMaxStocksSlider from '../util/MinMaxStocksSlider'
 import Button from '@material-ui/core/Button'
 
+import { useMutation } from '@apollo/client'
+import { MUTATION_SET_PROFIT_LOSS_PARAMS } from '../../apollo-sm/mutations'
+
 const actions = {
     0: "Buy",
     1: "Sell"
@@ -49,10 +52,28 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
   const [stocks, changeStocks] = useState(0)
   const [_open, setOpen] = useState(open)
 
-  const minStocks = minMaxStocks?.minStocks
-  const maxStocks = minMaxStocks?.maxStocks
+  const [changePLP] = useMutation(MUTATION_SET_PROFIT_LOSS_PARAMS)
+
+  const minStocks = minMaxStocks?.minMaxStocks?.minStocks
+  const maxStocks = minMaxStocks?.minMaxStocks?.maxStocks
 
   const midValue = Math.ceil((maxStocks+minStocks)/2)
+
+  const confirmAction = () => {
+    const endDate = minMaxStocks?.endDate
+    const fid = minMaxStocks?.fid
+    const lastPrice = minMaxStocks?.lastPrice
+    changePLP({
+      variables: {
+          newFid: fid,
+          newEnddate: endDate,
+          newStocks: stocks,
+          newAction: actions[action],
+          newLastPrice: lastPrice
+      }
+    })
+    proceed()
+  }
 
   useEffect(() => {
     changeStocks(midValue)
@@ -73,7 +94,7 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
         />
         <Button 
           className={actions[action] == "Buy" ? classes.buttonSuccess : classes.buttonDanger }
-          onClick={() => proceed()}
+          onClick={() => confirmAction()}
           size={"small"} 
           variant="outlined"
           color="#fff"
