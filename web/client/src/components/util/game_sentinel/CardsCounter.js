@@ -1,24 +1,24 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import { MUTATION_SET_ENDGAME } from '../../../apollo-sm/mutations'
 
-export default class CardsCounter extends Component {
-    state = {
-        realMax: null
-    }
-
-    componentDidMount() {
-        const { max } = this.props
-        this.setState({
-            realMax: max
-        })
-    }
-
-    render() {
-        const { current } = this.props
-        const { realMax } = this.state
-        return (
-            <div className="cardsCounter">
-                <h2>Card {realMax-current}/{realMax}</h2>
-            </div>
-        )
-    }
+export default function CardsCounter({max, current}) {
+    const [realMax, changeRealMax] = useState(null)
+    const [changeENDGM] = useMutation(MUTATION_SET_ENDGAME)
+    useEffect(() => {
+        if (current == max){
+            changeENDGM({
+                variables: {
+                    newEndGame: true
+                }
+            })
+            // return null
+        }
+        else changeRealMax(max)
+    }, [current])
+    return (
+        <div className="cardsCounter">
+            <h2>Card {current}/{realMax}</h2>
+        </div>
+    )
 }

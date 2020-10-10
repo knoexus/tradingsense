@@ -11,7 +11,7 @@ export default function Game() {
     const [action, setAction] = useState(-1)
     const [modalOpen, setModal] = useState(false)
     const [mixinUpdater, setMixinUpdate] = useState(false)
-    const [stocksPassed, setStocksLeft] = useState(0)
+    const [stocksPassed, setStocksLeft] = useState(1)
     const [currentMinMaxStocks, setCurrentMinMaxStocks] = useState(null)
 
     const openModal = (pos) => {

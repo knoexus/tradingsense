@@ -30,5 +30,13 @@ const MUTATION_SET_PROFIT_LOSS_PARAMS = gql`
     }
     `
 
+const MUTATION_SET_ENDGAME = gql`
+    mutation changeEndGame($newEndGame: Boolean!) {
+        changeEndGame(newEndGame: $newEndGame) @client {
+            endGame
+        }
+    }
+`
 
-export { MUTATION_SET_WI, MUTATION_SET_LOADING_MIXIN, MUTATION_SET_PROFIT_LOSS_PARAMS }
+
+export { MUTATION_SET_WI, MUTATION_SET_LOADING_MIXIN, MUTATION_SET_PROFIT_LOSS_PARAMS, MUTATION_SET_ENDGAME }

@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
-import Game from './components/Game'
+import PlayableArea from './components/PlayableArea'
 import createStore from './apollo-sm/store'
 import resolvers from './apollo-sm/resolvers'
 
@@ -19,7 +19,7 @@ function App() {
   return (
       <ApolloProvider client={client}>
         <div className="App">
-          <Game/>
+          <PlayableArea/>
         </div> 
       </ApolloProvider>     
   )

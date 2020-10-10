@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 const QUERY_INIT_STATE = gql`{
     wi @client
     loadingMixin @client
+    endGame @client
   }
   `
 
@@ -12,6 +13,11 @@ const QUERY_WI = gql`{
   `
 const QUERY_LOADING_MIXIN = gql`{
     loadingMixin @client
+  }
+  `
+
+const QUERY_ENDGAME = gql`{
+    endGame @client
   }
   `
 
@@ -26,4 +32,4 @@ const QUERY_PROFIT_LOSS_PARAMS = gql`{
 }
 `
 
-export { QUERY_INIT_STATE, QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS }
+export { QUERY_INIT_STATE, QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME }

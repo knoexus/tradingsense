@@ -1,4 +1,4 @@
-import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS } from './queries'
+import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME } from './queries'
 
 const resolvers = {
     Mutation: {
@@ -34,7 +34,14 @@ const resolvers = {
                 }
             }    
             cache.writeQuery({ query: QUERY_PROFIT_LOSS_PARAMS, data })
-            return data
+            return data.profit_loss_params
+        },
+        changeEndGame: (_, { newEndGame }, { cache }) => {
+            const data = {
+                endGame: newEndGame
+            }    
+            cache.writeQuery({ query: QUERY_ENDGAME, data })
+            return data.endGame
         },
     }
 }
