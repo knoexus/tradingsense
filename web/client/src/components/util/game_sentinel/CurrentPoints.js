@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { QUERY_PROFIT_LOSS_PARAMS } from '../../../apollo-sm/queries'
 import { PROFIT_LOSS } from '../../../gql_queries/ProfitLoss__GQL'
+import { MUTATION_SET_CURRENT_POINTS } from '../../../apollo-sm/mutations'
 
 
 export default function CurrentPoints({amount}) {
     const [total, changeTotal] = useState(amount)
     const [lastChange, setLastChange] = useState(null)
+    const [changeCP] = useMutation(MUTATION_SET_CURRENT_POINTS)
     const calculateChange = (action, amount, oldPrice, newPrice) => {
         if (action == 'Buy') return (newPrice-oldPrice) * amount
         else return (oldPrice-newPrice) * amount
@@ -31,6 +33,13 @@ export default function CurrentPoints({amount}) {
             setLastChange(change)
         }
     }, [data])
+    useEffect(() => {
+        changeCP({
+            variables: {
+                newCurrentPoints: total
+            }
+        })
+    }, [total])
     return (
         <div className="currentPoints">
             <h2>Current balance: {total.toFixed(2)}$ 

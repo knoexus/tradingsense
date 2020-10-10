@@ -1,4 +1,4 @@
-import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME } from './queries'
+import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME, QUERY_CURRENT_POINTS } from './queries'
 
 const resolvers = {
     Mutation: {
@@ -42,6 +42,13 @@ const resolvers = {
             }    
             cache.writeQuery({ query: QUERY_ENDGAME, data })
             return data.endGame
+        },
+        changeCurrentPoints: (_, { newCurrentPoints }, { cache }) => {
+            const data = {
+                currentPoints: newCurrentPoints
+            }    
+            cache.writeQuery({ query: QUERY_CURRENT_POINTS, data })
+            return data.currentPoints
         },
     }
 }
