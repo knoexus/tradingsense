@@ -1,0 +1,10 @@
+.gameOver{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameOver h2{
+    font-family: 'Cabin', sans-serif;
+    font-size: 48px;
+}

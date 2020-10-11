@@ -11,8 +11,5 @@ export default function PlayableArea() {
     })
     if (loading || loadingP) return <p>Loading...</p>
     if (error || errorP) return <p>Error:(</p>
-    if (data && dataP) {
-        console.log(dataP)
-        return !data.endGame ? <Game/> : <GameOver score={dataP.currentPoints}/>
-    }
+    if (data && dataP) return !data.endGame ? <Game/> : <GameOver score={dataP.currentPoints}/>
 }
