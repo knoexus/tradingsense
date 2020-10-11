@@ -97,7 +97,6 @@ export default function AmountSelectionModal({ action, open, proceed, minMaxStoc
           onClick={() => confirmAction()}
           size={"small"} 
           variant="outlined"
-          color="#fff"
         >Confirm {actions[action]}ing {stocks} stocks
         </Button>
       </div>
