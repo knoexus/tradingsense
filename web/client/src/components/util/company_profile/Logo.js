@@ -42,13 +42,14 @@ const LogoGQL = ({fid, errorComponent}) => {
 }
 
 const LogoContent = ({loading, data}) => {
+    const [imgLoaded, changeImgLoaded] = useState(false)
     return (
         <Fragment>
-            { loading && <LogoSkeleton/> }
+            { (loading || !imgLoaded) && <LogoSkeleton/> }
             { data && 
-                <div className="companyProfile-logo">
+                <div style={imgLoaded ? {} : { display: 'none' }} className="companyProfile-logo">
                     <div className="companyProfile-content-item">
-                        <img alt={"Logo"} src={data}></img> 
+                        <img alt="Logo" src={data} onLoad={() => changeImgLoaded(true)}></img> 
                     </div>
                 </div>
             }
