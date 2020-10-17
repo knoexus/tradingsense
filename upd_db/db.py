@@ -53,8 +53,8 @@ class DataOps:
 
     # data
     def call_all_authed(self):
-        methods = [self.get_recommendation_trends, self.get_financials_reported, self.get_earnings_calendar, 
-                    self.get_candles, self.get_company_profile, self.get_technicals]
+        methods = [self.get_company_profile, self.get_recommendation_trends, self.get_financials_reported, self.get_earnings_calendar, 
+                    self.get_candles, self.get_technicals]
         for method in methods:
             method()
             time.sleep(60)
@@ -71,7 +71,11 @@ class DataOps:
             self._set_timeout_based_on_current_index(idx)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
-            result = self._finnhub_client.recommendation_trends(symbol)
+            try:
+                result = self._finnhub_client.recommendation_trends(symbol)
+            except:
+                print(f'Could not dowload {symbol} (possible conn error)')
+                continue
             if result != []:
                 try:
                     self._db.recommendation_trends.insert_many(result)
@@ -89,7 +93,11 @@ class DataOps:
             self._set_timeout_based_on_current_index(idx)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
-            result = self._finnhub_client.financials_reported(symbol=symbol, freq='quarterly')
+            try:
+                result = self._finnhub_client.financials_reported(symbol=symbol, freq='quarterly')
+            except:
+                print(f'Could not dowload {symbol} (possible conn error)')
+                continue
             if result != {} and result["data"] != []:
                 try:
                     for entry in result["data"]:
@@ -112,7 +120,11 @@ class DataOps:
             self._set_timeout_based_on_current_index(idx)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
-            result = self._finnhub_client.earnings_calendar(symbol=symbol)
+            try:
+                result = self._finnhub_client.earnings_calendar(symbol=symbol)
+            except:
+                print(f'Could not dowload {symbol} (possible conn error)')
+                continue
             if result != {} and result["earningsCalendar"] != []:
                 try:
                     self._db.earnings_calendar.insert_many(result["earningsCalendar"])
@@ -130,7 +142,11 @@ class DataOps:
             self._set_timeout_based_on_current_index(idx)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
-            result = self._finnhub_client.stock_candles(symbol=symbol, resolution="D", _from=self._INIT_TIMESTAMP, to=self._CURRENT_TIMESTAMP)
+            try:
+                result = self._finnhub_client.stock_candles(symbol=symbol, resolution="D", _from=self._INIT_TIMESTAMP, to=self._CURRENT_TIMESTAMP)
+            except:
+                print(f'Could not dowload {symbol} (possible conn error)')
+                continue
             if result != {} and result["c"] != [] and result["t"] != []:
                 try:
                     transformed = []
@@ -155,21 +171,28 @@ class DataOps:
     def get_company_profile(self):
         func_name = inspect.currentframe().f_code.co_name
         print(f"{func_name} has started executing")
-        self._db.company_profile.create_index([("symbol", 1), ("shareOutstanding", 1)], unique=True)
+        existing_symbols = []
+        self._db.company_profile.create_index([("ticker", 1), ("shareOutstanding", 1)], unique=True)
         data_list = []
         for idx, item in enumerate(self._symbols):
-            self._set_timeout_based_on_current_index(idx)
+            self._set_timeout_based_on_current_index(idx, 58)
             symbol = item["symbol"]
             print(f"Downloading {symbol}")
-            result = self._finnhub_client.company_profile2(symbol=symbol)
+            try:
+                result = self._finnhub_client.company_profile2(symbol=symbol)
+            except:
+                print(f'Could not dowload {symbol} (possible conn error)')
+                continue
             if result != {}:
                 data_list.append(result)
+                existing_symbols.append(item)
             else:
                 print(f"{func_name}: Cannot insert {symbol} as the response is empty")
         try:
-            self._db.company_profile.insert_many(data_list) 
+            self._db.company_profile.insert_many(data_list)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+        self._symbols = existing_symbols
 
     def get_technicals(self, cut=30):
         func_name = inspect.currentframe().f_code.co_name
@@ -189,8 +212,12 @@ class DataOps:
                     count_for_timeout += 1
                     self._set_timeout_based_on_current_index(count_for_timeout) 
                     indicator_alias = technicals_dict[indicator]
-                    result = self._finnhub_client.technical_indicator(symbol, "D", self._INIT_TIMESTAMP, self._CURRENT_TIMESTAMP, 
-                        indicator, indicator_alias["params"])
+                    try:
+                        result = self._finnhub_client.technical_indicator(symbol, "D", self._INIT_TIMESTAMP, self._CURRENT_TIMESTAMP, 
+                            indicator, indicator_alias["params"])
+                    except:
+                        print(f'Could not dowload {symbol} (possible conn error)')
+                        continue
                     indicator_timestamp_list = result["t"]
                     if len(indicator_timestamp_list) <= cut:
                         print(f'Insufficient {indicator} data for {symbol}')
@@ -245,8 +272,12 @@ class DataOps:
                     i = self._iterate_proxies(i, delay)
                     continue
                 try: 
-                    response = requests.get(f"https://finnhub.io/api/v1/stock/financials?symbol={symbol}&statement=bs&freq=quarterly", 
-                                    proxies=self._proxies[i])
+                    try:
+                        response = requests.get(f"https://finnhub.io/api/v1/stock/financials?symbol={symbol}&statement=bs&freq=quarterly", 
+                                        proxies=self._proxies[i])
+                    except:
+                        print(f'Could not dowload {symbol} (possible conn error)')
+                        continue
                     if response.text == self._UNAUTHED_STRING:
                         print(f'Unauthed for proxy {current_proxy}')
                         i = self._iterate_proxies(i, delay)
