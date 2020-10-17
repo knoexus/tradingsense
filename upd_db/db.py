@@ -6,6 +6,7 @@ import os
 import proxy
 import json
 import inspect
+import re
 from requests.exceptions import ProxyError, SSLError
 
 class DataOps:
@@ -184,8 +185,24 @@ class DataOps:
                 print(f'Could not dowload {symbol} (possible conn error)')
                 continue
             if result != {}:
-                data_list.append(result)
-                existing_symbols.append(item)
+                    try:
+                        weburl = result['weburl']
+                        patterns = ['http://', 'https://', 'http://www.', 'https://www.']
+                        for p in patterns:
+                            if weburl.startswith(p):
+                                weburl = weburl.replace(p, '')
+                        weburl = re.sub('.com.*$', '.com', weburl)
+                        logourl = f'http://logo.clearbit.com/{weburl}?size=88'
+                        r = requests.get(logourl)
+                        if r.status_code != 200:
+                            print(f'Invalid weburl with {symbol}')
+                            continue
+                        else:
+                            result['logo'] = logourl
+                    except:
+                        print(f'Image issue with {symbol}')
+                    data_list.append(result)
+                    existing_symbols.append(item)
             else:
                 print(f"{func_name}: Cannot insert {symbol} as the response is empty")
         try:
