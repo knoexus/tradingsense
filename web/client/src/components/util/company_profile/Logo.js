@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { COMPANY_PROFILE_LOGO } from '../../../gql_queries/CompanyProfile__GQL'
+import { MUTATION_ADD_TO_CURRENT_POINTS } from '../../../apollo-sm/mutations'
 import LockedItem from '../LockedItem'
 import LogoSkeleton from '../../skeletons/company_profile/LogoSkeleton'
 import { Fragment } from 'react'
 
 
 export default function Logo({data, fid}) {
-    const [lock, changeLock] = useState(true)
+    const [lock, changeLock] = useState(data.value === null)
     const [needFetch, changeFetchNeeded] = useState(false)
+    const [addToCP] = useMutation(MUTATION_ADD_TO_CURRENT_POINTS)
     const logoUnlockTry = () => {
         changeLock(!lock)
         changeFetchNeeded(!needFetch)
+        addToCP({
+            variables: {
+                addPoints: -data.price
+            }
+        })
     }
 
-    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={["item-covered-companyProfile-logo"]}/>
+    const LI = <LockedItem handler="Logo" price={data.price} unlockTry={logoUnlockTry} extraClasses={["item-covered-companyProfile-logo"]}/>
 
     return (
         <Fragment>
@@ -23,7 +30,7 @@ export default function Logo({data, fid}) {
             : needFetch ? 
                 <LogoGQL fid={fid} errorComponent={LI}></LogoGQL>
             :
-                <LogoContent data={data}></LogoContent>
+                <LogoContent data={data.value}></LogoContent>
             }
         </Fragment>
     )
@@ -38,7 +45,7 @@ const LogoGQL = ({fid, errorComponent}) => {
         console.error(error) // or handle
         return errorComponent
     }
-    if (data) return <LogoContent data={data.company_profile.logo}/>
+    if (data) return <LogoContent data={data.company_profile.logo.value}/>
 }
 
 const LogoContent = ({loading, data}) => {

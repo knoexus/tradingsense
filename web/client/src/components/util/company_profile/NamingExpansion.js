@@ -1,19 +1,26 @@
 import React, { useState, Fragment } from 'react'
-import { useQuery } from '@apollo/client'
-import { COMPANY_PROFILE_NAME_EXCHANGE_TICKER } from '../../../gql_queries/CompanyProfile__GQL'
+import { useQuery, useMutation } from '@apollo/client'
+import { COMPANY_PROFILE_NAME_TICKER_EXCHANGE } from '../../../gql_queries/CompanyProfile__GQL'
+import { MUTATION_ADD_TO_CURRENT_POINTS } from '../../../apollo-sm/mutations'
 import LockedItem from '../LockedItem'
 import NamingExpansionSkeleton from '../../skeletons/company_profile/NamingExpansionSkeleton'
 
 
 export default function NamingExpansion({data, fid}) {
-    const [lock, changeLock] = useState(true)
+    const [lock, changeLock] = useState(data.value === null)
     const [needFetch, changeFetchNeeded] = useState(false)
+    const [addToCP] = useMutation(MUTATION_ADD_TO_CURRENT_POINTS)
     const logoUnlockTry = () => {
         changeLock(!lock)
         changeFetchNeeded(!needFetch)
+        addToCP({
+            variables: {
+                addPoints: -data.price
+            }
+        })
     }
 
-    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-item-name']}/>
+    const LI = <LockedItem handler="Name" price={data.price} unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-item-name']}/>
 
     return (
         <Fragment>
@@ -22,14 +29,14 @@ export default function NamingExpansion({data, fid}) {
             : needFetch ? 
                 <NamingExpansionGQL fid={fid} errorComponent={LI}></NamingExpansionGQL>
             :
-                <NamingExpansionContent data={data}></NamingExpansionContent>
+                <NamingExpansionContent data={data.value}></NamingExpansionContent>
             }
         </Fragment>
     )
 }
 
 const NamingExpansionGQL = ({fid, errorComponent}) => {
-    const { loading, error, data } = useQuery(COMPANY_PROFILE_NAME_EXCHANGE_TICKER, {
+    const { loading, error, data } = useQuery(COMPANY_PROFILE_NAME_TICKER_EXCHANGE, {
         variables: { fid }
     })
     if (loading) return <NamingExpansionContent loading={loading}/>
@@ -37,7 +44,7 @@ const NamingExpansionGQL = ({fid, errorComponent}) => {
         console.error(error) // or handle
         return errorComponent
     }
-    if (data) return <NamingExpansionContent data={data.company_profile}/>
+    if (data) return <NamingExpansionContent data={data.company_profile.nameTickerExchange.value}/>
 }
 
 //handle error

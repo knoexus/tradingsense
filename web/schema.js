@@ -2,21 +2,47 @@ const { GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLFloat, GraphQLString,
         GraphQLSchema, GraphQLScalarType } = require('graphql')
 const resolvers = require('./resolvers')
 
+const NameTickerExchange = new GraphQLObjectType({
+    name: 'NameTickerExchange',
+    fields: () => ({
+        name: { type: GraphQLString },
+        ticker: { type: GraphQLString },
+        exchange: { type: GraphQLString }
+    })
+})
+
 const CompanyProfile = new GraphQLObjectType({
     name: 'CompanyProfile',
     fields: () => ({
         _id: { type: GraphQLID },
         country: { type: GraphQLString },
         currency: { type: GraphQLString },
-        exchange: { type: GraphQLString },
-        finnhubIndustry: { type: GraphQLString },
+        ticker: { type: GraphQLString },
+        finnhubIndustry: { type: new GraphQLObjectType({
+            name: 'finnhubIndustry',
+            fields: () => ({
+                value: { type: GraphQLString },
+                price: { type: GraphQLFloat }
+            })
+        })},
+        nameTickerExchange: { type: new GraphQLObjectType({
+            name: 'nameTickerExchange',
+            fields: () => ({
+                value: { type: NameTickerExchange },
+                price: { type: GraphQLFloat }
+            })
+        })},
         ipo: { type: GraphQLString },
-        logo: { type: GraphQLString },
+        logo: { type: new GraphQLObjectType({
+            name: 'logo',
+            fields: () => ({
+                value: { type: GraphQLString },
+                price: { type: GraphQLFloat }
+            })
+        })},
         marketCapitalization: { type: GraphQLFloat },
-        name: { type: GraphQLString },
         phone: { type: GraphQLInt },
         shareOutstanding: { type: GraphQLFloat },
-        ticker: { type: GraphQLString },
         weburl: { type: GraphQLString }
     })
 })

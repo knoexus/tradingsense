@@ -47,6 +47,14 @@ const MUTATION_SET_CURRENT_POINTS = gql`
     }
 `
 
+const MUTATION_ADD_TO_CURRENT_POINTS = gql`
+    mutation addToCurrentPoints($addPoints: Float!) {
+        addToCurrentPoints(addPoints: $addPoints) @client {
+            currentPoints
+        }
+    }
+`
+
 
 export { MUTATION_SET_WI, MUTATION_SET_LOADING_MIXIN, MUTATION_SET_PROFIT_LOSS_PARAMS, MUTATION_SET_ENDGAME,
-    MUTATION_SET_CURRENT_POINTS }
+    MUTATION_SET_CURRENT_POINTS, MUTATION_ADD_TO_CURRENT_POINTS }

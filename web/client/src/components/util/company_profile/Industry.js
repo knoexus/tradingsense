@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { COMPANY_PROFILE_INDUSTRY} from '../../../gql_queries/CompanyProfile__GQL'
+import { useQuery, useMutation } from '@apollo/client'
+import { COMPANY_PROFILE_INDUSTRY } from '../../../gql_queries/CompanyProfile__GQL'
+import { MUTATION_ADD_TO_CURRENT_POINTS } from '../../../apollo-sm/mutations'
 import LockedItem from '../LockedItem'
 import IndustrySkeleton from '../../skeletons/company_profile/IndustrySkeleton'
 import { Fragment } from 'react'
 
 
 export default function Industry({data, fid}) {
-    const [lock, changeLock] = useState(true)
+    const [lock, changeLock] = useState(data.value === null)
     const [needFetch, changeFetchNeeded] = useState(false)
+    const [addToCP] = useMutation(MUTATION_ADD_TO_CURRENT_POINTS)
     const logoUnlockTry = () => {
         changeLock(!lock)
         changeFetchNeeded(!needFetch)
+        addToCP({
+            variables: {
+                addPoints: -data.price
+            }
+        })
     }
 
-    const LI = <LockedItem unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-item-sector']} lockSize={"xl"}/>
+    const LI = <LockedItem handler="Industry" price={data.price} unlockTry={logoUnlockTry} extraClasses={['item-covered-companyProfile-content-item-sector']} lockSize={"xl"}/>
 
     return (
         <Fragment>
@@ -23,7 +30,7 @@ export default function Industry({data, fid}) {
             : needFetch ? 
                 <IndustryGQL fid={fid} errorComponent={LI}></IndustryGQL>
             :
-                <IndustryContent data={data}></IndustryContent>
+                <IndustryContent data={data.value}></IndustryContent>
             }
         </Fragment>
     )
@@ -38,7 +45,7 @@ const IndustryGQL = ({fid, errorComponent}) => {
         console.error(error) // or handle
         return errorComponent
     }
-    if (data) return <IndustryContent data={data.company_profile.finnhubIndustry}/>
+    if (data) return <IndustryContent data={data.company_profile.finnhubIndustry.value}/>
 }
 
 //handle error

@@ -10,11 +10,22 @@ const MIXIN_W_TECHNICALS = gql`
             daysMargin
             company_profile {
                 _id
-                ticker
-                name
-                logo
-                exchange
-                finnhubIndustry
+                logo {
+                    value
+                    price
+                }
+                finnhubIndustry {
+                    value
+                    price
+                }
+                nameTickerExchange {
+                    value {
+                        name
+                        exchange
+                        ticker
+                    }
+                    price
+                }
             }
             candles {
                 close

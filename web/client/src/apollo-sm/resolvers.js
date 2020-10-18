@@ -50,6 +50,19 @@ const resolvers = {
             cache.writeQuery({ query: QUERY_CURRENT_POINTS, data })
             return data.currentPoints
         },
+        addToCurrentPoints: (_, { addPoints }, { cache }) => {
+            const queryResult = cache.readQuery({
+                query: QUERY_CURRENT_POINTS
+            })      
+            if (queryResult) {
+                const { currentPoints } = queryResult   
+                const data = {
+                    currentPoints: addPoints + currentPoints
+                }    
+                cache.writeQuery({ query: QUERY_CURRENT_POINTS, data })
+                return data.currentPoints
+            }
+        },
     }
 }
 

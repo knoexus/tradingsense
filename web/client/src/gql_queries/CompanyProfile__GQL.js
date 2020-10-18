@@ -3,17 +3,25 @@ import { gql } from '@apollo/client'
 const COMPANY_PROFILE_LOGO = gql`
     query getCompanyProfileLogo($fid: ID!) {
         company_profile(_id: $fid) {
-            logo
+            logo {
+                value
+                price
+            }
         }
     }
 `
 
-const COMPANY_PROFILE_NAME_EXCHANGE_TICKER = gql`
-    query getCompanyProfileNameExchange($fid: ID!) {
+const COMPANY_PROFILE_NAME_TICKER_EXCHANGE = gql`
+    query getCompanyProfileNameTickerExchange($fid: ID!) {
         company_profile(_id: $fid) {
-            name
-            exchange
-            ticker
+            nameTickerExchange {
+                value {
+                    name
+                    ticker
+                    exchange
+                }
+                price
+            }
         }
     }
 `
@@ -21,9 +29,12 @@ const COMPANY_PROFILE_NAME_EXCHANGE_TICKER = gql`
 const COMPANY_PROFILE_INDUSTRY = gql`
     query getCompanyProfileIndustry($fid: ID!) {
         company_profile(_id: $fid) {
-            finnhubIndustry
+            finnhubIndustry {
+                value
+                price
+            }
         }
     }
 `
 
-export { COMPANY_PROFILE_LOGO, COMPANY_PROFILE_NAME_EXCHANGE_TICKER, COMPANY_PROFILE_INDUSTRY }
+export { COMPANY_PROFILE_LOGO, COMPANY_PROFILE_NAME_TICKER_EXCHANGE, COMPANY_PROFILE_INDUSTRY }

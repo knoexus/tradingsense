@@ -3,6 +3,7 @@ const _FinancialsReported = require('./mongoose_models/FinancialsReported')
 const _Candle = require('./mongoose_models/Candle')
 const _Technicals = require('./mongoose_models/Technicals')
 const { getMixedTechnicals } = require('./util/technicals') 
+const { getCompanyProfileSimple, getCompanyProfileRandomlyPriced } = require('./util/company_profile')
 const { addDays } = require('./util/dates')
 
 const callback = (err, obj) => {
@@ -10,23 +11,27 @@ const callback = (err, obj) => {
     if (obj) return obj
 }
 
-const getCompanyProfile = (ticker) => {
-    return _CompanyProfile
+const getCompanyProfile = async ticker => {
+    const data = await _CompanyProfile
         .where({ ticker })
         .findOne(callback)
+    return getCompanyProfileSimple(data._doc)
+    
 }
 
-const getCompanyProfileByID = (_id) => {
-    return _CompanyProfile
+const getCompanyProfileByID = async _id => {
+    const data = await _CompanyProfile
         .where({ _id })
         .findOne(callback)
+    return getCompanyProfileSimple(data._doc)
 }
 
 const getRandomCompanyProfile = async () => {
     const company_profile_random = await _CompanyProfile
         .aggregate()
         .sample(1)
-    return company_profile_random[0]
+    const instance = company_profile_random[0]
+    return getCompanyProfileRandomlyPriced(instance)
 }
 
 const getCandles = (symbol, startDate, endDate) => {

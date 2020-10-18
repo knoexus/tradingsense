@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
-import { QUERY_PROFIT_LOSS_PARAMS } from '../../../apollo-sm/queries'
+import { QUERY_PROFIT_LOSS_PARAMS, QUERY_CURRENT_POINTS } from '../../../apollo-sm/queries'
 import { PROFIT_LOSS } from '../../../gql_queries/ProfitLoss__GQL'
 import { MUTATION_SET_CURRENT_POINTS } from '../../../apollo-sm/mutations'
 
@@ -13,6 +13,7 @@ export default function CurrentPoints({amount}) {
         if (action == 'Buy') return (newPrice-oldPrice) * amount
         else return (oldPrice-newPrice) * amount
     }
+    const { data: dataCP, error: errorCP, loading: loadingCP } = useQuery(QUERY_CURRENT_POINTS)  
     const { data: dataPLP, error: errorPLP, loading: loadingPLP } = useQuery(QUERY_PROFIT_LOSS_PARAMS)
     const variables = {
         fid: dataPLP?.profit_loss_params?.fid,
@@ -24,6 +25,10 @@ export default function CurrentPoints({amount}) {
         skip: dataPLP == undefined,
     }
     const { data, error, loading } = useQuery(PROFIT_LOSS, params)
+    useEffect(() => {
+        if (dataCP.currentPoints != 0)
+            changeTotal(dataCP.currentPoints)
+    }, [dataCP])
     useEffect(() => {
         if (data) {
             const { profit_loss_params: { stocks, action, lastPrice } } = dataPLP

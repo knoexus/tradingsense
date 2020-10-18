@@ -33,6 +33,7 @@ exports.technicalsResolver = technicalsResolver = async (_, args) => {
 exports.technicalsSingleResolver = technicalsSingleResolver = async (_, args) => {
     const realDate = new Date(args.current_date*1000)
     const company_profile = await getCompanyProfileByID(args._id)
+    console.log(company_profile)
     const symbol = company_profile.ticker
     const technicals = await getTechnicalsSingle(symbol, realDate)
     const value = technicals.indicators.find(x => x.name == args.indicator).value
