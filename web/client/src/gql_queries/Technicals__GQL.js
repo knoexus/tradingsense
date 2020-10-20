@@ -1,15 +1,5 @@
 import { gql } from '@apollo/client'
 
-// const TECHNICALS_MANY = gql`
-//     query getTechnicalsForAllAvailable($next_date: Int!, $fid: ID!, $lockedList: [String!]) {
-//         technicals_many(next_date: $next_date, _id: $fid, lockedList: $lockedList) {
-//             day0
-//             dayX
-//             percentChange
-//         }
-//     }
-// `
-
 const TECHNICALS_SINGLE_ALL_UNLOCKED = gql`
     query getTechnicalsSingleAllUnlocked($current_date: Int!, $plus_days: Int!, $fid: ID!, $indicator: String!) {
         technicals_single_w_next(current_date: $current_date, plus_days: $plus_days, _id: $fid, indicator: $indicator) {

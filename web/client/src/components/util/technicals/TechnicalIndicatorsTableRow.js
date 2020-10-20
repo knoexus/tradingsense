@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { TECHNICALS_SINGLE_ALL_UNLOCKED, TECHNICALS_SINGLE_NEXT_LOCKED } from '../../../gql_queries/Technicals__GQL'
+import { MUTATION_ADD_TO_CURRENT_POINTS } from '../../../apollo-sm/mutations'
 import LockedItem from '../LockedItem'
 import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
 import TableCell from '@material-ui/core/TableCell'
@@ -10,14 +11,20 @@ import TableRow from '@material-ui/core/TableRow'
 export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedIndicators, current_date, plus_days, lockedQ}) {
     const [lock, changeLock] = useState(data.value === null)
     const [needFetch, changeFetchNeeded] = useState(false)
+    const [addToCP] = useMutation(MUTATION_ADD_TO_CURRENT_POINTS)
     const logoUnlockTry = () => {
         changeLock(!lock)
         changeFetchNeeded(!needFetch)
+        addToCP({
+            variables: {
+                addPoints: -data.price
+            }
+        })
     }
 
     const LI = (
         <TableCell colSpan={3}>
-             <LockedItem unlockTry={logoUnlockTry} extraClasses={["item-covered-technicals-row"]} lockSize={"xl"}/>
+             <LockedItem price={data.price} unlockTry={logoUnlockTry} extraClasses={["item-covered-technicals-row"]} lockSize={"xl"}/>
         </TableCell>
     )
 

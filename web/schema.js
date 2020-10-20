@@ -112,7 +112,8 @@ const Indicator = new GraphQLObjectType({
     name: 'Indicator',
     fields: () => ({
         name: { type: GraphQLString },
-        value: { type: GraphQLFloat }
+        value: { type: GraphQLFloat },
+        price: { type: GraphQLFloat }
     })
 })
 
@@ -134,6 +135,14 @@ const Technicals = new GraphQLObjectType({
         indicators: { type: new GraphQLList(Indicator) }
     })
 })
+
+const TechnicalsAllPrices = new GraphQLObjectType({
+    name: 'TechnicalsAllPrices',
+    fields: () => ({
+        min: { type: GraphQLFloat },
+        max: { type: GraphQLFloat }
+    })
+})
  
 const Mixin = new GraphQLObjectType({
     name: 'Mixin',
@@ -148,6 +157,7 @@ const Mixin = new GraphQLObjectType({
         financials_reported: { type: FinancialsReported },
         technicals_day0: { type: Technicals },
         technicals: { type: new GraphQLList(Technicals) },
+        technicals_all_prices: { type: TechnicalsAllPrices },
         minMaxStocks: { type: MinMaxStocks }
     })
 })

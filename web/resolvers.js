@@ -4,6 +4,7 @@ const { getCompanyProfile, getRandomCompanyProfile, getCandles, getFinancialsRep
         getCandlesSingle } = require('./mongoose_actions')
 const { getErrorMessage, errorTypes: { NULLRESPONSE, RECURSIONEXCEEDED, DATAMISMATCH, INSUFFICIENTDATA }  } = require('./util/errors')
 const { getRandomMarginsAndGaps, getRandomSecondsAndStocks, getInitialSum } = require('./util/gameParams')
+const { getTechnicalsAllPrice } = require('./util/technicals')
 const { v4 } = require('uuid')
 
 exports.companyProfileResolver = companyProfileResolver = async (_, args) => {
@@ -33,7 +34,6 @@ exports.technicalsResolver = technicalsResolver = async (_, args) => {
 exports.technicalsSingleResolver = technicalsSingleResolver = async (_, args) => {
     const realDate = new Date(args.current_date*1000)
     const company_profile = await getCompanyProfileByID(args._id)
-    console.log(company_profile)
     const symbol = company_profile.ticker
     const technicals = await getTechnicalsSingle(symbol, realDate)
     const value = technicals.indicators.find(x => x.name == args.indicator).value
@@ -93,6 +93,7 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
         const technicals_day0 = technicals[0]
         if (technicals_day0 == []) throw NULLRESPONSE
         if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString()) throw DATAMISMATCH
+        const technicals_all_prices = getTechnicalsAllPrice(technicals_day0.indicators.length)
 
         const minMaxStocks = minMaxStocksResolver(_, {
             lastPrice: candles[candles.length-1].close
@@ -107,6 +108,7 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
             company_profile,
             candles,
             technicals_day0,
+            technicals_all_prices,
             technicals,
             minMaxStocks
         }

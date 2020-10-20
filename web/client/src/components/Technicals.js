@@ -2,15 +2,17 @@ import React, { useState, useRef } from 'react'
 import DaysSlider from './util/DaysSlider'
 import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
 import { Button } from '@material-ui/core'
+import { MUTATION_ADD_TO_CURRENT_POINTS } from '../apollo-sm/mutations'
+import { useMutation } from '@apollo/client'
 
-import { useQuery } from '@apollo/client'
-import { TECHNICALS_MANY } from '../gql_queries/Technicals__GQL'
-
-export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoint, startDate}) {
+export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoint, startDate, unlock_all_prices}) {
+    const { min } = unlock_all_prices
     const [days, changeDays] = useState(1)
+    const [currentUnlockAllPrice, changeCurrentUnlockAllPrice] = useState(min)
     const [lockedQ, changelockedStateQ] = useState(false)
     const [highlightLockedIndicators, changeHighlight] = useState(false)
     const [daysClassName, changeDaysClassName] = useState('')
+    const [addToCP] = useMutation(MUTATION_ADD_TO_CURRENT_POINTS)
     const spanRef = useRef()
     const indicators = data.indicators
     
@@ -30,14 +32,25 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
         return i + "th"
     }
 
+    const priceFormula = (currentDays) => {
+        if (currentDays == 1) return min
+        else return Math.ceil(min * (currentDays+actual_gapToEndPoint)/actual_gapToEndPoint)
+    }
+
     const changeDays_ = (newDays) => {
         changeDays(newDays)
+        changeCurrentUnlockAllPrice(priceFormula(newDays))
         restartAnimation()
         changeDaysClassName('technicals-datechanger-currentval-animated')
     }
 
     const changelockedStateQ_ = (newLockState) => {
         changelockedStateQ(newLockState)
+        addToCP({
+            variables: {
+                addPoints: -currentUnlockAllPrice
+            }
+        })
     }
 
     return (
@@ -66,7 +79,7 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
                         size={"small"} 
                         variant="outlined"
                         disabled={lockedQ}>
-                        Unlock
+                        Unlock -{currentUnlockAllPrice}$
                     </Button>
                 </div>
                 <div className="technicals-datechanger-description">

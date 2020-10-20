@@ -56,7 +56,7 @@ export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
             }
         })
         const { mixin: { startDate, gapToEndpoint, company_profile, 
-            daysMargin, candles, technicals_day0, technicals } } = data
+            daysMargin, candles, technicals_day0, technicals, technicals_all_prices } } = data
         const actual_gapToEndPoint = technicals.length
         return (
             <div className="mixinCard">
@@ -64,8 +64,8 @@ export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
                 <QuotesChart data={candles} actual_gapToEndPoint={actual_gapToEndPoint} 
                     daysMargin={daysMargin}/>
                 {/* <FinancialsReported data={financials_reported}/> */}
-                <Technicals data={technicals_day0} fid={company_profile._id} gapToEndpoint={gapToEndpoint} 
-                    actual_gapToEndPoint={actual_gapToEndPoint} startDate={startDate}/>
+                <Technicals data={technicals_day0} unlock_all_prices={technicals_all_prices} fid={company_profile._id} 
+                    gapToEndpoint={gapToEndpoint} actual_gapToEndPoint={actual_gapToEndPoint} startDate={startDate}/>
             </div>
         )
     }

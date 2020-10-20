@@ -39,12 +39,18 @@ const MIXIN_W_TECHNICALS = gql`
                 indicators {
                     name
                     value
+                    price
                 }
+            }
+            technicals_all_prices {
+                min
+                max
             }
             technicals {
                 indicators {
                     name
                     value
+                    price
                 }
             }
             minMaxStocks {
