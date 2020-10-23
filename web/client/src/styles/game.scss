@@ -8,7 +8,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     border: 1px solid lightgrey;
-    border-radius: 2.5%;
+    border-radius: 20px;
 }
 
 .mixinCard > div:not(:first-child) {
@@ -120,7 +120,8 @@
     max-height: 100%;
     max-width: 100%;
     min-height: 60%;
-	min-width: 60%;
+    min-width: 60%;
+    border-radius: 4.5px;
 }
 
 .companyProfile-content{
@@ -172,6 +173,7 @@
 }
 
 .item-locked{
+    border-radius: 4.5px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -179,21 +181,23 @@
     cursor: pointer;
     transition: transform .15s; 
     z-index: 1;
-    background: linear-gradient(90deg, rgba(221,221,224,1) 19%, rgba(225,225,228,1) 44%, rgba(232,232,234,1) 64%, rgba(236,236,238,1) 77%, rgba(240,240,242,1) 89%);
+    background: #FAFAFA;
     box-shadow: 0 0 3.5px rgba(0,0,0,0.5);;
 }
 
 .item-locked span{
     font-family: 'Quicksand', sans-serif;
-    font-size: 14pt;
-    font-weight: 400;
+    font-size: 12pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #5B5B5B;
     word-break: break-word;
     margin: 8px;
     text-align: center;
 }
   
 .item-locked:hover {
-    transform: scale(1.025)
+    transform: scale(1.025);
 }
 
 .item-covered-companyProfile-logo{
