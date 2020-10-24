@@ -381,8 +381,24 @@
 }
 
 .technicals-indicators-tablecell-highlighted{
-    border-bottom: 0.25px dashed  rgb(41, 46, 51) !important;
+    border-bottom: 0.5px dashed  rgb(41, 46, 51) !important;
     color: rgb(52, 101, 124) !important;
+}
+
+.technicals-indicators-tablecell-positive{
+    color: rgb(29, 143, 9) !important;
+}
+
+.technicals-indicators-tablecell-positive::after{
+    content: " ↑" !important;
+}
+
+.technicals-indicators-tablecell-negative{
+    color: #FF0000 !important;
+}
+
+.technicals-indicators-tablecell-negative::after{
+    content: " ↓" !important;
 }
 
 .modal-stocks-inner{

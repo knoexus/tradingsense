@@ -43,7 +43,7 @@ export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlig
             <StyledTableCell align="left">Indicator Name</StyledTableCell>
             <StyledTableCell align="center">Day 0 Value</StyledTableCell>
             <StyledTableCell align="center">Day {dayX} Value</StyledTableCell>
-            <StyledTableCell align="right">% change</StyledTableCell>
+            <StyledTableCell align="right">Change</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -78,6 +78,7 @@ const TechnicalIndicatorsTableRowGQL = ({fid, indicator, errorComponent, current
 }
 
 const TechnicalIndicatorsTableRowContent = ({loading, data, highlightLockedIndicators}) => {
+    const isDataPercentage = (data?.percentChange !== undefined && data?.percentChange !== null)
     return (
         <Fragment>
             { loading && 
@@ -95,9 +96,11 @@ const TechnicalIndicatorsTableRowContent = ({loading, data, highlightLockedIndic
                         {data.valueX ? data.valueX.toPrecision(2) : "???"}
                     </TableCell>
                     <TableCell 
-                        className={!data.percentChange && highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
+                        className={(!isDataPercentage && highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "")
+                                    + " " + (isDataPercentage && Math.round(data.percentChange) > 0 ? "technicals-indicators-tablecell-positive" : 
+                                    Math.round(data.percentChange) < 0 ? "technicals-indicators-tablecell-negative" : "")} 
                         align="right">
-                        {data.percentChange ? Math.round(data.percentChange) : "???"}
+                        {isDataPercentage ? Math.round(data.percentChange) + '%' : "???"}
                     </TableCell>
                 </Fragment>
             }
