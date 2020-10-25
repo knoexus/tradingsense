@@ -1,10 +1,44 @@
 .gameOver{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    text-align: center;
+    /* justify-content: center;
+    align-items: center; */
 }
 
 .gameOver h2{
-    font-family: 'Cabin', sans-serif;
-    font-size: 48px;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0.5em !important;
+    font-weight: 500;
+    font-size: 60px;
+}
+
+.gameOver h3{
+    font-family: 'Changa', sans-serif;
+    margin: 0.4em !important;
+    font-weight: 200;
+    font-size: 44px;
+}
+
+.gameOver-furtherActions{
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+}
+
+.gameOver-furtherActions button{
+    cursor: pointer;
+    font-size: 16px;
+    width: 40px;
+    margin: 10px;
+    height: 30px;
+}
+
+.button-Continue:hover{
+    background-color: yellowgreen;
+    color: whitesmoke;
+}
+
+.button-Exit:hover{
+    background-color: red;
+    color: whitesmoke;
 }
