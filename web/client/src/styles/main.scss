@@ -194,12 +194,18 @@
 }
 
 .footer span {
-    color:rgb(133, 133, 133);;
+    color:rgb(184, 179, 179);
 }
 
 .footer a {
     text-decoration: none;
-    color:rgb(204, 199, 199);
+    color:rgb(184, 179, 179);
+    &:visited{
+        color:rgb(184, 179, 179);
+    }
+    &:hover{
+        color:rgb(238, 176, 176);
+    }
 }
 
 html, body {
@@ -219,6 +225,7 @@ body {
 .home {
     height: 100%;
     width: 100%;
+    padding-top: 75px;
     display: flex;
     justify-content: center;
     align-items: center;
