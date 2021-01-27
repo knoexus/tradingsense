@@ -23,7 +23,7 @@ export default function Home() {
                             </div>
                         </button>
                     </Link>
-                    <Link to="/">
+                    <Link to="/rules">
                         <button className="home-detail-button home-detail-button-rules">
                             <div>
                                 <span>Rules</span>

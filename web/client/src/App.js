@@ -3,14 +3,14 @@ import './App.css'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import PlayableArea from './components/PlayableArea'
 import Home from './components/site/Home'
+import Rules from './components/site/Rules'
 import createStore from './apollo-sm/store'
 import resolvers from './apollo-sm/resolvers'
 import BaseRoute from './components/util/routes/BaseRoute'
 import GameRoute from './components/util/routes/GameRoute'
 import {
   BrowserRouter as Router,
-  Switch,
-  Route
+  Switch
 } from 'react-router-dom'
 
 const client = new ApolloClient({
@@ -29,11 +29,11 @@ function App() {
         <Router>
           <div className="App">
             <Switch>
-              <GameRoute path="/game">
+              <GameRoute exact path="/game">
                   <PlayableArea />
               </GameRoute>
-              <BaseRoute path="/" component={() => <Home/>}>
-              </BaseRoute>
+              <BaseRoute exact path="/" component={() => <Home/>}/>
+              <BaseRoute exact path="/rules" component={() => <Rules/>}/>
             </Switch>
           </div> 
         </Router>
