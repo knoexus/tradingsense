@@ -155,6 +155,10 @@
 
 .sideNavPanel a:hover {
     color: rgb(180, 138, 23);
+}
+
+a.sideNavPanel-link-active {
+    color: rgb(180, 138, 23);
     text-decoration: underline;
 }
 
