@@ -177,27 +177,28 @@
     }
 }
 
-.footer{
+footer{
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 70px;
-    background-color: transparent;
+    background-color: rgba(247, 247, 247, 0.041);
 }
 
-.footer > div {
+footer > div {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
-.footer span {
+footer span {
     color:rgb(184, 179, 179);
 }
 
-.footer a {
+footer a {
     text-decoration: none;
     color:rgb(184, 179, 179);
     &:visited{
@@ -208,9 +209,17 @@
     }
 }
 
+@media(max-width: 600px) {
+    footer span, footer a {
+        font-size: 14px;
+    }
+}
+
 html, body {
+    min-height: 100%;
     height: 100%;
     margin: 0;
+    padding: 0;
 }
 
 body {
@@ -220,8 +229,18 @@ body {
     background-attachment: fixed;
 }
 
+#root, #root>div {
+    min-height: 100%;
+    height: 100%;
+}
+
 .main{
-    padding-bottom: 85px;   
+    min-height: 100%;
+    position: relative;  
+}
+
+.main-centre {
+    padding-bottom: 100px;
 }
 
 .home {
