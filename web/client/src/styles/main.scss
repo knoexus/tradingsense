@@ -389,17 +389,18 @@ body {
 
 .rules > div > div {
     display: flex;
-    animation: 1.8s ease-out 0s 1 rulesSlide;
+    transition: 0.25s;
+    // animation: 1.8s ease-out 0s 1 rulesSlide;
 }
 
-@keyframes rulesSlide {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 100%;
-    }
-  }
+// @keyframes rulesSlide {
+//     0% {
+//       opacity: 0;
+//     }
+//     100% {
+//       opacity: 100%;
+//     }
+//   }
 
 .rules hr {
     width: 100%;
@@ -421,6 +422,18 @@ body {
 
 .rules-card {
     margin-top: 30px;
+}
+
+.rules-chart {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rules-chart > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .rules-balance {
@@ -463,10 +476,8 @@ body {
         padding: 0 5%;
     }
 
-    .rules-chart {
+    .rules-chart > div {
         flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
     }
 
     .rules-chart img, .rules-chart p {
@@ -537,13 +548,13 @@ body {
 // }
 
 @media(max-width: 600px) {
-    .rules-chart {
-        flex-direction: column;
-    }
-
     .rules-chart img {
         max-width: 100%;
         border-radius: 8px;
+    }
+
+    .rules-chart > div {
+        flex-direction: column;
     }
 
     .rules-card {
