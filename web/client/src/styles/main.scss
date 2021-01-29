@@ -227,8 +227,9 @@ html, body {
 }
 
 body {
-    background: rgb(28,28,93);
-    background: linear-gradient(142deg, rgba(28,28,93,1) 0%, rgba(25,51,112,1) 20%, rgba(23,75,125,1) 40%, rgba(20,103,141,1) 61%, rgba(13,150,189,1) 94%);
+    background: #0f0c29;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -384,12 +385,13 @@ body {
 }
 
 .rules img {
-    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
 
 .rules > div > div {
     display: flex;
     transition: 0.25s;
+    // min-height: 1080px;
     // animation: 1.8s ease-out 0s 1 rulesSlide;
 }
 

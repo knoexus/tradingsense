@@ -17,7 +17,7 @@ export default function Rules() {
 
         const iRatio = entry => {
             if (entry.isIntersecting) {
-                // console.log([entry.target.className, entry.rootBounds.height, entry.target.offsetHeight, entry.intersectionRatio], (entry.target.offsetHeight*entry.intersectionRatio)/entry.rootBounds.height)
+                //console.log([entry.target.className, entry.rootBounds.height, entry.target.offsetHeight, entry.intersectionRatio], (entry.target.offsetHeight*entry.intersectionRatio)/entry.rootBounds.height)
                 if (entry.target.offsetHeight > entry.rootBounds.height) {
                     return (entry.target.offsetHeight*entry.intersectionRatio)/entry.rootBounds.height   
                 }
