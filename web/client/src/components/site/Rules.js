@@ -42,7 +42,6 @@ export default function Rules() {
                     <img src={card}></img>
                 </IDiv>
                 <IDiv className="rules-chart">
-                    <hr className="rules-class-sep"/>
                     <h2>Chart</h2>
                     <div>
                         <p>The chart shows past daily quotes for an arbitrary number of days with a gap where the line is hidden between Day 0 and Day X. Day 0 indicates your current position with respect to time. Day X stands for the day your prediction will be compared against. As an example, X = 20 means that you should make a decision on whether to buy or sell the asset relative to 20 days after day 0.</p>
@@ -50,7 +49,6 @@ export default function Rules() {
                     </div>
                 </IDiv>
                 <IDiv className="rules-balance">
-                    <hr className="rules-class-sep"/>
                     <h2>Balance and purchases</h2>
                     <p>The balance only accounts for how successful you trades are. However, a 3000$ improvised starting capital is given to unlock hidden stock info and prevent your balance from going negative too soon. With that said, if you still manage to go below 0, the game will be over.</p>
                     <div>
@@ -60,7 +58,6 @@ export default function Rules() {
                     <p>To help you make up your mind, info regarding the asset industry, or reveal its logo / name as well as technical indicators can be unlocked. With the latter you can select a day which you would like to unlock indicators for, but beware that its proximity to day X affects the price of an unlock. </p>
                 </IDiv>
                 <IDiv className="rules-buying-selling">
-                    <hr className="rules-class-sep"/>
                     <h2>Buying and Selling</h2>
                     <div className="rules-buying-selling-arrows-example">
                         <p>Press right arrow if you wish to acquire the asset, or left if you wish to sell it.</p>

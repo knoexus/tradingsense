@@ -227,9 +227,7 @@ html, body {
 }
 
 body {
-    background: #0f0c29;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #3f4c6b, #606c88);
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -348,27 +346,47 @@ body {
  // rules
 
  .rules {
-    padding: 20px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
  }
 
- .rules h1, .rules h2, .rules h3 {
+.rules h2, .rules h3 {
     text-align: center;
     font-weight: 200;
     font-family: 'Quicksand', sans-serif;
  }
 
  .rules h1 {
+    text-align: center;
     font-size: 44px;
     margin-bottom: 20px;
-    font-weight: 300;
+    font-weight: 200;
  }
 
  .rules h2 {
     font-size: 32px;
     margin-top: 40px;
+    position: relative;
+ }
+
+ .rules h2::after {
+    content: "";
+    width: 100%;
+    max-width: 100%;
+    transition: max-width 0.2s ease-in-out 0s;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -0.5rem;
+ }
+
+ .rules-chart h2::after, .rules-buying-selling h2::after {
+    border-bottom: 0.1rem solid rgb(17, 16, 16);
+ }
+
+ .rules-balance h2::after {
+    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.7);
  }
 
  .rules p {
@@ -405,8 +423,9 @@ body {
 //   }
 
 .rules hr {
-    width: 100%;
-    border-top: 1px solid rgba(196, 195, 195, 0.555);
+    width: 94%;
+    margin: 0 auto;
+    border-top: 1px solid rgba(209, 209, 209, 0.555);
     border-bottom: none;
     border-right: none;
     border-left: none;
@@ -418,7 +437,7 @@ body {
       width: 0%;
     }
     100% {
-      opacity: 95%;
+      width: 94%;
     }
   }
 
@@ -426,10 +445,30 @@ body {
     margin-top: 30px;
 }
 
+.rules-card img {
+    animation: 0.75s ease-out 0s 1 imgPop;
+}
+
+@keyframes imgPop {
+    0% {
+        transform: translateX(-200%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 100%;
+    }
+  }
+
 .rules-chart {
+    background-color: white;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & p, h2 {
+        color:rgb(17, 16, 16);
+    }
 }
 
 .rules-chart > div {
@@ -442,6 +481,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border: 1px solid lightgray;
+    // background-color: #175183;
 }
 
 .rules-balance > div {
@@ -449,15 +490,20 @@ body {
 }
 
 .rules-buying-selling{
+    background-color: white;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
+    & p, h2 {
+        color:rgb(17, 16, 16);
+    }
 }
 
 .rules-buying-selling-arrows-example {
     display: flex;
     flex-direction: row;
-    margin: 15px -10px 50px -10px; 
+    margin: 38px -10px 50px -10px; 
 }
 
 .rules-buying-selling-arrows-example > div {
@@ -474,17 +520,20 @@ body {
 }
 
 @media(min-width: 600px) {
-    .rules {
-        padding: 0 5%;
+    .rules > div > div {
+        padding: 0 3%;
+        margin: 40px 3% 80px 3%;
+        border-radius: 14px;
     }
 
     .rules-chart > div {
         flex-direction: row;
     }
 
-    .rules-chart img, .rules-chart p {
+    .rules-chart > div img, .rules-chart > div p {
         max-width: 550px;
         border-radius: 12px;
+        margin: 40px;
     }
 
     .rules-balance img {
@@ -503,13 +552,18 @@ body {
         flex-direction: row-reverse;
         justify-content: center;
         align-items: center;
-        margin: 40px 40px;
+        background-color: #264764;
+        background-image: -webkit-linear-gradient(135deg, #3e74a3 60%, #f1f1f1 40%);
     }
 
     .rules-card img, .rules-card p {
         max-width: 375px;
         border-radius: 12px;
         margin: 0 40px;
+    }
+    
+    .rules-card img {
+        margin: 40px;
     }
 
     .rules-buying-selling-arrows-example > div {
@@ -527,6 +581,10 @@ body {
     .rules-buying-selling-modal-example img{
         max-width: 550px;
         border-radius: 9px;
+    }
+
+    .rules-buying-selling-modal-example img, .rules-buying-selling-modal-example p {
+        margin: 40px;
     }
 
     .rules-class-sep {
@@ -550,6 +608,10 @@ body {
 // }
 
 @media(max-width: 600px) {
+    .rules > div > div {
+        padding: 0 20px;
+    }
+
     .rules-chart img {
         max-width: 100%;
         border-radius: 8px;
@@ -557,16 +619,25 @@ body {
 
     .rules-chart > div {
         flex-direction: column;
+        margin-bottom: 40px;
     }
 
     .rules-card {
         flex-direction: column;
     }
 
+    .rules-card img {
+        margin-bottom: 40px;
+    }
+
     .rules-card img, .rules-balance img {
         max-width: 100%;
-        border-radius: 15px;
+        border-radius: 14px;
     }
+
+    .rules-balance img:last-child{
+        margin-top: 30px;
+    } 
 
     .rules-balance > div {
         flex-direction: column;
@@ -587,6 +658,7 @@ body {
     .rules-buying-selling-modal-example img{
         max-width: 100%;
         border-radius: 14px;
+        margin: 10px 0px 30px 0;
     }
 
     .rules-class-sep {
@@ -612,6 +684,7 @@ p.rules-important {
     border-width: 1px;
     border-radius: 5px;
     border-style: solid;
-    border-color: rgba(196, 195, 195, 0.555);
-    padding: 5px;
+    border-color: rgb(228, 200, 41);
+    margin-bottom: 30px;
+    padding: 10px;
 }
