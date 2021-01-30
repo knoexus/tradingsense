@@ -390,7 +390,7 @@ body {
  }
 
  .rules p {
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 300;
     color: rgb(209, 208, 208);
     line-height: 1.8em;
@@ -402,7 +402,7 @@ body {
     color: rgb(209, 208, 208);
 }
 
-.rules img {
+.rules .rules-media-display {
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
 
@@ -445,11 +445,11 @@ body {
     margin-top: 30px;
 }
 
-.rules-card img {
-    animation: 0.75s ease-out 0s 1 imgPop;
+.rules-card .rules-media-display {
+    animation: 0.75s ease-out 0s 1 mediaPop;
 }
 
-@keyframes imgPop {
+@keyframes mediaPop {
     0% {
         transform: translateX(-200%);
         opacity: 0;
@@ -530,13 +530,13 @@ body {
         flex-direction: row;
     }
 
-    .rules-chart > div img, .rules-chart > div p {
+    .rules-chart > div .rules-media-display, .rules-chart > div p {
         max-width: 550px;
         border-radius: 12px;
         margin: 40px;
     }
 
-    .rules-balance img {
+    .rules-balance .rules-media-display {
         max-width: 400px;
         border-radius: 8px;
         margin: 0 20px;
@@ -556,13 +556,13 @@ body {
         background-image: -webkit-linear-gradient(135deg, #3e74a3 60%, #f1f1f1 40%);
     }
 
-    .rules-card img, .rules-card p {
+    .rules-card .rules-media-display, .rules-card p {
         max-width: 375px;
         border-radius: 12px;
         margin: 0 40px;
     }
     
-    .rules-card img {
+    .rules-card .rules-media-display {
         margin: 40px;
     }
 
@@ -578,12 +578,12 @@ body {
         flex-direction: row;
     }
 
-    .rules-buying-selling-modal-example img{
+    .rules-buying-selling-modal-example .rules-media-display{
         max-width: 550px;
         border-radius: 9px;
     }
 
-    .rules-buying-selling-modal-example img, .rules-buying-selling-modal-example p {
+    .rules-buying-selling-modal-example .rules-media-display, .rules-buying-selling-modal-example p {
         margin: 40px;
     }
 
@@ -601,7 +601,7 @@ body {
 //         flex-direction: column;
 //     }
 
-//     .rules-balance img {
+//     .rules-balance .rules-media-display {
 //         max-width: 500px;
 //         border-radius: 10px;
 //     }
@@ -612,7 +612,7 @@ body {
         padding: 0 20px;
     }
 
-    .rules-chart img {
+    .rules-chart .rules-media-display {
         max-width: 100%;
         border-radius: 8px;
     }
@@ -626,16 +626,16 @@ body {
         flex-direction: column;
     }
 
-    .rules-card img {
+    .rules-card .rules-media-display {
         margin-bottom: 40px;
     }
 
-    .rules-card img, .rules-balance img {
+    .rules-card .rules-media-display, .rules-balance .rules-media-display {
         max-width: 100%;
         border-radius: 14px;
     }
 
-    .rules-balance img:last-child{
+    .rules-balance .rules-media-display:last-child{
         margin-top: 30px;
     } 
 
@@ -655,7 +655,7 @@ body {
         flex-direction: column;
     }
 
-    .rules-buying-selling-modal-example img{
+    .rules-buying-selling-modal-example .rules-media-display{
         max-width: 100%;
         border-radius: 14px;
         margin: 10px 0px 30px 0;
