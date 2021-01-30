@@ -481,7 +481,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid lightgray;
     // background-color: #175183;
 }
 
@@ -534,6 +533,10 @@ body {
         max-width: 550px;
         border-radius: 12px;
         margin: 40px;
+    }
+
+    .rules-balance {
+        border: 1px solid rgb(173, 173, 173);
     }
 
     .rules-balance .rules-media-display {
