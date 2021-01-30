@@ -599,17 +599,6 @@ body {
     }
 }
 
-// @media(max-width: 900px){
-//     .rules-balance {
-//         flex-direction: column;
-//     }
-
-//     .rules-balance .rules-media-display {
-//         max-width: 500px;
-//         border-radius: 10px;
-//     }
-// }
-
 @media(max-width: 600px) {
     .rules > div > div {
         padding: 0 20px;
@@ -670,6 +659,37 @@ body {
 
     p.rules-important {
         margin-top: 35px;
+    }
+}
+
+@media(max-width: 900px) {
+    .rules-card {
+        flex-direction: column-reverse;
+        & p {
+            margin-bottom: 40px;
+        }
+    }
+
+    .rules-balance > div .rules-media-display:last-child {
+        margin-top: 40px;
+    }
+
+    .rules-balance > div, .rules-buying-selling-arrows-example {
+        flex-direction: column;
+    }
+
+    .rules-buying-selling-modal-example{
+        flex-direction: column-reverse;
+    }
+
+    .rules-buying-selling-arrows-example > div {
+        margin-top: 40px;
+    }
+}
+
+@media(max-width: 1100px) {
+    .rules-chart > div {
+        flex-direction: column;
     }
 }
 
