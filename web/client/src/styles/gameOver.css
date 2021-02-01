@@ -1,44 +1,123 @@
-.gameOver{
-    display: block;
+.gameOver {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    /* justify-content: center;
-    align-items: center; */
+    height: 100%;
+    position: relative;
+    animation: 1.5s ease-out 0s 1 emergeGameOver;
+}
+
+@keyframes emergeGameOver {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+.gameOver > div {
+    /* margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
+    margin-top: -15%;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 20px;
+}
+
+@media(max-width: 800px), (max-height: 450px) {
+    .gameOver > div {
+        border: none;
+    }
+}
+
+.gameOver h2, .gameOver h3, .gameOver span, .gameOver p, .gameOver .gameOver-furtherActions {
+    color: rgb(200, 200, 200);
 }
 
 .gameOver h2{
     font-family: 'Orbitron', sans-serif;
     margin: 0.5em !important;
     font-weight: 500;
-    font-size: 60px;
+    font-size: 70px;
 }
 
 .gameOver h3{
+    margin: 30px;
     font-family: 'Changa', sans-serif;
-    margin: 0.4em !important;
+    margin: 0.5em !important;
     font-weight: 200;
     font-size: 44px;
+}
+
+.gameOver h3 > b {
+    font-weight: 600;
+    text-decoration: underline;
 }
 
 .gameOver-furtherActions{
     font-family: 'Chakra Petch', sans-serif;
     font-weight: 300;
     font-size: 36px;
+    margin-top: 15px;
+}
+
+@media(max-height: 450px) {
+    .gameOver > div {
+        margin-top: 0;
+    }
+}
+
+@media(max-width: 600px) and (max-height: 700px), (max-height: 450px) {
+    .gameOver h2 {
+        font-size: 50px;
+    }
+
+    .gameOver h3 {
+        font-size: 36px;
+    }
+
+    .gameOver-furtherActions {
+        font-size: 28px;
+    }
 }
 
 .gameOver-furtherActions button{
     cursor: pointer;
     font-size: 16px;
-    width: 40px;
+    width: 50px;
     margin: 10px;
-    height: 30px;
+    height: 35px;
+    border-radius: 10px;
+    border-style: solid;
+    background-color: transparent;
+    outline: none;
+}
+
+.button-Continue {
+    color: rgb(34, 170, 10);
+    border-color: rgb(34, 170, 10);
 }
 
 .button-Continue:hover{
-    background-color: yellowgreen;
+    background-color: rgb(34, 170, 10);
     color: whitesmoke;
 }
 
+.button-Exit {
+    border-color: #FF0000;
+    color: #FF0000;
+}
+
 .button-Exit:hover{
-    background-color: red;
+    background-color: #FF0000;
     color: whitesmoke;
 }
