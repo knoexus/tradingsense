@@ -455,13 +455,13 @@ body {
     animation: 0.75s ease-out 0s 1 mediaPop;
 }
 
-@media(min-height: 800px) and (min-width: 900px) {
+@media(min-height: 700px) and (min-width: 900px) {
     .rules-card{
         height: calc(100vh - 219px);
     }
 
     .rules-card .rules-media-display {
-        max-height: 60vh;
+        max-height: 65vh;
     }
 }
 
