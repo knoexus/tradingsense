@@ -256,6 +256,8 @@ body {
 }
 
 .home-detail-buttons {
+    display: flex;
+    align-items: center;
     margin-top: 40px;
 }
 
@@ -264,6 +266,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 15px;
+}
+
+.home-detail > div:first-child {
+    min-width: 200px;
+    min-height: 200px;
 }
 
 .home-detail-phrase {
@@ -341,6 +349,18 @@ body {
     color: rgb(100, 100, 98);
     background-color:#fff;
     border-color: rgb(114, 113, 108);
+ }
+
+ @media(min-width: 600px) and (min-height: 600px) {
+    .home-detail {
+        margin-top: 70px;
+    }
+ }
+
+ @media(max-width: 600px) {
+    .home-detail-buttons {
+        flex-direction: column;
+    }
  }
 
  // rules
