@@ -313,7 +313,7 @@
     grid-template-areas: 
     "slider slider slider"
     "description query currentval";
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 40px 40px;
     grid-template-columns: 45% 33% 22%;
     &[disabled]{
         pointer-events: none;
@@ -341,11 +341,18 @@
 .technicals-datechanger-description > span{
     font-size: 12px;
     color: grey;
+    margin-left: 10px;
 }
 
 .technicals-datechanger-description-helper {
     grid-area: qm;
     display: none;
+    margin-top: 2px;
+}
+
+.technicals-datechanger-description-helper > svg {
+    border: 1px solid rgb(192, 192, 192);
+    border-radius: 50%;
 }
 
 .technicals-datechanger-fetcher{
@@ -374,38 +381,6 @@
     animation: changeDaysColor 2.5s ease-out; 
 }
 
-@media(max-width: 550px) {
-    .technicals-datechanger {
-        display: grid;
-        grid-template-areas: 
-        "slider slider slider"
-        "qm query currentval";
-        grid-template-rows: 1fr 1fr;
-        grid-template-columns: 28% 44% 28%;
-    }
-
-    .technicals-datechanger-description {
-        display: none;
-    }
-
-    .technicals-datechanger-description-helper {
-        display: block;
-        justify-self: center;
-    }
-
-    .technicals-datechanger-fetcher {
-        justify-self: center;
-    }
-
-    .technicals-datechanger-currentval {
-        margin-right: 10px;
-    }
-
-    .technicals-datechanger-currentval > span {
-        margin-bottom: 12px;
-    }
-}
-
 @keyframes changeDaysColor {
     0% { color: rgb(29, 143, 9)}
     25% { color: rgb(34, 128, 17)}
@@ -432,7 +407,7 @@
 }
 
 .item-covered-technicals-datechanger{
-    height: 74px;
+    height: 80px;
 }
 
 .item-covered-technicals-indicators{
@@ -491,4 +466,40 @@
     font-size: 20pt;
     font-weight: 500;
     font-family: 'Quicksand', sans-serif;
+}
+
+@media(max-width: 600px) {
+    .technicals-datechanger {
+        display: grid;
+        grid-template-areas: 
+        "slider slider slider"
+        "qm query currentval";
+        grid-template-rows: 50px 50px;
+        grid-template-columns: 28% 44% 28%;
+    }
+
+    .item-covered-technicals-datechanger{
+        height: 100px;
+    }
+
+    .technicals-datechanger-description {
+        display: none;
+    }
+
+    .technicals-datechanger-description-helper {
+        display: block;
+        justify-self: center;
+    }
+
+    .technicals-datechanger-fetcher {
+        justify-self: center;
+    }
+
+    .technicals-datechanger-currentval {
+        margin-right: 10px;
+    }
+
+    .technicals-datechanger-currentval > span {
+        margin-bottom: 12px;
+    }
 }
