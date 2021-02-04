@@ -4,6 +4,19 @@ import TechnicalIndicatorsTable from './util/TechnicalIndicatorsTable'
 import { Button } from '@material-ui/core'
 import { MUTATION_ADD_TO_CURRENT_POINTS } from '../apollo-sm/mutations'
 import { useMutation } from '@apollo/client'
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+    root: {
+        fontSize: '2.2rem',
+        fill: 'lightgrey',
+        '&:hover': {
+            fill: 'cornflowerblue'
+        }
+    }
+})
 
 export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoint, startDate, unlock_all_prices}) {
     const { min } = unlock_all_prices
@@ -53,6 +66,8 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
         })
     }
 
+    const classes = useStyles()
+
     return (
         <div className="technicals">
             {/* <div className="technicals-title"><h2>Technicals</h2></div> */}
@@ -84,6 +99,16 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
                 </div>
                 <div className="technicals-datechanger-description">
                     <span>Show unlocked technicals for the {ordinal_suffix_of(days)} trading day from Day 0</span>
+                </div>
+                <div className="technicals-datechanger-description-helper">
+                    <Tooltip
+                        arrow
+                        enterTouchDelay={50} 
+                        leaveTouchDelay={2500}
+                        title={`Show unlocked technicals for the ${ordinal_suffix_of(days)} trading day from Day 0`} 
+                        placement={"bottom"}>
+                        <HelpIcon className={classes.root}/>
+                    </Tooltip>
                 </div>
             </div>
             <div className="technicals-indicators">

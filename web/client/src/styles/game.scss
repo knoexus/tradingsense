@@ -315,7 +315,6 @@
     "description query currentval";
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 45% 33% 22%;
-
     &[disabled]{
         pointer-events: none;
         opacity: 0.5;
@@ -344,6 +343,11 @@
     color: grey;
 }
 
+.technicals-datechanger-description-helper {
+    grid-area: qm;
+    display: none;
+}
+
 .technicals-datechanger-fetcher{
     grid-area: query;
     justify-self: right;
@@ -368,6 +372,38 @@
 
 .technicals-datechanger-currentval-animated {
     animation: changeDaysColor 2.5s ease-out; 
+}
+
+@media(max-width: 550px) {
+    .technicals-datechanger {
+        display: grid;
+        grid-template-areas: 
+        "slider slider slider"
+        "qm query currentval";
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 28% 44% 28%;
+    }
+
+    .technicals-datechanger-description {
+        display: none;
+    }
+
+    .technicals-datechanger-description-helper {
+        display: block;
+        justify-self: center;
+    }
+
+    .technicals-datechanger-fetcher {
+        justify-self: center;
+    }
+
+    .technicals-datechanger-currentval {
+        margin-right: 10px;
+    }
+
+    .technicals-datechanger-currentval > span {
+        margin-bottom: 12px;
+    }
 }
 
 @keyframes changeDaysColor {
