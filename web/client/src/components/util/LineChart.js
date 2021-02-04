@@ -22,7 +22,7 @@ export default function LineChart({data, actual_gapToEndPoint, daysMargin}) {
                 data: {
                     labels: datesWithSpace,
                     datasets: [{
-                        label: `${daysMargin}-day interval Daily Quotes (${data.length} trading days)`,
+                        label: `${data.length}-day Interval Daily Quotes (${daysMargin} Real Days)`,
                         data: quotesWithSpace,
                         fill: false,
                         borderColor: [
@@ -77,7 +77,7 @@ export default function LineChart({data, actual_gapToEndPoint, daysMargin}) {
                                 let xLabels = data.ticks
                                 xLabels.forEach((_, i) => {
                                     if (i == xLabels.length-1){
-                                        xLabels[i] = 'Day X'
+                                        xLabels[i] = `Day ${actual_gapToEndPoint}`
                                     }
                                     else if (i == xLabels.length-1-actual_gapToEndPoint) {
                                         xLabels[i] = 'Day 0'
