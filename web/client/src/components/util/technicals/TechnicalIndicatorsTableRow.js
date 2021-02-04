@@ -6,7 +6,15 @@ import LockedItem from '../LockedItem'
 import DefaultSkeleton from '../../skeletons/DefaultSkeleton'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
+import { withStyles } from '@material-ui/core/styles'
 
+const StyledTableCell = withStyles(theme => ({
+    root: {
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 10.5
+      }
+    }
+  }))(TableCell)
 
 export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedIndicators, current_date, plus_days, lockedQ}) {
     const [lock, changeLock] = useState(data.value === null)
@@ -23,9 +31,9 @@ export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedI
     }
 
     const LI = (
-        <TableCell colSpan={3}>
+        <StyledTableCell colSpan={3}>
              <LockedItem price={data.price} unlockTry={logoUnlockTry} extraClasses={["item-covered-technicals-row"]} lockSize={"xl"}/>
-        </TableCell>
+        </StyledTableCell>
     )
 
     const C = (() => {
@@ -53,7 +61,7 @@ export default function TechnicalIndicatorsTableRow({data, fid, highlightLockedI
 
     return (
         <TableRow>
-            <TableCell align="left">{data.name}</TableCell>
+            <StyledTableCell align="left">{data.name}</StyledTableCell>
             { C }
          </TableRow>
     )
@@ -82,26 +90,26 @@ const TechnicalIndicatorsTableRowContent = ({loading, data, highlightLockedIndic
     return (
         <Fragment>
             { loading && 
-                <TableCell colSpan={3}>
+                <StyledTableCell colSpan={3}>
                     <div className="item-covered item-covered-technicals-row">
                         <DefaultSkeleton/>
                     </div>
-                </TableCell> } 
+                </StyledTableCell> } 
             { data && 
                 <Fragment>
-                    <TableCell align="center">{data.value.toPrecision(2)}</TableCell>
-                    <TableCell 
+                    <StyledTableCell align="center">{data.value.toPrecision(2)}</StyledTableCell>
+                    <StyledTableCell 
                         className={!data.valueX && highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
                         align="center">
                         {data.valueX ? data.valueX.toPrecision(2) : "???"}
-                    </TableCell>
-                    <TableCell 
+                    </StyledTableCell>
+                    <StyledTableCell 
                         className={(!isDataPercentage && highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "")
                                     + " " + (isDataPercentage && Math.round(data.percentChange) > 0 ? "technicals-indicators-tablecell-positive" : 
                                     Math.round(data.percentChange) < 0 ? "technicals-indicators-tablecell-negative" : "")} 
                         align="right">
                         {isDataPercentage ? Math.round(data.percentChange) + '%' : "???"}
-                    </TableCell>
+                    </StyledTableCell>
                 </Fragment>
             }
         </Fragment>
