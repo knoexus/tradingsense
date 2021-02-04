@@ -55,7 +55,7 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
 
     return (
         <div className="technicals">
-            <div className="technicals-title"><h2>Technicals</h2></div>
+            {/* <div className="technicals-title"><h2>Technicals</h2></div> */}
             <div className="technicals-datechanger" disabled={lockedQ}>
                 <div className="technicals-datechanger-slider">
                     <DaysSlider
@@ -83,7 +83,7 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
                     </Button>
                 </div>
                 <div className="technicals-datechanger-description">
-                    <span>Show the unlocked indicators for the {ordinal_suffix_of(days)} trading day from the start.</span>
+                    <span>Show unlocked technicals for the {ordinal_suffix_of(days)} trading day from Day 0</span>
                 </div>
             </div>
             <div className="technicals-indicators">

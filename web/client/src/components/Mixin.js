@@ -14,7 +14,7 @@ import { MUTATION_SET_LOADING_MIXIN } from '../apollo-sm/mutations'
 
 export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
     const variables = {
-        returnTechnicals: 7,
+        returnTechnicals: 6,
         lockTechnicals: 2,
     }
 

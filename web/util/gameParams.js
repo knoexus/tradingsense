@@ -11,9 +11,9 @@ const daysMarginsAndGaps = [
 ]
 
 const secondsAndStocks = [
-    [1, 15],
-    [1, 20],
-    [1, 30]
+    [180, 15],
+    [240, 20],
+    [300, 30]
 ]
 
 const initialSum = [

@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -27,22 +27,15 @@ const SimplePaper = withStyles(() => ({
     }
   }))(Paper)
 
-const useStyles = makeStyles({
-  table: {
-    maxWidth: 520
-  }
-})
-
 export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlightLockedIndicators, startDate, lockedQ}) {
-  const classes = useStyles()
   return (
     <TableContainer component={SimplePaper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="left">Indicator Name</StyledTableCell>
-            <StyledTableCell align="center">Day 0 Value</StyledTableCell>
-            <StyledTableCell align="center">Day {dayX} Value</StyledTableCell>
+            <StyledTableCell align="left">Indicator</StyledTableCell>
+            <StyledTableCell align="center">Day 0</StyledTableCell>
+            <StyledTableCell align="center">Day {dayX}</StyledTableCell>
             <StyledTableCell align="right">Change</StyledTableCell>
           </TableRow>
         </TableHead>
