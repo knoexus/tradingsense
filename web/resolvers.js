@@ -92,7 +92,9 @@ exports.mixinResolver = mixinResolver = async (_, args, r=0, r_threshold=9) => {
         if (technicals == [] || candles == null) throw NULLRESPONSE
         const technicals_day0 = technicals[0]
         if (technicals_day0 == []) throw NULLRESPONSE
-        if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString()) throw DATAMISMATCH
+        if (candles[candles.length-1].timestamp.toString() !== technicals_day0.t.toString() 
+            || final_candle.timestamp.toString() !== technicals[technicals.length-1].t.toString()) 
+            throw DATAMISMATCH
         const technicals_all_prices = getTechnicalsAllPrice(technicals_day0.indicators.length)
 
         const minMaxStocks = minMaxStocksResolver(_, {
