@@ -50,6 +50,14 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
         else return Math.ceil(min * (currentDays+actual_gapToEndPoint)/actual_gapToEndPoint)
     }
 
+    const calculateStep = gap => {
+        const prev = gap - 1
+        for (let i = 1; i <= prev; i++) {
+            if (prev % i !== 0) return i
+        }
+        return 2
+    }
+
     const changeDays_ = (newDays) => {
         changeDays(newDays)
         changeCurrentUnlockAllPrice(priceFormula(newDays))
@@ -77,7 +85,7 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
                         onChange={lockedQ ? x=>x : (_,v) => changeDays_(v)}
                         defaultValue={1}
                         valueLabelDisplay="auto"
-                        step={gapToEndpoint % 3 == 0 ? 3 : 2}
+                        step={calculateStep(actual_gapToEndPoint)}
                         marks
                         min={1}
                         max={actual_gapToEndPoint}
