@@ -10,7 +10,7 @@
     
     &-top,
     &-bottom {
-      background-color: #666;
+      background-color: rgb(148, 148, 148);
       height: 4px;
       position: absolute;
       top: 50%;
@@ -119,5 +119,44 @@
     
     &:active {
       transform: translateX(0%) translateY(0%) scale(0.85);
+    }
+  }
+
+  .arrow-small {
+    display: none;
+  }
+
+  .arrow-small-button {
+    cursor: pointer;
+    outline: none;
+    height: 10vh;
+    width: 10vh;
+    max-width: 75px;
+    max-height: 75px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background-color: rgb(173, 169, 169);
+  }
+
+  .arrow-small-button:hover, .arrow-small-button :active {
+    color: rgb(95, 94, 94);
+    border-color: rgb(95, 94, 94);
+  }
+
+  .arrow-small-left-button:hover, .arrow-small-left-button :active {
+    background-color: #e90f0f;
+  }
+
+  .arrow-small-right-button:hover, .arrow-small-right-button :active {
+    background-color: #2dd610;
+  }
+
+  @media(max-width: 800px) {
+    .arrow {
+      display: none;
+    }
+
+    .arrow-small {
+      display: block;
     }
   }

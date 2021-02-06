@@ -38,7 +38,7 @@ const TimerWrapper = (props) => {
     return (
         <div className="timer">
             <h2>
-                Time: <Timer.Minutes />
+                <Timer.Minutes />
                 :
                 <Timer.Seconds formatValue={v => v.toString().length < 2 ? '0' + v : v} />
             </h2>

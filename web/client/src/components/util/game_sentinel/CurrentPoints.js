@@ -47,7 +47,7 @@ export default function CurrentPoints({amount}) {
     }, [total])
     return (
         <div className="currentPoints">
-            <h2>Current balance: {total.toFixed(2)}$ 
+            <h2>{total.toFixed(2)}$ 
                 {lastChange ? 
                     lastChange > 0 ? ` (+${lastChange.toFixed(2)})` : ` (${lastChange.toFixed(2)})`
                     : ''}</h2>

@@ -6,13 +6,10 @@
   
 
 .mixinCard{
-    align-self: baseline;
+    align-self: center;
     grid-area: card;
-    margin: 0px 30px;
     max-width: var(--max-card-width);
     max-height: var(--max-card-height);
-    // height: 100%;
-    // min-height: 100%;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     overflow-y: scroll;
     overflow-x: hidden;
@@ -21,26 +18,13 @@
     background-color: rgb(255, 255, 255);
 }
 
-@media(max-width: 472px) {
-    .mixinCard {
-        width: 98vw;
-        height: calc(98vw / var(--ratio))
-    }
-}
-
-@media(min-width: 472px) {
-    .mixinCard {
-        height: 88vh;
-        width: calc(88vh * var(--ratio))
-    }
-}
-
 .mixinCard > div:not(:first-child) {
     margin: 10px 15px;
 }
 
 .game{
     display: grid;
+    max-height: 100vh;
     justify-items: center;
     align-items: center;
     justify-content: center;
@@ -49,11 +33,34 @@
         "cardsleft currentpoints timer"
         "leftarrow card rightarrow"
         ". . .";
-    grid-template-rows: 8vh 88vh 4vh;
+    grid-template-rows: 10vh 88vh 2vh;
     // grid-template-columns: 150px 600px 150px;
     // grid-gap: 10px;
     // margin: auto;
     // width: 1000px;
+}
+
+@media(max-width: 472px) {
+    .mixinCard {
+        width: 98vw;
+        height: 80vh;
+        max-height: 100%;
+    }
+}
+
+@media(min-width: 472px) and (max-width: 800px) {
+    .mixinCard {
+        height: 80vh;
+        width: calc(80vh * var(--ratio))
+    }
+}
+
+@media(min-width: 800px) {
+    .mixinCard {
+        margin: 0px 30px;
+        height: 88vh;
+        width: calc(88vh * var(--ratio))
+    }
 }
 
 .button-FastForward{
@@ -96,7 +103,6 @@
 }
 
 .currentPoints{
-    width: 600px;
     grid-area: currentpoints;
     justify-self: center;
     align-self: end;
@@ -113,6 +119,8 @@
     top: 0;
     z-index: 5;
     position: sticky;
+    border-top-left-radius: 20px; // compatibility
+    border-top-right-radius: 20px;
     background: rgb(228,227,227);
     background: linear-gradient(90deg, rgba(228,227,227,1) 16%, rgba(237,236,236,1) 47%, rgba(246,244,244,1) 77%);
     &-color {
@@ -462,10 +470,15 @@
     font-family: 'Mukta Malar', sans-serif;
 }
 
+.currentPoints, .cardsCounter, .timer {
+    align-self: center;
+}
+
 .currentPoints h2, .cardsCounter h2, .timer h2{
     margin: 0;
     font-size: 20pt;
     font-weight: 500;
+    color: rgba(221, 209, 209, 0.856);
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -503,4 +516,67 @@
     .technicals-datechanger-currentval > span {
         margin-bottom: 12px;
     }
+}
+
+@media(max-width: 800px) {
+    .game {
+        max-width: 100%;
+        grid-template-areas:
+        "cardsleft currentpoints timer"
+        "card card card"
+        ". arrows .";
+        
+        grid-template-columns: 10vw 80vw 10vw;
+        grid-template-rows: 6vh 80vh 16vh;
+    }
+
+    .button-FastForward-left, .button-FastForward-right {
+        grid-area: arrows;
+    }
+
+    .currentPoints, .cardsCounter, .timer{
+        align-self: center;
+        align-items: center;
+        & > h2 {
+            font-size: 22px;
+        }
+        max-height: 100%;
+    }
+
+    .currentPoints{
+        justify-self: center;
+        justify-content: center;
+    }
+    
+    .cardsCounter {
+        justify-self: start;
+        justify-content: flex-start;
+        & > h2 {
+            margin-left: 15px;
+        }
+    }
+
+    .timer {
+        justify-self: end;
+        justify-content: flex-end;
+        margin-right: 15px;
+        & > h2 {
+            margin-right: 15px;
+        }
+    }
+
+    .button-FastForward-left, .button-FastForward-right {
+        align-self: center;
+    }
+
+    .button-FastForward-left{
+        justify-self: start;
+        margin-left: 30px;
+    }
+
+    .button-FastForward-right{
+        justify-self: end;
+        margin-right: 30px;
+    }
+    
 }
