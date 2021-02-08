@@ -25,7 +25,13 @@ const getModalStyle = () => {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: 400,
+    maxWidth: '80vw',
+    [theme.breakpoints.down('sm')]: {
+      width: 300,
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: 450,
+    },
     backgroundColor: theme.palette.background.paper,
     border: '1px solid #000',
     borderRadius: 7,

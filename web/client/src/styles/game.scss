@@ -465,7 +465,8 @@
 
 .modal-stocks-inner h2 {
     margin: 0;
-    font-size: 20pt;
+    font-size: 1.35em;
+    text-align: center;
     font-weight: 500;
     font-family: 'Mukta Malar', sans-serif;
 }
@@ -580,7 +581,7 @@
     }
 }
 
-@media(min-width: 1300px) {
+@media(min-width: 1335px) {
     .currentPoints, .cardsCounter, .timer {
         background-color: rgba(255, 255, 255, 0.048);
         border: 1px solid lightgray;
