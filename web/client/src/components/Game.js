@@ -21,6 +21,7 @@ export default function Game() {
 
     const closeModal = () => {
         setModal(false)
+        setAction(-1)
     }
 
     const proceed = () => {
