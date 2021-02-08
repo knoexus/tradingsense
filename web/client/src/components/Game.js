@@ -19,6 +19,10 @@ export default function Game() {
         setAction(pos)
     }
 
+    const closeModal = () => {
+        setModal(false)
+    }
+
     const proceed = () => {
         setModal(false)
         setAction(-1)
@@ -32,7 +36,7 @@ export default function Game() {
             <Arrow side="right" clicked={() => openModal(0)}/>
             <Arrow side="left" clicked={() => openModal(1)}/>
             <GameSentinel stocksPassed={stocksPassed}/>
-            <AmountSelectionModal open={modalOpen} action={action} 
+            <AmountSelectionModal open={modalOpen} action={action} closeModal={() => closeModal()} 
                 minMaxStocks={currentMinMaxStocks} proceed={() => proceed()}/>
         </GameWrapper>
     )
