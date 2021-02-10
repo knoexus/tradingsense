@@ -97,7 +97,7 @@ const TechnicalIndicatorsTableRowContent = ({loading, data, highlightLockedIndic
                 </StyledTableCell> } 
             { data && 
                 <Fragment>
-                    <StyledTableCell align="center">{data.value.toPrecision(2)}</StyledTableCell>
+                    <StyledTableCell align="center">{data.value ? data.value.toPrecision(2) : 0}</StyledTableCell>
                     <StyledTableCell 
                         className={!data.valueX && highlightLockedIndicators ? "technicals-indicators-tablecell-highlighted": "" } 
                         align="center">
