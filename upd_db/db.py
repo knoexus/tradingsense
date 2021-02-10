@@ -8,11 +8,13 @@ import proxy
 import json
 import inspect
 import re
+import csv
 from requests.exceptions import ProxyError, SSLError
 
 class DataOps:
     def __init__(self, finnhub_client, db, number_of_assets):
         self._symbols = self.get_symbol_list()[:number_of_assets]
+        self._symbols_sp500 = self.get_sp500_symbol_list()
         self._finnhub_client = finnhub_client
         self._db = db
         self._proxies = self._map_proxies()
@@ -52,13 +54,21 @@ class DataOps:
             return tuple([])
         else:
             return tuple(filter(lambda x : 1 if x["type"] == "Common Stock" else 0, response.json()))
+    
+    def get_sp500_symbol_list(self):
+        sp500_lst = []
+        with open('sp500.csv', newline='') as sp500:
+            reader = csv.DictReader(sp500)
+            for row in reader:
+                sp500_lst.append(row['Symbol'])
+        return tuple(sp500_lst)
 
     # data
     def call_all_authed(self):
         time.sleep(10)
         self.create_indices()
-        for idx, item in enumerate(self._symbols):
-            symbol = item["symbol"]
+        for idx, item in enumerate(self._symbols_sp500):
+            symbol = item
             data = []
             ext = False
             if idx != 0 and idx % 3 == 0:
