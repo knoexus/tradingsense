@@ -5,6 +5,8 @@ import FinancialsReported from './FinancialsReported'
 import Technicals from './Technicals'
 import MixinSkeleton from './skeletons/MixinSkeleton'
 
+import ErrorBox from '../components/util/ErrorBox'
+
 import { useQuery } from '@apollo/client'
 import { MIXIN_W_TECHNICALS } from '../gql_queries/Mixin__GQL'
 import { useEffect } from 'react'
@@ -48,7 +50,7 @@ export default function Mixin({updater, preUpdater, setMinMaxStocks}) {
         })
         return <MixinSkeleton status={"loading"}/>
     }
-    if (error) return <p>Error {error} :(</p>
+    if (error) return <ErrorBox/>
     if (data) {
         changeMXN({
             variables: {
