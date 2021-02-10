@@ -58,8 +58,6 @@ export default function AmountSelectionModal({ action, open, proceed, closeModal
   const [stocks, changeStocks] = useState(0)
   const [_open, setOpen] = useState(open)
 
-  console.log(open, _open)
-
   const [changePLP] = useMutation(MUTATION_SET_PROFIT_LOSS_PARAMS)
 
   const minStocks = minMaxStocks?.minMaxStocks?.minStocks
