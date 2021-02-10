@@ -12,7 +12,7 @@ export default function Rules() {
         const buildThresholdArray = () => [...Array(50).keys()].map(x => x * 2 / 100) 
         const [ref, entry] = useIntersect({
             threshold: buildThresholdArray(),
-            root: document.querySelector('.main'),
+            root: document.body,
         })
 
         const iRatio = entry => {
