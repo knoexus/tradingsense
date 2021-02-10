@@ -1,4 +1,4 @@
-from pymongo.errors import BulkWriteError
+from pymongo.errors import BulkWriteError, DuplicateKeyError
 import datetime
 import random
 import time
@@ -123,7 +123,8 @@ class DataOps:
             self._db.recommendation_trends.insert_many(chunk)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
-            return
+        except DuplicateKeyError:
+            print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
 
 
     def get_financials_reported(self, symbol):
@@ -156,7 +157,8 @@ class DataOps:
             self._db.financials_reported.insert_many(chunk)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
-            return
+        except DuplicateKeyError:
+            print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
     
 
     def get_earnings_calendar(self, symbol):
@@ -180,7 +182,8 @@ class DataOps:
             self._db.earnings_calendar.insert_many(chunk)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
-            return
+        except DuplicateKeyError:
+            print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
 
     
     def get_candles(self, symbol):
@@ -216,7 +219,8 @@ class DataOps:
             self._db.candles.insert_many(chunk)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
-            return
+        except DuplicateKeyError:
+            print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
 
 
     def get_company_profile(self, symbol):
@@ -257,6 +261,8 @@ class DataOps:
             self._db.company_profile.insert_one(chunk)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+        except DuplicateKeyError:
+            print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
 
 
     def get_technicals(self, symbol, cut=30):
@@ -316,6 +322,8 @@ class DataOps:
             self._db.technicals.insert_many(chunk)
         except BulkWriteError as bwe:
             print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+        except DuplicateKeyError:
+            print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
 
 
     # unauthed
@@ -369,6 +377,8 @@ class DataOps:
     #                 self._db.financials.insert_many(result["financials"]) 
     #             except BulkWriteError as bwe:
     #                 print(f"{func_name}: BulkWrite - {symbol} - {bwe.details['writeErrors'][0]['errmsg']}")
+    #             except DuplicateKeyError:
+    #                 print(f"{func_name}: DuplicateKey - {symbol} has already been inserted")
     #         else:
     #             print(f"{func_name}: Cannot insert {symbol} as the response is empty")
 
