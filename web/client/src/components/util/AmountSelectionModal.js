@@ -93,7 +93,7 @@ export default function AmountSelectionModal({ action, open, proceed, closeModal
           onChange={(_, v) => changeStocks(v)}
           defaultValue={midValue}
           valueLabelDisplay="auto"
-          step={Math.floor((maxStocks-minStocks)/10)}
+          step={(maxStocks-minStocks) >= 10 ? Math.floor((maxStocks-minStocks)/10) : 1}
           marks
           min={minStocks}
           max={maxStocks}

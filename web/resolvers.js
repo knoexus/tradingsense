@@ -145,7 +145,8 @@ exports.gameResolver = gameResolver = async (_, args) => {
 exports.minMaxStocksResolver = minMaxStocksResolver = (_, args) => {
     const { lastPrice } = args
     const maxPointsPerRound = 5000
-    const maxStocks = Math.floor(maxPointsPerRound/lastPrice)
+    let interMaxStocks = Math.floor(maxPointsPerRound/lastPrice)
+    const maxStocks = interMaxStocks < 2 ? 2 : interMaxStocks
     const minStocks = Math.floor(maxStocks/Math.ceil(Math.log10(maxPointsPerRound) + 1))
     return {
         minStocks,
@@ -158,6 +159,5 @@ exports.profitLossResolver = profitLossResolver = async (_, args) => {
     const company_profile = await getCompanyProfileByID(args._id)
     const symbol = company_profile.ticker
     const candle = await getCandlesSingle(symbol, realDate)
-    console.log(candle)
     return candle.close
 }
