@@ -1,6 +1,8 @@
 # node
 node_modules
 .env
+dist
+build
 
 # python
 env
