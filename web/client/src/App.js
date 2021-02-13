@@ -14,7 +14,7 @@ import {
 } from 'react-router-dom'
 
 const client = new ApolloClient({
-  uri: "http://localhost:5001/graphql",
+  uri: "https://tradingsense.herokuapp.com/graphql",
   cache: new InMemoryCache({
     addTypename: false
   }),
