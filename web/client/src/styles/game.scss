@@ -489,7 +489,7 @@
     color: lightgray;
 }
 
-@media(max-width: 600px) {
+@media(max-width: 600px), (max-height: 750px) {
     .technicals-datechanger {
         display: grid;
         grid-template-areas: 
