@@ -483,6 +483,12 @@
     font-family: 'Quicksand', sans-serif;
 }
 
+.sentinel-loading {
+    grid-area: currentpoints;
+    text-align: center;
+    color: lightgray;
+}
+
 @media(max-width: 600px) {
     .technicals-datechanger {
         display: grid;

@@ -12,7 +12,7 @@ import { GAME_PARAMS } from '../gql_queries/GameParams__GQL'
 export default function GameSentinel(props) {
     const { loading, error, data } = useQuery(GAME_PARAMS)
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <p className="sentinel-loading">Loading...</p>
     if (error) return <ErrorBox/>
     if (data) {
         const { gameParams: { secondsToPlay, numberOfStocks, initialSum } } = data
