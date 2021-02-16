@@ -547,6 +547,13 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    & .arrow-small-left {
+        padding-right: 8px;
+    }
+  
+    & .arrow-small-right {
+        padding-left: 8px;
+    }
 }
 
 .rules-buying-selling-modal-example {
