@@ -3,12 +3,24 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import { makeStyles } from '@material-ui/core/styles'
 import '../../styles/arrowButton.scss'
 
 import { QUERY_LOADING_MIXIN } from '../../apollo-sm/queries'
 import { useQuery } from '@apollo/client'
 
+const useStyles = makeStyles(() => {
+    const dimVal = '1.28em'
+    return {
+        root: {
+            width: dimVal,
+            height: dimVal
+        }
+    }
+})
+
 export default function Arrow({side, clicked}) {
+    const classes = useStyles()
     const { data: {loadingMixin } } = useQuery(QUERY_LOADING_MIXIN)
     return (
         <Tooltip 
@@ -26,7 +38,7 @@ export default function Arrow({side, clicked}) {
                             <div className={`arrow-small-${side}`}>
                                 <button className={`arrow-small-button arrow-small-${side}-button`}>
                                     <div>
-                                        { side == "left" ? <ArrowBackIcon/> : <ArrowForwardIcon/> }
+                                        { side == "left" ? <ArrowBackIcon className={classes.root}/> : <ArrowForwardIcon className={classes.root}/> }
                                     </div>
                                 </button>
                             </div>
