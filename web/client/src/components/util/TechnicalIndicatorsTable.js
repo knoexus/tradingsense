@@ -30,7 +30,14 @@ const SimplePaper = withStyles(() => ({
   }))(Paper)
 
 const useStyles = makeStyles(theme => ({
-    root: {
+    tableContainer: {
+      msOverflowStyle: 'none',
+      scrollbarWidth: 'none',
+      '&::-webkit-scrollbar': {
+        display: 'none'
+      },
+    },
+    tableRow: {
       [theme.breakpoints.down('sm')]: {
         fontSize: 10.5
       }
@@ -40,10 +47,10 @@ const useStyles = makeStyles(theme => ({
 export default function TechnicalIndicatorsTable({indicators, dayX, fid, highlightLockedIndicators, startDate, lockedQ}) {
   const classes = useStyles()
   return (
-    <TableContainer component={SimplePaper}>
+    <TableContainer className={classes.tableContainer} component={SimplePaper}>
       <Table size="small" aria-label="TI Table">
         <TableHead>
-          <TableRow className={classes.root}>
+          <TableRow className={classes.tableRow}>
             <StyledHeadTableCell align="left">Indicator</StyledHeadTableCell>
             <StyledHeadTableCell align="center">Day 0</StyledHeadTableCell>
             <StyledHeadTableCell align="center">Day {dayX}</StyledHeadTableCell>
