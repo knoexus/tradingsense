@@ -66,6 +66,7 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
     }
 
     const changelockedStateQ_ = (newLockState) => {
+        changeHighlight(false)
         changelockedStateQ(newLockState)
         addToCP({
             variables: {
@@ -96,8 +97,8 @@ export default function Technicals({data, fid, gapToEndpoint, actual_gapToEndPoi
                 </div>
                 <div className="technicals-datechanger-fetcher">
                     <Button 
-                        onMouseEnter={lockedQ ? x=>x : () => changeHighlight(!highlightLockedIndicators)} 
-                        onMouseLeave={lockedQ ? x=>x : () => changeHighlight(!highlightLockedIndicators)}
+                        onMouseEnter={lockedQ ? x=>x : () => changeHighlight(true)} 
+                        onMouseLeave={lockedQ ? x=>x : () => changeHighlight(false)}
                         onClick={lockedQ ? x=>x : () => changelockedStateQ_(true)}
                         size={"small"} 
                         variant="outlined"
