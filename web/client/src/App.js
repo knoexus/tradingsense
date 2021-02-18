@@ -14,7 +14,7 @@ import {
 } from 'react-router-dom'
 
 const client = new ApolloClient({
-  uri: "https://tradingsense.herokuapp.com/graphql",
+  uri: `${process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_ENDPOINT : process.env.REACT_APP_DEV_ENDPOINT }/graphql`,
   cache: new InMemoryCache({
     addTypename: false
   }),
