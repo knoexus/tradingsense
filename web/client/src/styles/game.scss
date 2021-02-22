@@ -602,3 +602,58 @@
         justify-content: center;
     }
 }
+
+.button-GameControl{
+    display: none;
+}
+
+@media(min-width: 800px) {
+    .button-GameControl {
+        display: block;
+        position: absolute;
+        bottom: 10px;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: center;
+        height: 40px;
+        width: 110px;
+        text-transform: uppercase;
+        border-style: solid;
+        border-width: 0.5px;
+        border-radius: 20px;
+        background: transparent;
+        transition: 0.4s ease-in-out;
+        outline: none;
+        &:hover{
+            color: rgb(94, 94, 94);
+        }
+    }
+
+    .button-GameControl-GameExit {
+        left: 40px;
+        margin: 10px;
+        color: rgb(228, 67, 38); 
+        box-shadow: 0 0 4px rgb(219, 118, 118);           
+        border-color: rgb(228, 67, 38); 
+        &:hover {
+            background-color: rgb(228, 67, 38); 
+            border-color: rgb(228, 67, 38); 
+        }
+    }
+
+    .button-GameControl-FullScreenControl {
+        right: 40px;
+        height: 40px;
+        margin: 10px;
+        color: rgb(223, 221, 118); 
+        box-shadow: 0 0 4px rgb(221, 215, 164);           
+        border-color: rgb(223, 221, 118); 
+        &:hover {
+            background-color: rgb(223, 221, 118); 
+            border-color: rgb(223, 221, 118); 
+        }
+    }
+}
+

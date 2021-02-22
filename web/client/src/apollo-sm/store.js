@@ -5,7 +5,8 @@ const store = {
     loadingMixin: false,
     profit_loss_params: null,
     endGame: false,
-    currentPoints: 0
+    currentPoints: 0,
+    isFullScreen: false
 }
 
 export default function createStore(client){

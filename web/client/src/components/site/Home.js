@@ -3,18 +3,12 @@ import { Link } from 'react-router-dom'
 import logo from '../../images/logo.png'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import { openFullscreen } from '../../extras/fullScreen'
+import { useMutation } from '@apollo/client'
+import { MUTATION_SET_IS_FULLSCREEN } from '../../apollo-sm/mutations'
 
 export default function Home() {
-    const openFullscreen = () => {
-        const elem = document.documentElement
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen()
-        } else if (elem.webkitRequestFullscreen) {
-          elem.webkitRequestFullscreen()
-        } else if (elem.msRequestFullscreen) {
-          elem.msRequestFullscreen()
-        }
-    }
+    const [changeISFS] = useMutation(MUTATION_SET_IS_FULLSCREEN)
     return (
         <div className="home">
             <div className="home-detail">
@@ -26,7 +20,7 @@ export default function Home() {
                 </div>
                 <div className="home-detail-buttons">
                     <Link to="/game">
-                        <button onClick={() => openFullscreen()} className="home-detail-button home-detail-button-play">
+                        <button onClick={() => openFullscreen(changeISFS)} className="home-detail-button home-detail-button-play">
                             <div>
                                 <span>Play</span>
                                 <PlayArrowIcon/>
