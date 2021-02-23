@@ -484,9 +484,9 @@
 
 .currentPoints h2, .cardsCounter h2, .timer h2{
     margin: 0;
-    font-size: 20pt;
-    font-weight: 500;
-    font-family: 'Quicksand', sans-serif;
+    font-size: 24pt;
+    font-weight: 400;
+    font-family: 'Karma', serif;
 }
 
 .sentinel-loading {
@@ -596,10 +596,30 @@
 
 @media(min-width: 1335px) {
     .currentPoints, .cardsCounter, .timer {
-        background-color: rgba(255, 255, 255, 0.048);
-        border: 1px solid lightgray;
-        border-radius: 12px;
+        background: rgb(246, 246, 246);
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+        border: none;
         justify-content: center;
+        color: rgb(77, 77, 77);
+        // text-shadow: 1px 1px 2px rgb(184, 184, 184);
+        position: relative;
+
+        & > h2{
+            margin-top: 5px;
+        }
+
+        &::after {
+            border-top-left-radius: 60px; 
+            border-top-right-radius: 60px;
+            background: linear-gradient(to right, #CDB4DB 20%,#FFC8DD 20%, #FFC8DD 40%, #FFAFCC 40%, #FFAFCC 60%, #BDE0FE 60%, #BDE0FE 80%, #A2D2FF 80%);
+            position: absolute;
+            content: '';
+            height: 5px;
+            width: 100%;
+            top: 0;
+        }
     }
 }
 
