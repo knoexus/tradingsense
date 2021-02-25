@@ -8,10 +8,13 @@ import { openFullscreen, closeFullscreen } from '../extras/fullScreen'
 import { useQuery, useMutation } from '@apollo/client'
 import { QUERY_IS_FULLSCREEN } from '../apollo-sm/queries'
 import { MUTATION_SET_IS_FULLSCREEN } from '../apollo-sm/mutations'
+import { withRouter } from 'react-router-dom'
+import { useApolloClient } from '@apollo/client'
 
 import '../styles/game.scss'
 
-export default function Game() {
+function Game(props) {
+    const client = useApolloClient()
     const [action, setAction] = useState(-1)
     const [modalOpen, setModal] = useState(false)
     const [mixinUpdater, setMixinUpdate] = useState(false)
@@ -40,7 +43,7 @@ export default function Game() {
 
     const exit = () => {
         const question = "Are you sure you want to exit?"
-        if (window.confirm(question)) window.location.href = "/"
+        if (window.confirm(question)) props.history.goBack()
     }
 
     const fullScreenExitHandler = () => {
@@ -64,6 +67,7 @@ export default function Game() {
         document.addEventListener('mozfullscreenchange', fullScreenExitHandler)
         document.addEventListener('MSFullscreenChange', fullScreenExitHandler)
         return () => {
+            client.clearStore()
             document.removeEventListener('fullscreenchange', fullScreenExitHandler)
             document.removeEventListener('webkitfullscreenchange', fullScreenExitHandler)
             document.removeEventListener('mozfullscreenchange', fullScreenExitHandler)
@@ -84,3 +88,5 @@ export default function Game() {
         </GameWrapper>
     )
 }
+
+export default withRouter(Game)

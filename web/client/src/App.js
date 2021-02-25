@@ -22,6 +22,7 @@ const client = new ApolloClient({
 })
 
 createStore(client)
+client.onClearStore(() => createStore(client))
 
 function App() {
   return (
