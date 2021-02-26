@@ -31,11 +31,21 @@ const SimplePaper = withStyles(() => ({
 
 const useStyles = makeStyles(theme => ({
     tableContainer: {
-      msOverflowStyle: 'none',
-      scrollbarWidth: 'none',
+      overflowX: 'overlay',
       '&::-webkit-scrollbar': {
-        display: 'none'
+        position: 'absolute',
+        height: '4px'
       },
+      '&::-webkit-scrollbar-track': {
+        borderRadius: '4px'
+      },
+      '&::-webkit-scrollbar-thumb': {
+        background: 'rgb(204, 204, 204)', 
+        borderRadius: '4px',
+      },
+      '&::-webkit-scrollbar-thumb:hover': {
+        background: 'rgb(173, 173, 173)', 
+      }
     },
     tableRow: {
       [theme.breakpoints.down('sm')]: {

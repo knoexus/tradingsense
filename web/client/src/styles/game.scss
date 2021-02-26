@@ -11,15 +11,27 @@
     max-width: var(--max-card-width);
     max-height: var(--max-card-height);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    overflow-y: scroll;
+    overflow-y: overlay;
     overflow-x: hidden;
     border: 1px solid lightgrey;
     border-radius: 20px;
     background-color: rgb(255, 255, 255);
-    -ms-overflow-style: none;  
-    scrollbar-width: none; 
-    &::-webkit-scrollbar{
-        display: none;
+    position: relative;
+    &::-webkit-scrollbar {
+        width: 4px;
+        position: absolute;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 4px;
+        margin-top: 18px;
+        margin-bottom: 18px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgb(204, 204, 204); 
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgb(173, 173, 173); 
     }
 }
 
