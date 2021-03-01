@@ -1,9 +1,9 @@
 const { shuffle, getRandomNumbers } = require('./baseOps')
 
 const basePrices = {
-    logo: 100,
-    nameTickerExchange: 200,
-    finnhubIndustry: 50
+    logo: 70,
+    nameTickerExchange: 50,
+    finnhubIndustry: 25
 }
 
 const getPrices = mult => {
