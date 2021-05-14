@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../images/logo.png'
+import {ReactComponent as HomeLogo} from '../../images/home-logo.svg'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import { openFullscreen } from '../../extras/fullScreen'
@@ -13,7 +13,7 @@ export default function Home() {
         <div className="home">
             <div className="home-detail">
                 <div>
-                    <img src={logo}></img>
+                    <HomeLogo/>
                 </div>
                 <div className="home-detail-phrase">
                     <span>Find out if your trading instincts are true.</span>
