@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { QUERY_PROFIT_LOSS_PARAMS, QUERY_CURRENT_POINTS } from '../../../apollo-sm/queries'
 import { PROFIT_LOSS } from '../../../gql_queries/ProfitLoss__GQL'
-import { MUTATION_SET_CURRENT_POINTS, MUTATION_SET_ENDGAME } from '../../../apollo-sm/mutations'
+import { MUTATION_SET_CURRENT_POINTS, MUTATION_SET_INIT_POINTS, MUTATION_SET_ENDGAME } from '../../../apollo-sm/mutations'
 
 
 export default function CurrentPoints({amount}) {
@@ -11,6 +11,7 @@ export default function CurrentPoints({amount}) {
     const [lastChange, setLastChange] = useState(null)
 
     const [changeCP] = useMutation(MUTATION_SET_CURRENT_POINTS)
+    const [changeIP] = useMutation(MUTATION_SET_INIT_POINTS)
     const [changeENDGM] = useMutation(MUTATION_SET_ENDGAME)
 
     const calculateChange = (action, amount, oldPrice, newPrice) => {
@@ -35,8 +36,12 @@ export default function CurrentPoints({amount}) {
     const { data, error, loading } = useQuery(PROFIT_LOSS, params)
 
     useEffect(() => {
-        if (!isFirstRender)
-            changeTotal(dataCP.currentPoints)
+        if (!isFirstRender) changeTotal(dataCP.currentPoints)
+        else changeIP({
+            variables: {
+                newInitPoints: amount
+            }
+        })
     }, [dataCP])
 
     useEffect(() => {

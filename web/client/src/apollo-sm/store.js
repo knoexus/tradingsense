@@ -5,6 +5,7 @@ const store = {
     loadingMixin: false,
     profit_loss_params: null,
     endGame: false,
+    initPoints: 0,
     currentPoints: 0,
     isFullScreen: false
 }

@@ -1,4 +1,5 @@
-import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME, QUERY_CURRENT_POINTS, QUERY_IS_FULLSCREEN } from './queries'
+import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME, 
+    QUERY_CURRENT_POINTS, QUERY_INIT_POINTS, QUERY_IS_FULLSCREEN } from './queries'
 
 const resolvers = {
     Mutation: {
@@ -62,6 +63,20 @@ const resolvers = {
                 cache.writeQuery({ query: QUERY_CURRENT_POINTS, data })
                 return data.currentPoints
             }
+        },
+                changeCurrentPoints: (_, { newCurrentPoints }, { cache }) => {
+            const data = {
+                currentPoints: newCurrentPoints
+            }    
+            cache.writeQuery({ query: QUERY_CURRENT_POINTS, data })
+            return data.currentPoints
+        },
+        changeInitPoints: (_, { newInitPoints }, { cache }) => {
+            const data = {
+                initPoints: newInitPoints
+            }    
+            cache.writeQuery({ query: QUERY_INIT_POINTS, data })
+            return data.initPoints
         },
         changeIsFullScreen: (_, { newIsFullScreen }, { cache }) => {
             const data = {

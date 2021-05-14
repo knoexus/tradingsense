@@ -26,6 +26,11 @@ const QUERY_CURRENT_POINTS = gql`{
   }
   `
 
+const QUERY_INIT_POINTS = gql`{
+  initPoints @client
+}
+`
+
 const QUERY_PROFIT_LOSS_PARAMS = gql`{
     profit_loss_params @client {
       endDate 
@@ -43,4 +48,4 @@ const QUERY_IS_FULLSCREEN = gql`{
 `
 
 export { QUERY_INIT_STATE, QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME,
-    QUERY_CURRENT_POINTS, QUERY_IS_FULLSCREEN }
+    QUERY_CURRENT_POINTS, QUERY_INIT_POINTS, QUERY_IS_FULLSCREEN }
