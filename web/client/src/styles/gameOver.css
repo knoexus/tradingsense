@@ -28,18 +28,19 @@
     display: flex;
     flex-direction: column;
     padding: 40px;
-    border: 1px solid rgb(200, 200, 200);
     border-radius: 20px;
+    background: #96cafa;
+    background: linear-gradient(to bottom,#ffacdc 25%, #cdace0 50%, #96cafa 75%, #9ecdf7 100%);
+}
+
+.gameOver h2, .gameOver h3, .gameOver span, .gameOver p, .gameOver .gameOver-furtherActions {
+    color: #ffffff;
 }
 
 @media(max-width: 800px), (max-height: 450px) {
     .gameOver > div {
-        border: none;
-    }
-}
-
-.gameOver h2, .gameOver h3, .gameOver span, .gameOver p, .gameOver .gameOver-furtherActions {
-    color: rgb(200, 200, 200);
+        border-radius: 0;
+    }   
 }
 
 .gameOver h2{
@@ -102,12 +103,12 @@
 }
 
 .button-Continue {
-    color: rgb(34, 170, 10);
-    border-color: rgb(34, 170, 10);
+    color: #dfa60a;
+    border-color: #dfa60a;
 }
 
 .button-Continue:hover{
-    background-color: rgb(34, 170, 10);
+    background-color: #dfa60a;
     color: whitesmoke;
 }
 
