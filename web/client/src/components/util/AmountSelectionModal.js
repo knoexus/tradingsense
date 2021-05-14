@@ -85,6 +85,15 @@ export default function AmountSelectionModal({ action, open, proceed, closeModal
     changeStocks(midValue)
   }, [minMaxStocks])
 
+  const calculateStep = (max, min) => {
+    let neg = max-min
+    let istep = Math.floor(neg/10)
+    if (neg % istep === 0)
+      while (neg % istep === 0)
+        istep += 1
+    return istep
+  }
+
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <div className="modal-stocks-inner">
@@ -93,7 +102,7 @@ export default function AmountSelectionModal({ action, open, proceed, closeModal
           onChange={(_, v) => changeStocks(v)}
           defaultValue={midValue}
           valueLabelDisplay="auto"
-          step={(maxStocks-minStocks) >= 10 ? Math.floor((maxStocks-minStocks)/10) : 1}
+          step={(maxStocks-minStocks) >= 10 ? calculateStep(maxStocks, minStocks) : 1}
           marks
           min={minStocks}
           max={maxStocks}
