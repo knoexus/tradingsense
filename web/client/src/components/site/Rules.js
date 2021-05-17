@@ -58,7 +58,7 @@ export default function Rules() {
                         <img className="rules-media-display" src={company_info}></img>
                         <video poster={technicalsImg} className="rules-media-display" muted autoPlay loop src={technicals} type="video/mp4"></video>
                     </div>
-                    <p>To help you make up your mind, info regarding the asset industry, or reveal its logo / name as well as technical indicators can be unlocked. With the latter you can select a day which you would like to unlock indicators for, but beware that its proximity to day X affects the price of an unlock. </p>
+                    <p>To help you make up your mind, info regarding the asset industry, logo and name as well as technical indicators can be unlocked. With the latter, you can select a day which you would like to unlock indicators for, but beware that its proximity to day X affects the price of an unlock. </p>
                 </IDiv>
                 <IDiv className="rules-buying-selling">
                     <h2>Buying and Selling</h2>
@@ -71,7 +71,7 @@ export default function Rules() {
                     </div>
                     <div className="rules-buying-selling-modal-example">
                         <video poster={modalImg} className="rules-media-display" muted autoPlay loop src={technicals} type="video/mp4" src={modal}></video>
-                        <p>You will be prompted to select how much of the asset you would like to sell (given that you virtually own it) or buy. This stands for the risk you are willing to take: the more you buy or sell - the bigger is the potential profit / loss. Please mind that you do not need to worry about the asset price - buying and selling is totally virtual and what matters is whether you got the market action right and to what extent. </p>
+                        <p>You will be prompted to select how much of the asset you would like to sell (given that you virtually own it) or buy. This stands for the risk you are willing to take: the more you buy or sell – the bigger the potential profit / loss is. Please mind that you do not need to worry about the asset price - buying and selling is totally virtual and what matters is whether you got the market action right and to what extent. </p>
                     </div>
                     <p className="rules-important">Actions of buying and selling might be confusing but in fact are not too difficult to understand. For the both the price on day 0 will be compared against price on day X, also accounting the number of assets you have selected. If you decide to <b className="rules-buy">BUY</b> an asset, the profit / loss of selling it on day X will be added / subtracted from your balance. If you decide to <b className="rules-sell">SELL</b> an asset, the profit / loss of not holding it until day X will be added / subtracted from your balance. </p>
                 </IDiv>
