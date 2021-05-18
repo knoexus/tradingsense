@@ -6,13 +6,12 @@ export default function CardsCounter({max, current}) {
     const [realMax, changeRealMax] = useState(null)
     const [changeENDGM] = useMutation(MUTATION_SET_ENDGAME)
     useEffect(() => {
-        if (current == max){
+        if (current - 1 == max){
             changeENDGM({
                 variables: {
                     newEndGame: true
                 }
             })
-            // return null
         }
         else changeRealMax(max)
     }, [current])
