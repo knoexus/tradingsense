@@ -19,6 +19,7 @@ function Game(props) {
     const [modalOpen, setModal] = useState(false)
     const [mixinUpdater, setMixinUpdate] = useState(false)
     const [stocksPassed, setStocksLeft] = useState(1)
+    const [maxStocks, setMaxStocks] = useState(Infinity)
     const [currentMinMaxStocks, setCurrentMinMaxStocks] = useState(null)
     const { data } = useQuery(QUERY_IS_FULLSCREEN)
     const isFullScreen = data?.isFullScreen
@@ -35,10 +36,12 @@ function Game(props) {
     }
 
     const proceed = () => {
-        setModal(false)
-        setAction(-1)
-        setMixinUpdate(!mixinUpdater)
-        setStocksLeft(stocksPassed + 1)
+        setStocksLeft(stocksPassed + 1) 
+        if (stocksPassed < maxStocks) {
+            setModal(false)
+            setAction(-1)
+            setMixinUpdate(!mixinUpdater)
+        }
     }
 
     const exit = () => {
@@ -80,7 +83,7 @@ function Game(props) {
             <Mixin updater={mixinUpdater} preUpdater={modalOpen} setMinMaxStocks={m => setCurrentMinMaxStocks(m)}/>
             <Arrow side="right" clicked={() => openModal(0)}/>
             <Arrow side="left" clicked={() => openModal(1)}/>
-            <GameSentinel stocksPassed={stocksPassed}/>
+            <GameSentinel stocksPassed={stocksPassed} setMaxStocks={setMaxStocks}/>
             <AmountSelectionModal open={modalOpen} action={action} closeModal={() => closeModal()} 
                 minMaxStocks={currentMinMaxStocks} proceed={() => proceed()}/>
             <button className="button-GameControl button-GameControl-GameExit" onClick={() => exit()} type="button">Exit</button>
