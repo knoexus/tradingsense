@@ -103,12 +103,12 @@
 }
 
 .button-Continue {
-    color: #dfa60a;
-    border-color: #dfa60a;
+    color: #a300e4;
+    border-color: #a300e4;
 }
 
 .button-Continue:hover{
-    background-color: #dfa60a;
+    background-color: #a300e4;
     color: whitesmoke;
 }
 
