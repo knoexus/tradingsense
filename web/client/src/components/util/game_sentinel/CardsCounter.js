@@ -17,7 +17,7 @@ export default function CardsCounter({max, current}) {
     }, [current])
     return (
         <div className="cardsCounter">
-            <h2>{current}/{realMax}</h2>
+            <h2>{current > realMax ? realMax : current }/{realMax}</h2>
         </div>
     )
 }

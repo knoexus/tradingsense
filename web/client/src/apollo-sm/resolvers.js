@@ -1,5 +1,5 @@
 import { QUERY_WI, QUERY_LOADING_MIXIN, QUERY_PROFIT_LOSS_PARAMS, QUERY_ENDGAME, 
-    QUERY_CURRENT_POINTS, QUERY_INIT_POINTS, QUERY_IS_FULLSCREEN } from './queries'
+    QUERY_CURRENT_POINTS, QUERY_INIT_POINTS, QUERY_IS_FULLSCREEN, QUERY_POINTS_READY_FOR_ENDGAME } from './queries'
 
 const resolvers = {
     Mutation: {
@@ -43,6 +43,13 @@ const resolvers = {
             }    
             cache.writeQuery({ query: QUERY_ENDGAME, data })
             return data.endGame
+        },
+        changePointsReadyForEndGame: (_, { newPointsReadyForEndGame }, { cache }) => {
+            const data = {
+                pointsReadyForEndGame: newPointsReadyForEndGame
+            }    
+            cache.writeQuery({ query: QUERY_POINTS_READY_FOR_ENDGAME, data })
+            return data.pointsReadyForEndGame
         },
         changeCurrentPoints: (_, { newCurrentPoints }, { cache }) => {
             const data = {

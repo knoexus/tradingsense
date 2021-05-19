@@ -5,7 +5,7 @@ import MinMaxStocksSlider from '../util/MinMaxStocksSlider'
 import Button from '@material-ui/core/Button'
 
 import { useMutation } from '@apollo/client'
-import { MUTATION_SET_PROFIT_LOSS_PARAMS } from '../../apollo-sm/mutations'
+import { MUTATION_SET_PROFIT_LOSS_PARAMS, MUTATION_SET_POINTS_READY_FOR_ENDGAME } from '../../apollo-sm/mutations'
 
 const actions = {
     0: "Buy",
@@ -59,6 +59,7 @@ export default function AmountSelectionModal({ action, open, proceed, closeModal
   const [_open, setOpen] = useState(open)
 
   const [changePLP] = useMutation(MUTATION_SET_PROFIT_LOSS_PARAMS)
+  const [changePRFENDGM] = useMutation(MUTATION_SET_POINTS_READY_FOR_ENDGAME)
 
   const minStocks = minMaxStocks?.minMaxStocks?.minStocks
   const maxStocks = minMaxStocks?.minMaxStocks?.maxStocks
@@ -69,6 +70,11 @@ export default function AmountSelectionModal({ action, open, proceed, closeModal
     const endDate = minMaxStocks?.endDate
     const fid = minMaxStocks?.fid
     const lastPrice = minMaxStocks?.lastPrice
+    changePRFENDGM({
+      variables: {
+          newPointsReadyForEndGame: false
+      }
+    })
     changePLP({
       variables: {
           newFid: fid,

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { QUERY_PROFIT_LOSS_PARAMS, QUERY_CURRENT_POINTS } from '../../../apollo-sm/queries'
 import { PROFIT_LOSS } from '../../../gql_queries/ProfitLoss__GQL'
-import { MUTATION_SET_CURRENT_POINTS, MUTATION_SET_INIT_POINTS, MUTATION_SET_ENDGAME } from '../../../apollo-sm/mutations'
+import { MUTATION_SET_CURRENT_POINTS, MUTATION_SET_INIT_POINTS, 
+    MUTATION_SET_POINTS_READY_FOR_ENDGAME, MUTATION_SET_ENDGAME } from '../../../apollo-sm/mutations'
 
 
 export default function CurrentPoints({amount}) {
@@ -13,6 +14,7 @@ export default function CurrentPoints({amount}) {
     const [changeCP] = useMutation(MUTATION_SET_CURRENT_POINTS)
     const [changeIP] = useMutation(MUTATION_SET_INIT_POINTS)
     const [changeENDGM] = useMutation(MUTATION_SET_ENDGAME)
+    const [changePRFENDGM] = useMutation(MUTATION_SET_POINTS_READY_FOR_ENDGAME)
 
     const calculateChange = (action, amount, oldPrice, newPrice) => {
         if (action == 'Buy') return (newPrice-oldPrice) * amount
@@ -61,6 +63,12 @@ export default function CurrentPoints({amount}) {
             variables: {
                 newCurrentPoints: total
             }
+        }).then(() => {
+            changePRFENDGM({
+                variables: {
+                    newPointsReadyForEndGame: true
+                }
+            })
         })
         if (total < 0){
             changeENDGM({
@@ -70,6 +78,7 @@ export default function CurrentPoints({amount}) {
             })
         }
     }, [total])
+    
     return (
         <div className="currentPoints">
             <h2>{total.toFixed(2)}$ 
