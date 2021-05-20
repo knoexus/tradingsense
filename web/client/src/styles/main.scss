@@ -209,13 +209,23 @@ footer a {
         color:rgb(184, 179, 179);
     }
     &:hover{
-        color:rgb(238, 176, 176);
+        color:rgb(250, 187, 242);
     }
 }
 
+footer a > svg {
+    vertical-align: middle;
+    margin: 0 0 2px 1px;
+}
+
 @media(max-width: 600px) {
-    footer span, footer a {
-        font-size: 14px;
+    footer span {
+        font-size: 0.88em;
+    }
+
+    footer a > svg {
+        height: 1.2em;
+        width: 1.2em;
     }
 }
 
