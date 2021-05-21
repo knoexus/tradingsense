@@ -10,6 +10,8 @@ import technicalsImg from '../../images/rules-technicals-was.png'
 import Arrow from '../util/Arrow'
 import useIntersect from '../../hooks/useIntersect'
 
+import '../../styles/rules.scss'
+
 export default function Rules() {
     const IDiv = props => {
         const buildThresholdArray = () => [...Array(50).keys()].map(x => x * 2 / 100) 

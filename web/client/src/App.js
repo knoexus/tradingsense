@@ -1,5 +1,4 @@
 import React from 'react'
-import './App.css'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import PlayableArea from './components/PlayableArea'
 import Home from './components/site/Home'
