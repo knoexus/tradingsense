@@ -1,0 +1,21 @@
+server {
+    listen 80;
+    server_name tradingsense.app;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+server {
+    listen 80;
+    server_name api.tradingsense.app;
+
+    location / {
+        proxy_pass http://server:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}

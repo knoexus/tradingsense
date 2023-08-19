@@ -6,7 +6,7 @@ export default function Footer() {
         <footer>
             <div>
                 <span>
-                    © {new Date().getFullYear()} TradingSense | By <a href="https://github.com/knoexus">@knoexus <GitHubLogo/></a>
+                    © 2020 – {new Date().getFullYear()} TradingSense | By <a href="https://github.com/knoexus">@knoexus <GitHubLogo/></a>
                 </span>
             </div>
         </footer>

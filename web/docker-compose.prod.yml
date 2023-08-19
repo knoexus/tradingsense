@@ -1,0 +1,33 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    volumes:
+      - shared-nginx:/usr/src/app/build
+    env_file:
+      - ./client/.env
+    depends_on:
+      - server
+
+  server:
+    build: ./server
+    expose:
+      - '5000'
+    env_file:
+      - ./server/.env
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.prod
+    volumes:
+      - shared-nginx:/usr/share/nginx/html
+    ports:
+      - '80:80'
+    depends_on:
+      - client
+
+volumes:
+  shared-nginx:
