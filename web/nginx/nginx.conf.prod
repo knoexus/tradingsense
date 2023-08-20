@@ -1,6 +1,9 @@
 server {
-    listen 80;
+    listen 443 ssl;
     server_name tradingsense.app;
+
+    ssl_certificate /etc/ssl/core/tradingsense.app.pem;
+    ssl_certificate_key /etc/ssl/core/tradingsense.app.key;
 
     location / {
         root /usr/share/nginx/html;
@@ -10,12 +13,27 @@ server {
 }
 
 server {
-    listen 80;
+    listen 443 ssl;
     server_name api.tradingsense.app;
+
+    ssl_certificate /etc/ssl/core/tradingsense.app.pem;
+    ssl_certificate_key /etc/ssl/core/tradingsense.app.key;
 
     location / {
         proxy_pass http://server:5000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
+}
+
+server {
+    listen 80;
+    server_name tradingsense.app;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 80;
+    server_name api.tradingsense.app;
+    return 301 https://$host$request_uri;
 }

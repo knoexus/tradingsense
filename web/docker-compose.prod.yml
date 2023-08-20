@@ -2,30 +2,31 @@ version: '3'
 services:
   client:
     build:
-      context: ./client
+      context: client
       dockerfile: Dockerfile.prod
     volumes:
       - shared-nginx:/usr/src/app/build
     env_file:
-      - ./client/.env
+      - client/.env
     depends_on:
       - server
 
   server:
-    build: ./server
+    build: server
     expose:
       - '5000'
     env_file:
-      - ./server/.env
+      - server/.env
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile.prod
+    image: nginx:1.25.2-alpine-slim
     volumes:
       - shared-nginx:/usr/share/nginx/html
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/default.conf
+      - ./nginx/ssl:/etc/ssl/core
     ports:
       - '80:80'
+      - '443:443'
     depends_on:
       - client
 

@@ -2,26 +2,26 @@ version: '3'
 services:
   client:
     build:
-      context: ./client
+      context: client
       dockerfile: Dockerfile.dev
     expose:
       - '3000'
     env_file:
-      - ./client/.env
+      - client/.env
     depends_on:
       - server
 
   server:
-    build: ./server
+    build: server
     expose:
       - '5000'
     env_file:
-      - ./server/.env
+      - server/.env
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile.dev
+    image: nginx:1.25.2-alpine-slim
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d/default.conf
     ports:
       - '80:80'
     depends_on:
